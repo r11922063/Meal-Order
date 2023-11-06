@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import CustomerNavBar from './components/CustomerNavBar';
 
-const result = await fetch('http://localhost:8081/users').then((res) => {return res.json();});
+// const result = await fetch('http://localhost:8081/allMeals').then((res) => {return res.json();});
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
-          { result.msg }
+          {/* { result.msg } */}
         </p>
         <a
           className="App-link"
