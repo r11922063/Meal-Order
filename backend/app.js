@@ -11,14 +11,15 @@ import { fileURLToPath } from "node:url"
 
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
+import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
+import { query } from './models/db.model.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 const server = http.createServer(app);
-// const expressLayouts = require('express-ejs-layouts');
-import expressLayouts from 'express-ejs-layouts';
+
 
 app.use(cors());
 app.set('port', process.env.PORT);
@@ -36,10 +37,8 @@ app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
+app.use('/settlement', settlementRouter);
 
-// View engine
-app.set('view engine', 'ejs');
-app.use(expressLayouts);
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

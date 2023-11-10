@@ -1,0 +1,53 @@
+.settlement table {
+    width: 100%;
+    /* border-collapse: separate;
+    border-radius: 1rem; */
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 1em;
+    border: solid .3em #dfdfdf;
+}
+
+.settlement th {
+    font-size: 30px;
+    padding: 5px;
+}
+
+.settlement td {
+    font-size: 24px;
+    padding: 5px;
+}
+
+.settlement table th, .settlement table td {
+    border: .1em solid #dfdfdf;
+}
+
+.settlement td {
+    text-align: center;
+}
+
+.settlement .container1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.settlement .container2 {
+    display: flex;
+    align-items: center;
+}
+
+.settlement .container2 label {
+    margin-right: 15px;
+    font-size: 24px;
+}
+
+.settlement .container2 select {
+    margin-left: 10px;
+    font-size: 24px;
+    border-radius: 4px;
+}
+
+.settlement .container2 h3 {
+    margin-left: auto;
+    font-size: 24px;
+}
