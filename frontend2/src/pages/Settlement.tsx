@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import SettlementTable from "../components/SettlementTable"
 import style from "../style/Settlement.module.css"
+import type { SettlementOrder } from '../type'
 
 let year: number = new Date().getFullYear();
 let month: number = new Date().getMonth() + 1;
@@ -21,46 +23,11 @@ for (let i = 0; i < PERIOD; ++i) {
     month -= 1;
 }
 
-type Order = {
-    Order_ID: number,
-    Pickup_Time: string,
-    Name: string,
-    Cash_Amout: number;
-};
-
-function OrderTable({ orders }: {orders: Order[]}) {
-    const content = orders.map(order => {
-        return (
-            <tr key={ order.Order_ID }>
-                <td> { order.Pickup_Time } </td>
-                <td> { order.Order_ID } </td>
-                <td> { order.Name } </td>
-                <td> { order.Cash_Amout } </td>
-            </tr>
-        );
-    });
-    return (
-        <table>
-            <thead>
-                <tr>
-                    <th>日期 / 時間</th>
-                    <th>訂單編號</th>
-                    <th>餐廳</th>
-                    <th>金額</th>
-                </tr>
-            </thead>
-            <tbody>
-                { content.length > 0 ? content : <tr><th colSpan={ 4 }> No data </th></tr> }
-            </tbody>
-        </table>
-    );
-}
-
-export default function Settlement() {
-    const { customerId } = useParams();
+export default function Settlement({ identity }: { identity: 'customer' | 'vendor' }) {
+    const { id } = useParams();
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-    const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
-    const [orders, setOrder] = useState<Order[]>([]);
+    const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+    const [orders, setOrder] = useState<SettlementOrder[]>([]);
     let totalAmount = 0;
     orders.forEach(order => {
         totalAmount += order.Cash_Amout;
@@ -69,7 +36,7 @@ export default function Settlement() {
     useEffect(() => {
         const FetchOrder = async (ID: string, Year: number, Month: number) => {
             try {
-                const url: string = `http://localhost:8081/settlement?id=${ID}&identity=customer&year=${Year}&month=${String(Month).padStart(2, '0')}`;
+                const url: string = `http://localhost:8081/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
                 setOrder(result);
             }
@@ -77,8 +44,10 @@ export default function Settlement() {
                 throw err;
             }
         }
+
         const abortController = new AbortController();
-        FetchOrder(customerId!, selectedYear, selectedMonth);
+        FetchOrder(id!, selectedYear, selectedMonth);
+
         return () => {
             abortController.abort();
         }
@@ -100,9 +69,9 @@ export default function Settlement() {
                             }
                             else if (selectedMonth > maxmonth) {
                                 setSelectedMonth(maxmonth);
-                            } 
+                            }
                         }}>
-                            { yearlist.map(y => <option value={ y } key={ y }> { y } </option>)}
+                            { yearlist.map(y => <option value={ y } key={ y }> { y } </option>) }
                         </select>
                     </label>
                     <label className="month-label">
@@ -113,7 +82,7 @@ export default function Settlement() {
                     </label>
                     <h3>總計 : NT$ { totalAmount }</h3>
                 </div>
-                <OrderTable orders={ orders! }/>
+                <SettlementTable orders={ orders! } identity= { identity }/>
             </div>
         </div>
     );

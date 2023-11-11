@@ -11,14 +11,16 @@ const GetSettlement = async (req, res, next) => {
         if (req.query.identity === 'customer') {
             const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amout`, v.`Name` \
                                                 FROM `Order` o JOIN Vendor v WHERE o.`Customer_ID` = ? AND o.`Status` = ? \
-                                                AND (o.`Pickup_Time` BETWEEN ? AND ?) AND o.`Vendor_ID` = v.`Vendor_ID`', 
+                                                AND (o.`Pickup_Time` BETWEEN ? AND ?) AND o.`Vendor_ID` = v.`Vendor_ID`\
+                                                ORDER BY `Pickup_Time`', 
                                                 [req.query.id, '4', start, end]);
             res.json(rows);
         }
         else {
             const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amout` \
                                                 FROM `Order` WHERE `Vendor_ID` = ? AND `Status` = ? \
-                                                AND (`Pickup_Time` BETWEEN ? AND ?)', 
+                                                AND (`Pickup_Time` BETWEEN ? AND ?) \
+                                                ORDER BY `Pickup_Time`', 
                                                 [req.query.id, '4', start, end]);
             res.json(rows);
         }

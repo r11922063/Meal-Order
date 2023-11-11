@@ -8,6 +8,7 @@ import http from 'http';
 import 'dotenv/config';
 import { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
+import SendMail from './models/mail.model.js';
 
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
@@ -55,5 +56,7 @@ app.use('/settlement', settlementRouter);
 //   res.status(err.status || 500);
 //   res.render('error');
 // });
+
+// SendMail({to: 'r11922173@csie.ntu.edu.tw', subject: 'nodemailer test', text: 'Hi, this is nodemail test.'})
 
 export default app;
