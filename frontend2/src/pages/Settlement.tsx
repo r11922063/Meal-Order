@@ -24,7 +24,8 @@ for (let i = 0; i < PERIOD; ++i) {
 }
 
 export default function Settlement({ identity }: { identity: 'customer' | 'vendor' }) {
-    const { id } = useParams();
+    const paras = useParams();
+    const id = identity === 'customer' ? paras.customerId : paras.vendorId;
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
     const [orders, setOrder] = useState<SettlementOrder[]>([]);
