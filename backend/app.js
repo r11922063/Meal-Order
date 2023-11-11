@@ -2,7 +2,6 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import createError from 'http-errors';
 import cors from 'cors';
 import http from 'http';
 import 'dotenv/config';
@@ -14,7 +13,6 @@ import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
-import { query } from './models/db.model.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -57,6 +55,6 @@ app.use('/settlement', settlementRouter);
 //   res.render('error');
 // });
 
-// SendMail({to: 'r11922173@csie.ntu.edu.tw', subject: 'nodemailer test', text: 'Hi, this is nodemail test.'})
+// SendMail({to: 'r11922125@csie.ntu.edu.tw', subject: 'nodemailer test', text: 'Hi, this is nodemail test.'})
 
 export default app;
