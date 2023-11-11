@@ -1,0 +1,25 @@
+.settlement .container1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.settlement .container2 {
+    display: flex;
+    align-items: center;
+}
+
+.settlement .container2 label {
+    margin-right: 15px;
+    font-size: 24px;
+}
+
+.settlement .container2 select {
+    margin-left: 10px;
+    font-size: 24px;
+    border-radius: 4px;
+}
+
+.settlement .container2 h3 {
+    margin-left: auto;
+    font-size: 24px;
+}

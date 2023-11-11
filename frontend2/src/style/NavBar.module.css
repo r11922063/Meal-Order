@@ -1,0 +1,48 @@
+.navbar {
+    background-color: rgb(213, 249, 230);
+    top: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    z-index: 999;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    border-radius: 4px;
+}
+  
+.navbar > a {
+    font-size: 40px;
+    color: rgb(254, 73, 100);
+    font-weight: bolder;
+    margin-left: 2.5vw;
+    margin-right: auto;
+}
+
+.navbar ul a[class="active"] {
+    border-bottom: 5px rgb(254, 73, 100) solid;
+}
+  
+.navbar ul {
+    list-style-type: none;
+    display: flex;
+    gap: 3.5vw;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 2.5vw;
+    font-size: 20px;
+    font-weight: bolder;
+}
+  
+.navbar button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
