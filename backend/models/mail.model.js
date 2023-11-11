@@ -19,7 +19,7 @@ try {
 
 export default function SendMail({ to, subject, text }) {
     const mailcontent = {
-        from: process.env.GMAIL_USER,
+        from: process.env.MAIL_USER,
         to: to,
         subject: subject,
         text: text
@@ -28,7 +28,7 @@ export default function SendMail({ to, subject, text }) {
         if (err) {
             console.error(err);
         } else {
-            console.log(`Send successfully ${ mailcontent }`);
+            console.log(`Send successfully`);
         }
     });
 }

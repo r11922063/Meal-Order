@@ -24,21 +24,22 @@ for (let i = 0; i < PERIOD; ++i) {
 }
 
 export default function Settlement({ identity }: { identity: 'customer' | 'vendor' }) {
-    const { id } = useParams();
+    const params = useParams();
+    const id = identity === 'customer' ? params.customerId : params.vendorId;
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
-    const [orders, setOrder] = useState<SettlementOrder[]>([]);
+    const [orders, setOrders] = useState<SettlementOrder[]>([]);
     let totalAmount = 0;
     orders.forEach(order => {
         totalAmount += order.Cash_Amout;
     });
 
     useEffect(() => {
-        const FetchOrder = async (ID: string, Year: number, Month: number) => {
+        const FetchOrders = async (ID: string, Year: number, Month: number) => {
             try {
                 const url: string = `http://localhost:8081/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
-                setOrder(result);
+                setOrders(result);
             }
             catch (err) {
                 throw err;
@@ -46,7 +47,7 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
         }
 
         const abortController = new AbortController();
-        FetchOrder(id!, selectedYear, selectedMonth);
+        FetchOrders(id!, selectedYear, selectedMonth);
 
         return () => {
             abortController.abort();
@@ -58,7 +59,7 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
             <h1>我的月結算</h1>
             <div className= { style.container1}>
                 <div className= { style.container2 }>
-                    <label className="year-label">
+                    <label>
                         Year :
                         <select value={selectedYear} onChange={e => {
                             setSelectedYear(+e.target.value);
@@ -74,7 +75,7 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
                             { yearlist.map(y => <option value={ y } key={ y }> { y } </option>) }
                         </select>
                     </label>
-                    <label className="month-label">
+                    <label>
                         Month :
                         <select value={selectedMonth} onChange={e => setSelectedMonth(+e.target.value) }>
                             { yearmap.get(selectedYear)!.map(m => <option value={ m } key={ `${selectedYear}/${m}` }> { m } </option>)}
