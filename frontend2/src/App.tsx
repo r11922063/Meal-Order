@@ -15,13 +15,13 @@ const route = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route index element={<Login/>}/>
-        <Route path="customer/:id" element={<CustomerLayout/>}>
+        <Route path="customer/:customerId/" element={<CustomerLayout/>}>
           <Route index element={<Customer/>}/>
-          <Route path="orders" element={<Orders/>}/>
+          <Route path=":vendorId" element={<Orders/>}/>
           <Route path="shopcart" element={<ShopCart/>}/>
           <Route path="settlement" element={<Settlement identity='customer'/>}/>
         </Route>
-        <Route path="vendor/:id" element={<VendorLayout/>}>
+        <Route path="vendor/:vendorId" element={<VendorLayout/>}>
           <Route index element={<Vendor/>}/>
           <Route path="mealamount" element={<MealAmount/>}/>
           <Route path="allmeals" element={<AllMeals/>}/>
