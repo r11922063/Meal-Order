@@ -1,0 +1,27 @@
+.VendorImg{
+    width: 100%;
+    max-height: 20vw;
+    overflow:hidden;
+    object-fit:cover;      
+    text-align: center;
+    }
+.VendorImg img{
+  width: 100%;
+}
+
+.VendorInfo{
+  width: auto;
+  height: auto;
+  max-height:10vw;
+  line-height: 3vw;
+}
+
+.VendorName{
+  padding: 0;
+}
+
+.VendorAddr{
+  color: gray;
+  line-height: 0.5vw;
+  padding: 0;
+}

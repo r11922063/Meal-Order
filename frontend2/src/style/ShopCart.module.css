@@ -1,0 +1,92 @@
+
+.Shoptitle{
+    padding-left: 1vw;
+    font-size: 2vw;
+  }
+  
+  .OneOrder{
+    padding-left: 1vw;
+    border-style:solid ;
+    border-color: #00000033;
+    border-width: 0.2vw 0;
+    margin: 1vw;
+  }
+  
+  .InfoAndButton{
+    display: grid; 
+    grid-template-columns: repeat(2, 50%);
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: flex-start
+  }
+  
+  
+  .orderInfo{
+    display: flex;
+    color:#000000B2;
+    float:left;
+    justify-content: flex-start;
+  }
+  
+  .button button{
+    float: right;
+  }
+  
+  .button{
+    float: right;
+    justify-self: flex-end;
+    margin: 0.5vw;
+  }
+  
+  .Deletebutton{
+    background:rgb(255, 45, 45);
+    border: 0px solid rgb(0, 0, 0);
+    color:white;
+    font-size: 2vw;
+    border-radius: 0.5vw;
+    font-size: 15px;
+    padding: 0.3vw;
+  }
+  
+  .Deletebutton img{
+    float: left;
+    margin: auto;
+  }
+  
+  .TotalAmount{
+    margin-right: 1vw;
+  }
+  
+  .TotalAmount h4{
+    text-align: right;
+  }
+  
+  .SendButton{
+    text-align: right;
+    margin-right: 0.5vw;
+  }
+  
+
+  .sendButton{
+    background-color: aquamarine;
+    border: 0px solid;
+    color: rgb(0, 0, 0);
+    font-size: 2vw;
+    border-radius: 0.5vw;
+    font-size: 15px;
+    padding: 0.3vw;
+    margin-bottom: 0.5vw;
+    width:auto;
+    margin-right: 0;
+  }
+  
+  .sendButton img{
+    float: left;
+    vertical-align: inline-block;
+  }
+
+  .sendButton p{
+    white-space: pre;
+  }
+  
+  
