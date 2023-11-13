@@ -5,6 +5,7 @@ import CustomerLayout from './layouts/CustomerLayout';
 import Settlement from './pages/Settlement';
 import Orders from './pages/Orders';
 import ShopCart from './pages/ShopCart';
+import OrderMeal from './pages/OrderMeal';
 import Vendor from './pages/Vendor';
 import AllMeals from './pages/AllMeals';
 import MealAmount from './pages/MealAmount';
@@ -17,7 +18,8 @@ const route = createBrowserRouter(
       <Route index element={<Login/>}/>
         <Route path="customer/:customerId/" element={<CustomerLayout/>}>
           <Route index element={<Customer/>}/>
-          <Route path=":vendorId" element={<Orders/>}/>
+          <Route path="vendor/:vendorId" element={<OrderMeal/>}/>
+          <Route path="orders" element={<Orders/>}/>
           <Route path="shopcart" element={<ShopCart/>}/>
           <Route path="settlement" element={<Settlement identity='customer'/>}/>
         </Route>
