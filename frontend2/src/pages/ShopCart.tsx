@@ -1,5 +1,12 @@
+import ShopTitle from '../components/ShopTitle';
+import MealBlocks from '../components/MealBlocks';
+
 export default function ShopCart() {
     return (
-        <h1>ShopCart</h1>
+        <>
+            <ShopTitle />
+            <MealBlocks />
+        </>
+
     )
-}
+};
