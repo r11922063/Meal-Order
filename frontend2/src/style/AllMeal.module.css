@@ -1,6 +1,6 @@
 .meal_container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -9,29 +9,17 @@
 }
   
 .meal_itemBox {
-width: 100%;
-border-radius: 10px;
-display: flex;
-flex-direction: column;
-gap: 10px;
-align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
 }
   
-.meal_item {
-width: 100%;
-height: 120px;
-background-color: #fff;
-border-radius: 10px;
-box-shadow: rgba(0, 0, 0, 0.08) 0px 5px 20px;
-border-right: 5px solid #8fc700;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 16px 5px;
-position: relative;
-}
+
   
-.meal_remove {
+/* .meal_remove {
 position: absolute;
 left: 15px;
 top: 15px;
@@ -41,46 +29,15 @@ transition: all 0.3s ease;
 
 .meal_remove:hover {
 transform: scale(1.1);
-}
+} */
   
-.meal_link {
+/* .meal_link {
 flex: 1 1 auto;
 display: flex;
 align-items: center;
-}
+} */
 
-.meal_img {
-display: flex;
-align-items: center;
-justify-content: center;
-}
-  
-.meal_img img {
-width: 80px;
-}
 
-.meal_content {
-padding: 10px 5px;
-height: 100%;
-flex: 1 1 auto;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-color: rgba(0, 0, 0, 0.7);
-}
-
-.meal_title {
-font-size: 16px;
-}
-
-.meal_counter {
-flex: 1 1 auto;
-padding: 10px 5px;
-height: 100%;
-display: flex;
-align-items: flex-end;
-justify-content: center;
-}
 
 .meal_priceBox {
 width: 100%;

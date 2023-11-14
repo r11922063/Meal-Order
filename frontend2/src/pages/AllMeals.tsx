@@ -28,15 +28,10 @@ export default function AllMeals() {
 
     return (
         <>
-        <h1>AllMeals</h1>
-        
         {/* Render items */}
-
-
-
         {meals.length > 0 ? (
-            <div className="meal_container">
-              <div className="meal_itemBox">
+            <div className={style.meal_container}>
+              <div className={style.meal_itemBox}>
                 {meals.map((meal) => (
                   <MealItem key={meal.Meal_ID} {...meal} />
                 ))}

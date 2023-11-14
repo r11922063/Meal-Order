@@ -1,0 +1,47 @@
+.mealItem_item {
+    width: 100%;
+    height: 120px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 5px 20px;
+    border-right: 5px solid #8fc700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 5px;
+    position: relative;
+}
+
+.mealItem_img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+}
+      
+.mealItem_img img {
+    width: 150px;
+}
+    
+.mealItem_content {
+    padding: 30px 20px;
+    height: 100%;
+    flex: 3 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: rgba(0, 0, 0, 0.7);
+}
+    
+.mealItem_title {
+    font-size: 24px;
+}
+    
+.mealItem_counter {
+    flex: 1 1 auto;
+    padding: 10px 5px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
