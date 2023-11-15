@@ -1,6 +1,6 @@
-import type { Meal } from '../type'
-import test_img from '../assets/dumplings.jpg'
-import style from '../style/shared/MealItem.module.css'
+import type { Meal } from '../../type'
+import test_img from '../../assets/dumplings.jpg'
+import style from '../../style/shared/BaseMealItem.module.css'
 
 export default function MealItem(meal: Meal) {
   return (

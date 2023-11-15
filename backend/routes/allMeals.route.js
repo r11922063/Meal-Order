@@ -1,5 +1,6 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
+import { useLocation } from "react-router-dom";
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -15,6 +16,16 @@ const getAllMeals = async (req, res, next) => {
     }
 };
 
+const updateDefaultInventory = (req, res, net) => {
+    console.log("hi...");
+    console.log("req = ", req.query);
+    
+    // let { state } = useLocation();
+    // console.log("id = ", state.id);
+    // console.log("count = ", state.count);
+}
+
 router.get('/', getAllMeals); 
+router.get('/updateDefaultInventory', updateDefaultInventory);
 
 export default router;
