@@ -5,7 +5,7 @@ import Counter from '../shared/Counter'
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from '../../constant'
 
-export default function AllMealMealItem({ meal, id }: {meal: Meal, id: any}) {
+export default function AllMealMealItem({ meal, vendorId }: {meal: Meal, vendorId: any}) {
   return (
     <div className={style.allMealMealItem_item}>
         <div className={style.allMealMealItem_contentContainer}>
@@ -16,7 +16,7 @@ export default function AllMealMealItem({ meal, id }: {meal: Meal, id: any}) {
 
         <div className={style.allMealMealItem_otherContainer}>
           <div className={style.allMealMealItem_updateBox}>
-            <Link to={`${BACKEND_URL}/allMeals/updateDefaultInventory?id=${id}&count=${1}`}>
+            <Link to={`${BACKEND_URL}/allMeals/updateDefaultInventory?vendorId=${vendorId}&count=${1}`}>
               <div className={style.allMealMealItem_updateButton}>
                 <span>更新</span>
               </div>

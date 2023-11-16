@@ -7,13 +7,13 @@ import style from '../style/Meal/AllMeal.module.css'
 
 export default function AllMeals() {
     const [meals, setMeals] = useState<Meal[]>([]);
-    const { id } = useParams();
+    const { vendorId } = useParams();
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const res = await fetch(
-                    BACKEND_URL + `/allMeals?id=${id}`
+                    BACKEND_URL + `/allMeals?vendorId=${vendorId}`
                 ).then(res => { return res.json(); });
                 console.log("Result: ", res);
 
@@ -32,7 +32,7 @@ export default function AllMeals() {
             {meals.length > 0 ? (
                 <div className={style.meal_itemBox}>
                     {meals.map((meal) => (
-                    <AllMealMealItem key={meal.Meal_ID} meal={meal} id={id} />
+                    <AllMealMealItem key={meal.Meal_ID} meal={meal} vendorId={vendorId} />
                     ))}
                 </div>
             ) : (
