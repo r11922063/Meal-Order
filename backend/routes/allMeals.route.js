@@ -4,11 +4,11 @@ import { useLocation } from "react-router-dom";
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
-    const vendor_id = req.query.id;
+    const vendorId = req.query.vendorId;
 
     try {
         const [rows, fields] = await query('SELECT * FROM `Meal` \
-                                            WHERE `Vendor_ID` = ?', [vendor_id]);
+                                            WHERE `Vendor_ID` = ?', [vendorId]);
         res.json(rows);
     }
     catch (err) {
@@ -21,7 +21,7 @@ const updateDefaultInventory = (req, res, net) => {
     console.log("req = ", req.query);
     
     // let { state } = useLocation();
-    // console.log("id = ", state.id);
+    // console.log("vendorId = ", state.vendorId);
     // console.log("count = ", state.count);
 }
 
