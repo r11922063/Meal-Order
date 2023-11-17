@@ -20,14 +20,8 @@ connection.connect(function (err) {
     }
 });
 
-const query = (sql, params) => {
-    connection.query(sql, params,
-        function (err, result) {
-            if (err)
-                console.log(`Error executing the query - ${err}`)
-            else
-                console.log("Result: ", result)
-    });
+const query_callBack = (sql, params, callBack) => {
+    connection.query(sql, params, callBack);
 }
 
-export { query };
+export { query_callBack };
