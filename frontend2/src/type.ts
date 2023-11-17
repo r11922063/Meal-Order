@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type SettlementOrder = {
     Order_ID: number,
     Pickup_Time: string,
@@ -15,3 +17,29 @@ export type Meal = {
     Image_url: string,
     Default_Inventory: number,
 };
+
+export enum OrderStatus {
+    IN_CART = "IN_CART",
+    PREPARING = "PREPARING",
+    READY_FOR_PICKUP = "READY_FOR_PICKUP",
+    PICKED_UP = "PICKED_UP",
+    CANCELLED_UNCHECKED = "CANCELLED_UNCHECKED",
+    CANCELLED_CHECKED = "CANCELLED_CHECKED",
+};
+
+export type OrderDetail = {
+    Meal_ID: number,
+    Amount: number,
+};
+
+export type Order = {
+    Order_ID: number,
+    Customer_ID: number,
+    Vendor_ID: number,
+    Status: string,
+    Pickup_Time: string,
+    Meal_List: Array<OrderDetail>,
+    Cash_Amount: number,
+};
+
+
