@@ -8,33 +8,30 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 export default function Orders() {
+    const [display, setDisplay] = useState(0); // 0: in progress, 1: completed
     const [orders, setOrders] = useState<Order[]>([]);
     const { customerId } = useParams();
-    const [ display, setDisplay ] = useState(0); // 0: in progress, 1: completed
-
-    async function fetchOrders() {
-        try {
-            const res = await fetch(
-                BACKEND_URL + `/orders?customerId=${customerId}&display=${display}`
-            ).then(res => { return res.json(); });
-            console.log("Result: ", res);
-
-            setOrders(res);
-        } catch (e) {
-            console.log("Error fetching all_orders from backend: ", e);
-        }
-    };
 
     function changeTab(tab: number) {
-        if (display != tab) {
+        if (tab != display) {
             setDisplay(tab);
-            fetchOrders();
         }
     }
 
     useEffect(() => {
+        async function fetchOrders() {
+            try {
+                const res = await fetch(
+                    BACKEND_URL + `/orders?customerId=${customerId}&display=${display}`
+                ).then(res => { return res.json(); });
+                // console.log("Result: ", res);
+                setOrders(res);
+            } catch (e) {
+                console.log("Error fetching all_orders from backend: ", e);
+            }
+        };
         fetchOrders();
-    }, []);
+    }, [display]);
 
     return (
         <>

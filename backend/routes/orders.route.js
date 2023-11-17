@@ -6,12 +6,12 @@ const router = express.Router();
 const getOrders = async (req, res, next) => {
     const customerId = req.query.customerId;
     const display = req.query.display;
-    console.log("display = ", display);
-    console.log("in getAllOrders");
-    if (display == 1) {
-        await getOrdersCompleted(req, res, next);
-    } else {
+    // console.log("display = ", display);
+    // console.log("in getAllOrders");
+    if (display == 0) {
         await getOrdersInProgress(req, res, next);
+    } else {
+        await getOrdersCompleted(req, res, next);
     }
 };
 

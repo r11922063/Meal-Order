@@ -1,8 +1,5 @@
 import type { Meal, Order } from '../../type'
-import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Order/OrderItem.module.css'
-import Counter from '../shared/Counter'
-import { Link } from "react-router-dom";
 import { BACKEND_URL } from '../../constant'
 
 export default function OrderItem({ order }: { order: Order }) {
