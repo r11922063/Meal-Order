@@ -4,6 +4,7 @@ import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
 import { useState } from 'react'
+import  BaseButton from '../shared/BaseButton'
 
 const updateOnClick = (mealId: number, count: number) => {
   const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
@@ -30,14 +31,10 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
-          <div className={style.allMealMealItem_updateBox} onClick={() => updateOnClick(meal.Meal_ID, count)}>
-              <div className={style.allMealMealItem_updateButton}>
-                <span>更新</span>
-              </div>
-          </div>
+          <BaseButton text="更新" onClickFunc={() => updateOnClick(meal.Meal_ID, count)}/>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>
-              <Counter _count={count} parentSetCount={setCount} />
+              <Counter count={count} setCount={setCount} />
             </div>
             <div>
               <p>預設庫存：</p>
