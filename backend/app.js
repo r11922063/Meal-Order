@@ -13,6 +13,7 @@ import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
+import mealAmountRouter from './routes/mealAmount.route.js'
 
 import orderMealRouter from './routes/OrderMeal.route.js'
 
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
+app.use('/mealAmount', mealAmountRouter);
 app.use('/settlement', settlementRouter);
 
 app.use('/orderMeal',orderMealRouter)

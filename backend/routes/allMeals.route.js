@@ -1,6 +1,6 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
-import { useLocation } from "react-router-dom";
+import { query_callBack } from "../models/db.model.js"
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -16,16 +16,21 @@ const getAllMeals = async (req, res, next) => {
     }
 };
 
-const updateDefaultInventory = (req, res, net) => {
-    console.log("hi...");
-    console.log("req = ", req.query);
-    
-    // let { state } = useLocation();
-    // console.log("vendorId = ", state.vendorId);
-    // console.log("count = ", state.count);
+const updateDefaultInventory = async (req, res, net) => {
+    const mealId = req.body.mealId;
+    const count = req.body.count;
+
+    query_callBack('UPDATE `Meal` SET `Default_Inventory` = ?\
+            WHERE `Meal_ID` = ?', [count, mealId],
+            (err, result) => {
+                if (err) 
+                    console.log(`Error updating the default inventory: ${err}`);
+                else
+                    console.log("Updated row(s): ", result.affectedRows);
+            });
 }
 
 router.get('/', getAllMeals); 
-router.get('/updateDefaultInventory', updateDefaultInventory);
+router.post('/updateDefaultInventory', updateDefaultInventory);
 
 export default router;
