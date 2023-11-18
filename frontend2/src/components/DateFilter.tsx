@@ -38,7 +38,6 @@ for (let step = 0; step < 3; step++){
     }
     DateTimeMap.set(temp.getFullYear().toString()+","+(temp.getMonth()+1).toString()+","+temp.getDate().toString(),TimeArray);
 }
-
 /*
 function SoldOutShow({mealshowday}:{mealshowday:number}){
     if(!Mealinvsum[mealshowday-1]){
