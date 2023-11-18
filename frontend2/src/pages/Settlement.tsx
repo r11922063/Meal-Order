@@ -31,7 +31,7 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
     const [orders, setOrders] = useState<SettlementOrder[]>([]);
     let totalAmount = 0;
     orders.forEach(order => {
-        totalAmount += order.Cash_Amout;
+        totalAmount += order.Cash_Amount;
     });
 
     useEffect(() => {

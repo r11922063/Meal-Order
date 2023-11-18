@@ -13,7 +13,7 @@ export default function SettlementTable({ orders, identity }: {orders: Settlemen
                 <td> { DateParse(order.Pickup_Time) } </td>
                 <td> { order.Order_ID } </td>
                 { identity === 'customer' && <td> { order.Name } </td> } 
-                <td> { order.Cash_Amout } </td>
+                <td> { order.Cash_Amount } </td>
             </tr>
         );
     });
