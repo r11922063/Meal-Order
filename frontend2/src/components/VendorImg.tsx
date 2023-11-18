@@ -1,7 +1,8 @@
 import style from "../style/OrderMeal.module.css";
 
-export default function VendorImg(){
-    const img = 'https://a.cdn-hotels.com/gdcs/production145/d903/8aabf806-31a8-4ba1-8400-ee2d0ab72248.jpg'
+
+export default function VendorImg({img_url}:{img_url:string}){
+    const img = img_url;
     return(
     <div className={style.VendorImg}>
         <img src={img} alt='error'></img>
