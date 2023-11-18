@@ -1,0 +1,9 @@
+.baseSelectBox {
+    width: 30%;
+    height: 50px;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 10px 35px;
+    position: relative;
+}
