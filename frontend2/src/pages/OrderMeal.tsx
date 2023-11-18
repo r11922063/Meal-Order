@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import VendorImg from '../components/VendorImg';
-import VendorInfo from '../components/VendorInfo';
-import DateFilter from '../components/DateFilter';
+import VendorImg from '../components/OrderMeal-ShopCart/VendorImg';
+import VendorInfo from '../components/OrderMeal-ShopCart/VendorInfo';
+import DateFilter from '../components/OrderMeal-ShopCart/DateFilter';
 
 export type Meals = {
     Vendor_img: string,
@@ -16,7 +16,6 @@ export type Meals = {
     Image_url: string;
 };
 
-
 export default function OrderMeal() {
 
     const [VendorImgurl, setVendorImgurl] = useState('');
@@ -29,7 +28,7 @@ export default function OrderMeal() {
     useEffect(() => {
       const FetchOrders = async (ID: string) => {
           try {
-              const url: string = `http://localhost:8081/orderMeal?vid=${ID.substring(1)}`;
+              const url: string = `http://localhost:8081/orderMeal?vid=${ID}`;
               const result = await fetch(url).then((res) => { return res.json(); });
               setVendorImgurl(result[0]['Vendor_img' as keyof typeof VendorImgurl]);
               setVendorName(result[0]['Name' as keyof typeof VendorName]);
