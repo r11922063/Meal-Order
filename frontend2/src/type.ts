@@ -16,7 +16,7 @@ export type Meal = {
     Default_Inventory: number,
 };
 
-type Option = {
+export type Option = {
     value: any,
     label: any
 }

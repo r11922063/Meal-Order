@@ -6,18 +6,15 @@ import { BACKEND_URL } from '../constant'
 import style from '../style/Meal/AllMeal.module.css'
 import BaseSelect from '../components/shared/BaseSelect'
 import BaseButton from "../components/shared/BaseButton";
+import { Option, SelectOption } from "../type";
 
 export default function MealAmount() {
     const [meals, setMeals] = useState<Meal[]>([]);
     const { vendorId } = useParams();
 
     // For BaseSelector
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberryyyyyyyyyyyyy' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]
-    const [selected, setSelected] = useState("");
+    const [options, setOptions] = useState<SelectOption>([]);
+    const [selected, setSelected] = useState<Option>({ value: "", label: "請選擇時間" });
     const onChange = (e: any) => {
         setSelected(e.value);
     };
@@ -26,25 +23,39 @@ export default function MealAmount() {
         return item ? item : { value: "", label: "請選擇時間" };
     };
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(
-                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}`
-                ).then(res => { return res.json(); });
+    const today = new Date().getDay();
+    async function fetchMealData(day_offset: number) {
+        try {
+            const res = await fetch(
+                BACKEND_URL + `/mealAmount?vendorId=${vendorId}?day=${today+day_offset}`
+            ).then(res => { return res.json(); });
 
-                setMeals(res);
-            } catch (e) {
-                console.log("Error fetching all_meals from backend: ", e);
-            }
-        };
-        fetchData();
-
-        async function fetchDateOption(){
-            // TODO: setOption
+            setMeals(res);
+        } catch (e) {
+            console.log("Error fetching all_meals from backend: ", e);
         }
-        fetchDateOption();
+    };
+
+    useEffect(() => {
+        function fetchDayOption(){
+            var _options = []
+            // +3 ~ +6
+            const day_options_num = [3, 4, 5, 6];
+            const day_options = day_options_num.map((num: number)=>( ((today+num) % 7 + 1) ));
+            for (const day of day_options){
+                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*day).toLocaleDateString('fr-CA');
+                _options.push({ value: day, label: date_string });
+            }
+            setOptions(_options);
+        }
+        fetchDayOption();
+        fetchMealData(3);
     }, []);
+
+    useEffect(() => {
+        console.log("selected changed");
+        fetchMealData(selected.value);
+    },[selected]);
 
     useEffect(() => {
         console.log("meals changed");
