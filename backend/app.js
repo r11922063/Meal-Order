@@ -14,6 +14,7 @@ import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
 import loginRouter from './routes/login.route.js'
+import signupRouter from './routes/signup.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,6 +40,7 @@ app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
 app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
+app.use('/signup', signupRouter);
 
 
 // // catch 404 and forward to error handler
