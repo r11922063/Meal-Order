@@ -11,28 +11,6 @@ export default function MealAmount() {
     const [meals, setMeals] = useState<Meal[]>([]);
     const { vendorId } = useParams();
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(
-                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}`
-                ).then(res => { return res.json(); });
-
-                setMeals(res);
-            } catch (e) {
-                console.log("Error fetching all_meals from backend: ", e);
-            }
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        console.log("meals changed");
-        for (const meal of meals){
-            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
-        }
-    }, [meals]);
-
     // For BaseSelector
     const options = [
         { value: 'chocolate', label: 'Chocolate' },
@@ -48,14 +26,42 @@ export default function MealAmount() {
         return item ? item : { value: "", label: "請選擇時間" };
     };
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(
+                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}`
+                ).then(res => { return res.json(); });
+
+                setMeals(res);
+            } catch (e) {
+                console.log("Error fetching all_meals from backend: ", e);
+            }
+        };
+        fetchData();
+
+        async function fetchDateOption(){
+            // TODO: setOption
+        }
+        fetchDateOption();
+    }, []);
+
+    useEffect(() => {
+        console.log("meals changed");
+        for (const meal of meals){
+            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
+        }
+    }, [meals]);
+
+
     // For BaseButton
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
         const meals_data = [];
-        // console.log("updateOnClick");
-        // for (const meal of meals){
-        //     console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
-        // }
+        console.log("updateOnClick");
+        for (const meal of meals){
+            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
+        }
 
         for (const meal of meals)
             meals_data.push({ mealId: meal.Meal_ID, inventory: meal.Inventory });
