@@ -4,78 +4,66 @@ import type { Meal } from '../type'
 import MealAmountMealItem from "../components/Meal/MealAmountMealItem";
 import { BACKEND_URL } from '../constant'
 import style from '../style/Meal/AllMeal.module.css'
-import BaseSelect from '../components/shared/BaseSelect'
 import BaseButton from "../components/shared/BaseButton";
-import { Option, SelectOption } from "../type";
+import { MealAmountOption, MealAmountSelectOption } from "../type";
+import MealAmountSelect from '../components/Meal/MealAmountSelect'
 
 export default function MealAmount() {
     const [meals, setMeals] = useState<Meal[]>([]);
     const { vendorId } = useParams();
 
-    // For BaseSelector
-    const [options, setOptions] = useState<SelectOption>([]);
-    const [selected, setSelected] = useState<Option>({ value: "", label: "請選擇時間" });
-    const onChange = (e: any) => {
-        setSelected(e.value);
-    };
-    const displayItem = (selected: any) => {
-        const item = options.find(x => x.value === selected);
-        return item ? item : { value: "", label: "請選擇時間" };
-    };
-
     const today = new Date().getDay();
-    async function fetchMealData(day_offset: number) {
-        try {
-            const res = await fetch(
-                BACKEND_URL + `/mealAmount?vendorId=${vendorId}?day=${today+day_offset}`
-            ).then(res => { return res.json(); });
-
-            setMeals(res);
-        } catch (e) {
-            console.log("Error fetching all_meals from backend: ", e);
-        }
+    // For BaseSelector
+    const [options, setOptions] = useState<MealAmountSelectOption>([]);
+    const [selected, setSelected] = useState<MealAmountOption>({ value: (today-1+3)%7+1, label: "請選擇時間" });
+    const onChange = (e: any) => {
+        const option_found = options.find((option: MealAmountOption) => {
+            return option.value.toString() === e.target.value;
+        });
+        setSelected(
+            option_found? option_found : selected
+        );
     };
 
     useEffect(() => {
         function fetchDayOption(){
-            var _options = []
+            var _options = [];
             // +3 ~ +6
-            const day_options_num = [3, 4, 5, 6];
-            const day_options = day_options_num.map((num: number)=>( ((today+num) % 7 + 1) ));
-            for (const day of day_options){
-                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*day).toLocaleDateString('fr-CA');
-                _options.push({ value: day, label: date_string });
+            const day_offsets = [3, 4, 5, 6];
+            for (const offset of day_offsets){
+                const day_num = (today-1 + offset)%7+1;
+                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*offset).toLocaleDateString('fr-CA');
+                _options.push({ value: day_num, label: date_string });
             }
             setOptions(_options);
         }
         fetchDayOption();
-        fetchMealData(3);
+
+        async function fetchMealData() {
+            try {
+                const res = await fetch(
+                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}}`
+                ).then(res => { return res.json(); });
+    
+                setMeals(res);
+            } catch (e) {
+                console.log("Error fetching all_meals from backend: ", e);
+            }
+        };
+        fetchMealData();
     }, []);
 
-    useEffect(() => {
-        console.log("selected changed");
-        fetchMealData(selected.value);
-    },[selected]);
 
-    useEffect(() => {
-        console.log("meals changed");
-        for (const meal of meals){
-            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
-        }
-    }, [meals]);
-
-
-    // For BaseButton
+    // For update button
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
         const meals_data = [];
         console.log("updateOnClick");
         for (const meal of meals){
-            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
+            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[selected.value]}`);
         }
-
         for (const meal of meals)
-            meals_data.push({ mealId: meal.Meal_ID, inventory: meal.Inventory });
+            meals_data.push({ mealId: meal.Meal_ID, day: selected.value, inventory: meal.Inventory[selected.value] });
         
         fetch(update_url, {
           method: 'POST',
@@ -90,8 +78,8 @@ export default function MealAmount() {
 
     return (
         <>
-        < BaseSelect options={options} onChangeFunc={onChange} 
-                     value={displayItem(selected)} />
+        < MealAmountSelect options={options} onChangeFunc={onChange} 
+                     value={selected.value} />
 
         <div className={style.meal_container}>
             {/* Render items */}
@@ -99,7 +87,7 @@ export default function MealAmount() {
                 <div>
                 <div className={style.meal_itemBox}>
                     {meals.map((meal) => (
-                    <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} />
+                    <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
                     ))}
                 </div>
 

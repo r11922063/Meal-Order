@@ -11,13 +11,14 @@ export type Meal = {
     Meal_Name: string, 
     Description: string,
     Price: number,
-    Inventory: {"1": number, "2": number, "3": number, "4": number, "5": number, "6": number, "7": number}, 
+    Inventory: Record<string, number>
     Image_url: string,
     Default_Inventory: number,
 };
 
-export type Option = {
-    value: any,
-    label: any
+
+export type MealAmountOption = {
+    value: number,
+    label: string
 }
-export type SelectOption = Option[];
+export type MealAmountSelectOption = MealAmountOption[];

@@ -3,15 +3,25 @@ import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { useEffect, useState } from 'react'
+import type { MealAmountOption } from '../../type'
 
-export default function MealAmountMealItem({ meal, setMeals }: {meal: Meal, setMeals: any}) {
-  const [count, setCount] = useState(meal.Default_Inventory);
+export default function MealAmountMealItem({ meal, setMeals, day }: 
+                                           {meal: Meal, setMeals: any, day: MealAmountOption}) {
+  const [count, setCount] = useState(meal.Inventory[day.value.toString()]);
+  // const [count, setCount] = useState(meal.Default_Inventory);
   
+  useEffect(() => {
+    setCount(meal.Inventory[day.value.toString()]);
+  }, [day]);
+
   useEffect(()=>{
     setMeals((prevValue: Meal[]) => {
       return prevValue.map((mealobj) => {
-        if (mealobj.Meal_ID === meal.Meal_ID) 
-          mealobj.Inventory["1"] = count;
+        if (mealobj.Meal_ID === meal.Meal_ID) {
+          const day_string = day.value.toString();
+
+          mealobj.Inventory[day_string] = count;
+        }
         return mealobj;
       });
     });
