@@ -1,4 +1,4 @@
-import style from '../style/ShopCart.module.css'
+import style from '../../style/OrderMeal-ShopCart/ShopCart.module.css'
 
 export default function MealBlock(){
     var Restname="安好食 和平店"
@@ -55,7 +55,7 @@ export default function MealBlock(){
                         }else{
                             console.log('no');
                         }
-                    }}>一鍵刪除<img src={require('../assets/delete.png')} height='17vw' ></img></button>
+                    }}>一鍵刪除<img src={require('../../assets/delete.png')} height='17vw' ></img></button>
                     </div>
                 </div>
                 <div className={style.Meals}>
@@ -73,7 +73,7 @@ export default function MealBlock(){
                         <div>
                         </div>
                             <button className={style.sendButton}>
-                                <img src={require('../assets/checked.png')} height='17vw' ></img>確認送出
+                                <img src={require('../../assets/checked.png')} height='17vw' ></img>確認送出
                             </button>
 
                     </div>

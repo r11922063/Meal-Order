@@ -1,6 +1,6 @@
 import { useState } from "react";
-import style from '../style/shared/DropDown.module.css';
-import style1 from '../style/OrderMeal.module.css';
+import style from '../../style/shared/DropDown.module.css';
+import style1 from '../../style/OrderMeal-ShopCart/OrderMeal.module.css';
 
 export type Meals = {
     Vendor_img: string,
