@@ -14,6 +14,7 @@ import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
 import ordersRouter from './routes/orders.route.js'
+import mealAmountRouter from './routes/mealAmount.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
+app.use('/mealAmount', mealAmountRouter);
 app.use('/settlement', settlementRouter);
 app.use('/orders', ordersRouter);
 

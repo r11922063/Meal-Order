@@ -18,6 +18,12 @@ export type Meal = {
     Default_Inventory: number,
 };
 
+type Option = {
+    value: any,
+    label: any
+}
+export type SelectOption = Option[];
+
 export enum OrderStatus {
     IN_CART = "IN_CART",
     PREPARING = "PREPARING",
