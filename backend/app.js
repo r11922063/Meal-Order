@@ -14,6 +14,8 @@ import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
 
+import orderMealRouter from './routes/OrderMeal.route.js'
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
@@ -37,6 +39,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
 app.use('/settlement', settlementRouter);
+
+app.use('/orderMeal',orderMealRouter)
 
 
 // // catch 404 and forward to error handler
