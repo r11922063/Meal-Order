@@ -17,6 +17,8 @@ import loginRouter from './routes/login.route.js'
 import signupRouter from './routes/signup.route.js'
 import mealAmountRouter from './routes/mealAmount.route.js'
 
+import orderMealRouter from './routes/OrderMeal.route.js'
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
@@ -43,6 +45,8 @@ app.use('/mealAmount', mealAmountRouter);
 app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
+
+app.use('/orderMeal',orderMealRouter)
 
 
 // // catch 404 and forward to error handler

@@ -25,3 +25,17 @@
   line-height: 0.5vw;
   padding: 0;
 }
+
+.mealblock { 
+  display: flex; flex-direction: column; 
+}
+
+.soldout{
+  color: gray;
+  order: 1; 
+}
+
+.soldout { 
+  order: 2; 
+}
+
