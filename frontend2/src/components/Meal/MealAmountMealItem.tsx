@@ -3,7 +3,7 @@ import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import  BaseButton from '../shared/BaseButton'
 
 const updateOnClick = (mealId: number, count: number) => {
@@ -19,8 +19,18 @@ const updateOnClick = (mealId: number, count: number) => {
     .catch((err) => console.log(err));
 }
 
-export default function AllMealMealItem({ meal }: {meal: Meal}) {
+export default function MealAmountMealItem({ meal, setMeals }: {meal: Meal, setMeals: any}) {
   const [count, setCount] = useState(meal.Default_Inventory);
+  
+  useEffect(()=>{
+    setMeals((prevValue: Meal[]) => {
+      return prevValue.map((mealobj) => {
+        if (mealobj.Meal_ID === meal.Meal_ID) 
+          mealobj.Inventory["1"] = count;
+        return mealobj;
+      });
+    });
+  }, [count]);
 
   return (
     <div className={style.allMealMealItem_item}>
@@ -31,13 +41,12 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
-          <BaseButton text="更新" onClickFunc={() => updateOnClick(meal.Meal_ID, count)}/>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>
               <Counter count={count} setCount={setCount} />
             </div>
             <div>
-              <p>預設庫存：</p>
+              <p>庫存：</p>
             </div>
           </div>
           

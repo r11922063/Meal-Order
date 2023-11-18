@@ -15,3 +15,9 @@ export type Meal = {
     Image_url: string,
     Default_Inventory: number,
 };
+
+type Option = {
+    value: any,
+    label: any
+}
+export type SelectOption = Option[];
