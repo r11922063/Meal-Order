@@ -10,7 +10,8 @@ export default function CustomerNavBar() {
                 <li><NavLink to="shopcart">購物車</NavLink></li>
                 <li><NavLink to="orders">訂單</NavLink></li>
                 <li><NavLink to="settlement">月結算</NavLink></li>
-                <li><button><img src={borderwidth} height="32" width="30"/></button></li>
+                <li><NavLink to="/">登出</NavLink></li>
+                {/* <li><button><img src={borderwidth} height="32" width="30"/></button></li> */}
             </ul>
         </nav>
     );

@@ -1,0 +1,105 @@
+@value customer-primary: #FF4B2B;
+@value customer-secondary: #f8eeec;
+@value vendor-primary: rgb(14, 181, 22);
+@value vendor-secondary: rgb(225, 253, 227);
+
+.LoginForm.customer {
+    background-color: customer-secondary;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2vw;
+    padding: 2vw;
+    width: 40%;
+}
+
+.LoginForm.vendor {
+    background-color: vendor-secondary;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2vw;
+    padding: 2vw;
+    width: 40%;
+}
+
+.LoginForm h1 {
+    margin: 0;
+    font-size: 2vw;
+}
+
+.LoginForm label input {
+	border: none;
+	padding: 12px 15px;
+}
+
+
+.LoginForm.customer .submitbtn {
+    border-radius: 20px;
+	border: 1px solid customer-primary;
+	background-color: customer-primary;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+    cursor: pointer;
+}
+
+.LoginForm.vendor .submitbtn {
+    border-radius: 20px;
+	border: 1px solid vendor-primary;
+	background-color: vendor-primary;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+    cursor: pointer;
+}
+
+.LoginForm .changebtn {
+    border-radius: 20px;
+	border: 1px solid rgb(71, 43, 255);
+	background-color: rgb(71, 43, 255);
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+    cursor: pointer;
+}
+
+.LoginForm .errormsg {
+    margin: 0;
+    color: red;
+}
+
+.LoginForm select {
+    border-radius: 2vw;
+    border-style: none;
+    background-color: #C4C4C440;
+    padding: 0.3em;
+}
+
+.InputImg div {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 240px;
+    height: 180px;
+    border: 1px dashed;
+    cursor: pointer;
+}
+
+.InputImg img {
+    width: 240px;
+    height: 180px;
+    cursor: pointer;
+}

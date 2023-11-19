@@ -1,0 +1,35 @@
+.Login {
+    perspective: 20000px;
+    display: flex;
+    justify-content: center;
+}
+
+.Login .inner {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.Login .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Login .front, .Login .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.Login .back {
+    transform: rotateY(180deg);
+}
+
+.Login .inner.active {
+    transform: rotateY(180deg);
+}
