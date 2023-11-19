@@ -13,7 +13,7 @@ export default function SettlementTable({ orders, identity }: {orders: Settlemen
                 <td> { DateParse(order.Pickup_Time) } </td>
                 <td> { order.Order_ID } </td>
                 { identity === 'customer' && <td> { order.Name } </td> } 
-                <td> { order.Cash_Amout } </td>
+                <td> { order.Cash_Amount } </td>
             </tr>
         );
     });
@@ -28,7 +28,7 @@ export default function SettlementTable({ orders, identity }: {orders: Settlemen
                 </tr>
             </thead>
             <tbody>
-                { content.length > 0 ? content : <tr><th colSpan={ 4 }> No data </th></tr> }
+                { content.length > 0 ? content : <tr><th colSpan={ 4 }> 無訂單紀錄... </th></tr> }
             </tbody>
         </table>
     );

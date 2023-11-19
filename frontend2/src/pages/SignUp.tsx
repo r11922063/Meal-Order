@@ -1,8 +1,8 @@
 import { useState } from "react";
-import LoginForm from "../components/LoginForm";
-import style from "../style/LoginSignUp.module.css";
+import SignUpForm from "../components/SignUpForm";
+import style from "../style/LoginSignUp.module.css"
 
-export default function Login() {
+export default function SignUp() {
     const [active, setActive] = useState(false);
     const handleActive = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -12,10 +12,10 @@ export default function Login() {
         <div className={ style.Login }>
             <div className= { active ? `${style.inner} ${style.active}` : `${style.inner}`}>
                 <div className={ `${style.container} ${style.front}` }>
-                    <LoginForm identity={ "customer" } handleActive={ handleActive }/>
+                    <SignUpForm identity={ "customer" } handleActive={ handleActive }/>
                 </div>
                 <div className={ `${style.container} ${style.back}` }>
-                    <LoginForm identity={ "vendor" } handleActive={ handleActive }/>
+                    <SignUpForm identity={ "vendor" } handleActive={ handleActive }/>
                 </div>
             </div>
         </div>
