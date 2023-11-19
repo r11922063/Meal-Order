@@ -1,4 +1,4 @@
-import style from "../style/OrderMeal.module.css";
+import style from "../../style/OrderMeal-ShopCart/OrderMeal.module.css";
 
 
 export default function VendorImg({img_url}:{img_url:string}){

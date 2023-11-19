@@ -1,4 +1,4 @@
-import style from '../style/ShopCart.module.css'
+import style from '../../style/OrderMeal-ShopCart/ShopCart.module.css';
 
 export default function ShopTitle(){
     return(
