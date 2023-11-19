@@ -55,7 +55,7 @@ const getOrderMeals = async (req, res, next) => {
         try {
             const query_str = 'SELECT Meal_ID, Meal_Name, Price, Image_url FROM `Meal` WHERE `Meal_ID` = ?';
             const [rows, fields] = await query(query_str, [orderMealIDs[i]]);
-            queryResults.push(rows);
+            queryResults.push(...rows);
         }
         catch (err) {
             throw err;

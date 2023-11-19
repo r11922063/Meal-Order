@@ -1,7 +1,9 @@
 import type { Order } from '../../type'
 import style from '../../style/Order/OrderInfoItem.module.css'
+import triangle_style from '../../style/Order/TriangleButton.module.css'
 
-export default function OrderTab({ order }: { order: Order }) {
+export default function OrderInfoItem({ order, handleDisclosureClick, disclosure }: 
+    { order: Order, handleDisclosureClick: () => any, disclosure: boolean }) {
     const vendorId = order.Vendor_ID;
 
     function CancelOrder() {
@@ -28,6 +30,13 @@ export default function OrderTab({ order }: { order: Order }) {
                 </div>
                 <div className={style.orderInfoItem_detail}>
                     <span>{'總計: NT$' + order.Cash_Amount}</span>
+                    <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
+                        {disclosure ?
+                            <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
+                            :
+                            <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_l}`}></div>
+                        }
+                    </button>
                 </div>
             </div>
         </div>

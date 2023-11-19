@@ -1,4 +1,4 @@
-import type { Meal, Order, OrderContent } from '../../type'
+import type { Order, OrderContent } from '../../type'
 import style from '../../style/Order/OrderItem.module.css'
 import { BACKEND_URL } from '../../constant'
 import { useState, useEffect } from "react";
@@ -8,6 +8,13 @@ import OrderContentItem from "./OrderContentItem";
 export default function OrderItem({ order }: { order: Order }) {
     const [orderMeals, setOrderMeal] = useState<OrderContent[]>([]);
     let orderMealIDs: Array<number> = [];
+
+    const [disclosure, setDisclosure] = useState(false);
+
+    const handleDisclosureClick = () => {
+        setDisclosure(!disclosure);
+        // console.log("disclosure = ", disclosure);
+    };
 
     useEffect(() => {
         async function fetchOrderMeals() {
@@ -20,7 +27,7 @@ export default function OrderItem({ order }: { order: Order }) {
                 const res = await fetch(
                     BACKEND_URL + `/orders/orderMeals?orderMealIDs=${orderMealIDs}`
                 ).then(res => { return res.json(); });
-                console.log("[fetchOrderMeals] Result: ", res);
+                // console.log("[fetchOrderMeals] Result: ", res);
                 setOrderMeal(res);
             } catch (e) {
                 console.log("Error fetching all_orders from backend: ", e);
@@ -32,25 +39,27 @@ export default function OrderItem({ order }: { order: Order }) {
     return (
         <div className={style.orderItem_container}>
             <div className={style.orderItem_InfoItemBox}>
-                <OrderInfoItem key={order.Order_ID} order={order} />
+                <OrderInfoItem key={order.Order_ID} order={order} handleDisclosureClick={handleDisclosureClick} disclosure={disclosure} />
             </div>
-
-            <div className={style.orderItem_mealContainer}>
-                {/* TODO: toggle (meals) */}
-                {/* Render items */}
-                {orderMeals.length > 0 ? (
-                    <div className={style.orderItem_mealItemBox}>
-                        {orderMeals.map((orderMeal, index) => (
-                            <OrderContentItem key={`${order.Order_ID}-${index++}`} orderContent={orderMeal} />
-                        ))}
+            <div>
+                {disclosure ?
+                    <div className={style.orderItem_mealContainer}>
+                        {orderMeals.length > 0 ? (
+                            <div className={style.orderItem_mealItemBox}>
+                                {orderMeals.map((orderMeal, index) => (
+                                    <OrderContentItem key={orderMeal.Meal_ID} orderContent={orderMeal} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="orderMeals_empty">\
+                                <span className="orderMeals_empty_title">Error: No meals in this order.</span>
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="orderMeals_empty">\
-                        <span className="orderMeals_empty_title">Error: No meals in this order.</span>
-                    </div>
-                )}
+                    :
+                    <></>
+                }
             </div>
-            
         </div>
         
     );

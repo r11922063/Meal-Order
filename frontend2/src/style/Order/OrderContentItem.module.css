@@ -1,5 +1,6 @@
 .orderContentItem_item {
     width: 100%;
+    max-width: 1000px;
     height: 120px;
     background-color: #fff;
     border-radius: 10px;
