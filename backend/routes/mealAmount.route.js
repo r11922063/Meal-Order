@@ -20,13 +20,10 @@ const updateAllInventory = async (req, res, net) => {
     console.log("data: ", req.body);
     for (const meal of req.body){
         const mealId = meal.mealId;
-        const day = meal.day;
         const inventory = meal.inventory;
-        console.log("id = ", mealId, "day = ", day, "inv = ", inventory);
-        // const inventory = JSON.stringify(meal.inventory).replaceAll("'", "`");
-        query_callBack('UPDATE `Meal` SET `Inventory` =\
-                        JSON_REPLACE(`Inventory`, `$."?"`, ?)\
-                        WHERE `Meal_ID` = ?', [day, inventory, mealId],
+        
+        query_callBack('UPDATE `Meal` SET `Inventory` =?\
+                        WHERE `Meal_ID` = ?', [JSON.stringify(inventory), mealId],
             (err, result) => {
                 if (err) 
                     console.log(`Error updating the inventory: ${err}`);

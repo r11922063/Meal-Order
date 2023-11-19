@@ -53,7 +53,6 @@ export default function MealAmount() {
         fetchMealData();
     }, []);
 
-
     // For update button
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
@@ -63,7 +62,7 @@ export default function MealAmount() {
             console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[selected.value]}`);
         }
         for (const meal of meals)
-            meals_data.push({ mealId: meal.Meal_ID, day: selected.value, inventory: meal.Inventory[selected.value] });
+            meals_data.push({ mealId: meal.Meal_ID, inventory: meal.Inventory });
         
         fetch(update_url, {
           method: 'POST',
@@ -82,26 +81,22 @@ export default function MealAmount() {
                      value={selected.value} />
 
         <div className={style.meal_container}>
-            {/* Render items */}
             {meals.length > 0 ? (
                 <div>
-                <div className={style.meal_itemBox}>
-                    {meals.map((meal) => (
-                    <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
-                    ))}
-                </div>
-
-                 <BaseButton text="更新" onClickFunc={() => updateOnClick()}/>
+                    <div className={style.meal_itemBox}>
+                        {meals.map((meal) => (
+                        <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
+                        ))}
+                    </div>
+                
+                    <div className={style.meal_updateButtonBox}>
+                        <BaseButton text="更新" onClickFunc={() => updateOnClick()}/>
+                    </div>
                 </div>
 
             ) : (
                 <div className="all_meals_empty">
-                {/* <img
-                    className="all_meals_empty_img"
-                    src="images/empty-cart.png"
-                    alt=""
-                /> */}
-                <span className="all_meals_empty_title">No meals.</span>
+                    <span className="all_meals_empty_title">No meals.</span>
                 </div>
             )}
         </div>
