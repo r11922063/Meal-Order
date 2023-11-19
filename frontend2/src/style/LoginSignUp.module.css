@@ -1,5 +1,5 @@
 .Login {
-    perspective: 1200px;
+    perspective: 20000px;
     display: flex;
     justify-content: center;
 }
@@ -33,16 +33,3 @@
 .Login .inner.active {
     transform: rotateY(180deg);
 }
-
-/* .Login button {
-    border-radius: 20px;
-	border: 1px solid rgb(71, 43, 255);
-	background-color: rgb(71, 43, 255);
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-} */

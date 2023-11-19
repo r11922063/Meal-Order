@@ -5,6 +5,18 @@ export type SettlementOrder = {
     Cash_Amount: number;
 };
 
+export type LoginInput = {
+    email: string,
+    password: string
+}
+
+export type SignUpInput = LoginInput & {
+    name: string,
+    address?: string,
+    type?: string,
+    img?: File
+}
+
 export type Meal = {
     Meal_ID: number,
     Vendor_ID: number,
