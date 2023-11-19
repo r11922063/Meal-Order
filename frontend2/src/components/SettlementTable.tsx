@@ -28,7 +28,7 @@ export default function SettlementTable({ orders, identity }: {orders: Settlemen
                 </tr>
             </thead>
             <tbody>
-                { content.length > 0 ? content : <tr><th colSpan={ 4 }> No data </th></tr> }
+                { content.length > 0 ? content : <tr><th colSpan={ 4 }> 無訂單紀錄... </th></tr> }
             </tbody>
         </table>
     );
