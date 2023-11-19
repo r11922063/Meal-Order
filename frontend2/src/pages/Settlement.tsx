@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import SettlementTable from "../components/SettlementTable"
-import style from "../style/Settlement.module.css"
-import type { SettlementOrder } from '../type'
+import SettlementTable from "../components/SettlementTable";
+import style from "../style/Settlement.module.css";
+import type { SettlementOrder } from '../type';
+import { BACKEND_URL } from '../constant';
 
 let year: number = new Date().getFullYear();
 let month: number = new Date().getMonth() + 1;
@@ -37,7 +38,7 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
     useEffect(() => {
         const FetchOrders = async (ID: string, Year: number, Month: number) => {
             try {
-                const url: string = `http://localhost:8081/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
+                const url: string = `${BACKEND_URL}/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
                 setOrders(result);
             }

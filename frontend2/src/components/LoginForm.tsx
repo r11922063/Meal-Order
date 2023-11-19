@@ -1,26 +1,29 @@
 import { useNavigate  } from "react-router-dom";
 import React, { useState } from "react";
-import style from "../style/LoginForm.module.css"
+import style from "../style/LoginSignUpForm.module.css";
+import { BACKEND_URL } from '../constant';
+import { LoginInput } from "../type";
 
 export default function LoginForm({ identity, handleActive }: { identity: "customer" | "vendor", handleActive: (e: React.MouseEvent) => void}) {
     const text = identity === "customer" ? "顧客登入" : "商家登入";
     const defaultemail = identity === "customer" ? "123456@gmail.com" : "222@gmail.com";
     const defaultpassword = identity === "customer" ? "LLL" : "tttt";
-    const [email, setEmail] = useState<string>(defaultemail);
-    const [password, setPassword] = useState<string>(defaultpassword);
+    const [userInput, setUserInput] = useState<LoginInput>({
+        email: defaultemail,
+        password: defaultpassword
+    });
     const [error, setError] = useState<Boolean>(false);
     const navigate = useNavigate();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<number | undefined> => {
         e.preventDefault();
-        const url = "http://localhost:8081/login";
+        const url = `${BACKEND_URL}/login`;
         const res = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                email: email,
-                password: password,
+                ...userInput,
                 identity: identity
             })
         }).then((res) => { return res.json(); });
@@ -42,10 +45,10 @@ export default function LoginForm({ identity, handleActive }: { identity: "custo
         }}>
             <h1> { text } </h1>
             <label>
-                <input defaultValue={defaultemail} type="email" name="account" placeholder="Email" onChange={ e => setEmail(e.currentTarget.value) }/>
+                <input defaultValue={defaultemail} type="email" name="account" placeholder="Email" onChange={ e => setUserInput({...userInput, email: e.currentTarget.value}) }/>
             </label>
             <label>
-                <input defaultValue={defaultpassword} type="password" name="password" placeholder="Password" onChange={ e => setPassword(e.currentTarget.value) }/>
+                <input defaultValue={defaultpassword} type="password" name="password" placeholder="Password" onChange={ e => setUserInput({...userInput, password: e.currentTarget.value}) }/>
             </label>
             { error && <h3 className={style.errormsg}> Email / password 錯誤</h3> }
             <input className={style.submitbtn} type="submit" value="Submit"/>

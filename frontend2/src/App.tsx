@@ -1,5 +1,6 @@
 import './App.css';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import Customer from './pages/Customer';
 import CustomerLayout from './layouts/CustomerLayout';
 import Settlement from './pages/Settlement';
@@ -10,14 +11,15 @@ import Vendor from './pages/Vendor';
 import AllMeals from './pages/AllMeals';
 import MealAmount from './pages/MealAmount';
 import VendorLayout from './layouts/VendorLayout';
-import LoginLayout from './layouts/LoginLayout'
+import HomeLayout from './layouts/HomeLayout'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
 
 const route = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<LoginLayout/>}>
+      <Route path="/" element={<HomeLayout/>}>
         <Route index element={<Login/>}/>
+        <Route path="signup" element={<SignUp/>}></Route>
       </Route>
       <Route path="customer/:customerId/" element={<CustomerLayout/>}>
         <Route index element={<Customer/>}/>

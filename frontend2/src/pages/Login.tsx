@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LoginForm from "../components/LoginForm";
-import style from "../style/Login.module.css"
+import style from "../style/LoginSignUp.module.css";
 
 export default function Login() {
     const [active, setActive] = useState(false);
@@ -17,8 +17,6 @@ export default function Login() {
                 <div className={ `${style.container} ${style.back}` }>
                     <LoginForm identity={ "vendor" } handleActive={ handleActive }/>
                 </div>
-                {/* <div><Link to="/customer/1"> Customer </Link></div>
-                <div><Link to="/vendor/101"> Vendor </Link></div> */}
             </div>
         </div>
     );
