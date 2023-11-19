@@ -1,9 +1,9 @@
 import Select from "react-select";
-import type { SelectOption } from '../../type'
+import type { MealAmountSelectOption } from '../../type'
 import style from '../../style/shared/BaseSelect.module.css'
 
 export default function BaseSelect ({ options, onChangeFunc, value}:
-                                    { options: SelectOption, onChangeFunc: any, value: any}){
+                                    { options: MealAmountSelectOption, onChangeFunc: any, value: any}){
     return (
         <>
           <div className={style.baseSelectBox}>

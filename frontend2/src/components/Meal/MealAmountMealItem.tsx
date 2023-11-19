@@ -2,31 +2,26 @@ import type { Meal } from '../../type'
 import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
-import { BACKEND_URL } from '../../constant'
 import { useEffect, useState } from 'react'
-import  BaseButton from '../shared/BaseButton'
+import type { MealAmountOption } from '../../type'
 
-const updateOnClick = (mealId: number, count: number) => {
-  const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
-  fetch(update_url, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ mealId: mealId, count: count })
-  }).then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
-}
-
-export default function MealAmountMealItem({ meal, setMeals }: {meal: Meal, setMeals: any}) {
-  const [count, setCount] = useState(meal.Default_Inventory);
+export default function MealAmountMealItem({ meal, setMeals, day }: 
+                                           {meal: Meal, setMeals: any, day: MealAmountOption}) {
+  const [count, setCount] = useState(meal.Inventory[day.value.toString()]);
+  // const [count, setCount] = useState(meal.Default_Inventory);
   
+  useEffect(() => {
+    setCount(meal.Inventory[day.value.toString()]);
+  }, [day]);
+
   useEffect(()=>{
     setMeals((prevValue: Meal[]) => {
       return prevValue.map((mealobj) => {
-        if (mealobj.Meal_ID === meal.Meal_ID) 
-          mealobj.Inventory["1"] = count;
+        if (mealobj.Meal_ID === meal.Meal_ID) {
+          const day_string = day.value.toString();
+
+          mealobj.Inventory[day_string] = count;
+        }
         return mealobj;
       });
     });

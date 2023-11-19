@@ -4,59 +4,63 @@ import type { Meal } from '../type'
 import MealAmountMealItem from "../components/Meal/MealAmountMealItem";
 import { BACKEND_URL } from '../constant'
 import style from '../style/Meal/AllMeal.module.css'
-import BaseSelect from '../components/shared/BaseSelect'
 import BaseButton from "../components/shared/BaseButton";
+import { MealAmountOption, MealAmountSelectOption } from "../type";
+import MealAmountSelect from '../components/Meal/MealAmountSelect'
 
 export default function MealAmount() {
     const [meals, setMeals] = useState<Meal[]>([]);
     const { vendorId } = useParams();
 
+    const today = new Date().getDay();
+    // For BaseSelector
+    const [options, setOptions] = useState<MealAmountSelectOption>([]);
+    const [selected, setSelected] = useState<MealAmountOption>({ value: (today-1+3)%7+1, label: "請選擇時間" });
+    const onChange = (e: any) => {
+        const option_found = options.find((option: MealAmountOption) => {
+            return option.value.toString() === e.target.value;
+        });
+        setSelected(
+            option_found? option_found : selected
+        );
+    };
+
     useEffect(() => {
-        async function fetchData() {
+        function fetchDayOption(){
+            var _options = [];
+            // +3 ~ +6
+            const day_offsets = [3, 4, 5, 6];
+            for (const offset of day_offsets){
+                const day_num = (today-1 + offset)%7+1;
+                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*offset).toLocaleDateString('fr-CA');
+                _options.push({ value: day_num, label: date_string });
+            }
+            setOptions(_options);
+        }
+        fetchDayOption();
+
+        async function fetchMealData() {
             try {
                 const res = await fetch(
-                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}`
+                    BACKEND_URL + `/mealAmount?vendorId=${vendorId}}`
                 ).then(res => { return res.json(); });
-
+    
                 setMeals(res);
             } catch (e) {
                 console.log("Error fetching all_meals from backend: ", e);
             }
         };
-        fetchData();
+        fetchMealData();
     }, []);
 
-    useEffect(() => {
-        console.log("meals changed");
-        for (const meal of meals){
-            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
-        }
-    }, [meals]);
-
-    // For BaseSelector
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberryyyyyyyyyyyyy' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]
-    const [selected, setSelected] = useState("");
-    const onChange = (e: any) => {
-        setSelected(e.value);
-    };
-    const displayItem = (selected: any) => {
-        const item = options.find(x => x.value === selected);
-        return item ? item : { value: "", label: "請選擇時間" };
-    };
-
-    // For BaseButton
+    // For update button
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
         const meals_data = [];
-        // console.log("updateOnClick");
-        // for (const meal of meals){
-        //     console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[1]}`);
-        // }
-
+        console.log("updateOnClick");
+        for (const meal of meals){
+            console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[selected.value]}`);
+        }
         for (const meal of meals)
             meals_data.push({ mealId: meal.Meal_ID, inventory: meal.Inventory });
         
@@ -73,30 +77,26 @@ export default function MealAmount() {
 
     return (
         <>
-        < BaseSelect options={options} onChangeFunc={onChange} 
-                     value={displayItem(selected)} />
+        < MealAmountSelect options={options} onChangeFunc={onChange} 
+                     value={selected.value} />
 
         <div className={style.meal_container}>
-            {/* Render items */}
             {meals.length > 0 ? (
                 <div>
-                <div className={style.meal_itemBox}>
-                    {meals.map((meal) => (
-                    <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} />
-                    ))}
-                </div>
-
-                 <BaseButton text="更新" onClickFunc={() => updateOnClick()}/>
+                    <div className={style.meal_itemBox}>
+                        {meals.map((meal) => (
+                        <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
+                        ))}
+                    </div>
+                
+                    <div className={style.meal_updateButtonBox}>
+                        <BaseButton text="更新" onClickFunc={() => updateOnClick()}/>
+                    </div>
                 </div>
 
             ) : (
                 <div className="all_meals_empty">
-                {/* <img
-                    className="all_meals_empty_img"
-                    src="images/empty-cart.png"
-                    alt=""
-                /> */}
-                <span className="all_meals_empty_title">No meals.</span>
+                    <span className="all_meals_empty_title">No meals.</span>
                 </div>
             )}
         </div>

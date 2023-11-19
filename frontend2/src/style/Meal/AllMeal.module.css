@@ -16,6 +16,14 @@
     gap: 40px;
     align-items: center;
 }
+
+.meal_updateButtonBox {
+    width: 100%;
+    padding: 25px 10px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: end;
+}
   
 
   
