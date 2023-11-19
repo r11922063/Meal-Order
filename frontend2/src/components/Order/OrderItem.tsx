@@ -1,35 +1,56 @@
-import type { Meal, Order } from '../../type'
+import type { Meal, Order, OrderContent } from '../../type'
 import style from '../../style/Order/OrderItem.module.css'
 import { BACKEND_URL } from '../../constant'
+import { useState, useEffect } from "react";
+import OrderInfoItem from "./OrderInfoItem";
+import OrderContentItem from "./OrderContentItem";
 
 export default function OrderItem({ order }: { order: Order }) {
-    const vendorId = order.Vendor_ID;
-    function CancelOrder() {
-        console.log("click cancel button!");
-        // TODO: cancel order
-    }
+    const [orderMeals, setOrderMeal] = useState<OrderContent[]>([]);
+    let orderMealIDs: Array<number> = [];
+
+    useEffect(() => {
+        async function fetchOrderMeals() {
+            orderMealIDs = [];
+            order.Meal_List.forEach((orderMeal) => {
+                orderMealIDs.push(orderMeal.Meal_ID);
+            });
+            // console.log("[OrderItem: fetchOrderMeals] orderMealIDs = ", orderMealIDs);
+            try {
+                const res = await fetch(
+                    BACKEND_URL + `/orders/orderMeals?orderMealIDs=${orderMealIDs}`
+                ).then(res => { return res.json(); });
+                console.log("[fetchOrderMeals] Result: ", res);
+                setOrderMeal(res);
+            } catch (e) {
+                console.log("Error fetching all_orders from backend: ", e);
+            }
+        };
+        fetchOrderMeals();
+    }, []);
+
     return (
-        <div className={style.orderItem_item}>
-            <div className={style.orderItem_contentContainer}>
-                <span className={style.orderItem_title}>{order.Vendor_ID}</span>
-                <span className={style.orderItem_note}>{'訂單編號 #' + order.Order_ID}</span>
-                <span className={style.orderItem_note}>{'取餐時間：' + order.Pickup_Time}</span>
-                <span className={style.orderItem_warning}>{'最後取消時間：' + order.Pickup_Time}</span>
-                {/* TODO: vendor name */}
-                {/* TODO: 取餐時間、最後取消時間 */}
+        <div className={style.orderItem_container}>
+            <div className={style.orderItem_InfoItemBox}>
+                <OrderInfoItem key={order.Order_ID} order={order} />
             </div>
 
-            <div className={style.orderItem_otherContainer}>
-                <div className={style.orderItem_cancelBox}>
-                    <button className={style.orderItem_cancelButton} onClick={() => CancelOrder()}>
-                        <span>取消訂單</span>
-                    </button>
-                </div>
-                <div className={style.orderItem_detail}>
-                        <span>{'總計: NT$' + order.Cash_Amount}</span>
-                </div>
+            <div className={style.orderItem_mealContainer}>
                 {/* TODO: toggle (meals) */}
+                {/* Render items */}
+                {orderMeals.length > 0 ? (
+                    <div className={style.orderItem_mealItemBox}>
+                        {orderMeals.map((orderMeal, index) => (
+                            <OrderContentItem key={`${order.Order_ID}-${index++}`} orderContent={orderMeal} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="orderMeals_empty">\
+                        <span className="orderMeals_empty_title">Error: No meals in this order.</span>
+                    </div>
+                )}
             </div>
+            
         </div>
         
     );

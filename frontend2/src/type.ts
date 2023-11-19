@@ -48,4 +48,10 @@ export type Order = {
     Cash_Amount: number,
 };
 
+export type OrderContent = {
+    Meal_ID: number,
+    Meal_Name: string,
+    Price: number,
+    Image_url: string,
+};
 

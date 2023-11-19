@@ -1,86 +1,36 @@
-.orderItem_item {
+.orderItem_container {
+    padding-left: 1vw;
+    border-style: solid;
+    border-color: #00000033;
+    border-width: 0.2vw 0;
+    margin: 1vw;
+}
+
+.orderItem_InfoItemBox {
     width: 100%;
-    height: 120px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 5px 20px;
-    border-right: 5px solid #8fc700;
-    display: flex;
-    align-items: first center;
-    justify-content: space-between;
-    padding: 16px 5px;
-    position: relative;
-}
-
-.orderItem_contentContainer {
-    padding: 30px 20px;
-    height: 100%;
-    flex: 3 1 auto;
+    /* border-radius: 10px; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: rgba(0, 0, 0, 0.7);
+    /* gap: 40px; */
+    /* align-items: center; */
+    /* justify-content: flex-start */
 }
 
-.orderItem_otherContainer {
-    padding: 30px 20px;
-    height: 100%;
-    flex: 1 1 auto;
+.orderItem_mealContainer {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: rgba(0, 0, 0, 0.7);
+    gap: 20px;
+    padding: 16px;
 }
 
-.orderItem_title {
-    font-size: 24px;
-}
-
-.orderItem_note {
-    font-size: 16px;
-}
-
-.orderItem_warning {
-    font-size: 16px;
-    color: red;
-}
-
-.orderItem_detail {
-    padding: 0px 20px;
-    height: 100%;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.orderItem_cancelBox {
-    padding: 0px 20px;
-    height: 100%;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.orderItem_cancelButton {
-    padding: 0px 10px;
-    width: auto;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
+.orderItem_mealItemBox {
+    width: 100%;
     border-radius: 10px;
-    cursor: pointer;
-    background-color: rgb(176, 67, 67);
-    color: #fff;
-}
-
-.orderItem_cancelButton:hover {
-    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
 }
