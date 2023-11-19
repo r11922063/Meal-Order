@@ -1,9 +1,9 @@
-import type { Order } from '../../type'
+import type { CustomerOrder } from '../../type'
 import style from '../../style/Order/OrderInfoItem.module.css'
 import triangle_style from '../../style/Order/TriangleButton.module.css'
 
 export default function OrderInfoItem({ order, handleDisclosureClick, disclosure }: 
-    { order: Order, handleDisclosureClick: () => any, disclosure: boolean }) {
+    { order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean }) {
     const vendorId = order.Vendor_ID;
 
     function CancelOrder() {
@@ -14,7 +14,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     return (
         <div className={style.orderInfoItem_item}>
             <div className={style.orderInfoItem_leftContainer}>
-                <span className={style.orderInfoItem_title}>{order.Vendor_ID}</span>
+                <span className={style.orderInfoItem_title}>{order.Vendor_Name}</span>
                 <span className={style.orderInfoItem_note}>{'訂單編號 #' + order.Order_ID}</span>
                 <span className={style.orderInfoItem_note}>{'取餐時間：' + order.Pickup_Time}</span>
                 <span className={style.orderInfoItem_warning}>{'最後取消時間：' + order.Pickup_Time}</span>

@@ -1,12 +1,12 @@
-import type { Order, OrderContent } from '../../type'
+import type { CustomerOrder, CustomerOrderContent } from '../../type'
 import style from '../../style/Order/OrderItem.module.css'
 import { BACKEND_URL } from '../../constant'
 import { useState, useEffect } from "react";
 import OrderInfoItem from "./OrderInfoItem";
 import OrderContentItem from "./OrderContentItem";
 
-export default function OrderItem({ order }: { order: Order }) {
-    const [orderMeals, setOrderMeal] = useState<OrderContent[]>([]);
+export default function OrderItem({ order }: { order: CustomerOrder }) {
+    const [orderMeals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
     let orderMealIDs: Array<number> = [];
 
     const [disclosure, setDisclosure] = useState(false);

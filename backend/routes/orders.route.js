@@ -18,8 +18,11 @@ const getOrders = async (req, res, next) => {
 const getOrdersCompleted = async (req, res, next) => {
     const customerId = req.query.customerId;
     try {
-        const query_str = 'SELECT * FROM `Order` WHERE `Customer_ID` = ? \
-                            AND (`Status` = ? OR `Status` = ? OR `Status` = ?)';
+        const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
+            FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
+            LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;'
+        // const query_str = 'SELECT * FROM `Order` WHERE `Customer_ID` = ? \
+        //                     AND (`Status` = ? OR `Status` = ? OR `Status` = ?)';
         const [rows, fields] = await query(query_str, 
                 [customerId, "PICKED_UP", "CANCELLED_UNCHECKED", "CANCELLED_CHECKED"]);
         res.json(rows);
@@ -34,8 +37,11 @@ const getOrdersCompleted = async (req, res, next) => {
 const getOrdersInProgress = async (req, res, next) => {
     const customerId = req.query.customerId;
     try {
-        const query_str = 'SELECT * FROM `Order` WHERE `Customer_ID` = ? \
-                            AND (`Status` = ? OR `Status` = ?)';
+        const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
+            FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ?)) AS orders \
+            LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;'
+        // const query_str = 'SELECT * FROM `Order` WHERE `Customer_ID` = ? \
+        //                     AND (`Status` = ? OR `Status` = ?)';
         const [rows, fields] = await query(query_str,
             [customerId, "PREPARING", "READY_FOR_PICKUP"]);
         res.json(rows);

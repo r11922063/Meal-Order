@@ -1,7 +1,7 @@
-import type { Order } from '../../type'
+import type { CustomerOrder } from '../../type'
 import OrderItem from "./OrderItem";
 
-export default function OrderTab({ orders }: { orders: Array<Order> }) {
+export default function OrderTab({ orders }: { orders: Array<CustomerOrder> }) {
     return (
         <div className="one_tab">
             {/* Render items */}
@@ -13,7 +13,7 @@ export default function OrderTab({ orders }: { orders: Array<Order> }) {
                 </div>
             ) : (
                 <div className="orders_empty">\
-                    <span className="orders_empty_title">No orders.</span>
+                    <span className="orders_empty_title">目前沒有訂單！</span>
                 </div>
             )}
         </div>

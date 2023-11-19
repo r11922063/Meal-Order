@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Order } from '../type'
+import { CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import OrderTab from "../components/Order/OrderTab";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -9,8 +9,8 @@ import 'react-tabs/style/react-tabs.css';
 export default function Orders() {
     const params = useParams();
     const [display, setDisplay] = useState(0); // 0: in progress, 1: completed
-    const [ordersCompleted, setOrdersCompleted] = useState<Order[]>([]);
-    const [ordersInProgress, setOrdersInProgress] = useState<Order[]>([]);
+    const [ordersCompleted, setOrdersCompleted] = useState<CustomerOrder[]>([]);
+    const [ordersInProgress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customerId = params.customerId;
 
     function changeTab(tab: number) {

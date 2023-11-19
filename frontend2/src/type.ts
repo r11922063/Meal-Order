@@ -46,22 +46,23 @@ export enum OrderStatus {
     CANCELLED_CHECKED = "CANCELLED_CHECKED",
 };
 
-export type OrderDetail = {
+export type CustomerOrderDetail = {
     Meal_ID: number,
     Amount: number,
 };
 
-export type Order = {
+export type CustomerOrder = {
     Order_ID: number,
     Customer_ID: number,
     Vendor_ID: number,
     Status: string,
     Pickup_Time: string,
-    Meal_List: Array<OrderDetail>,
+    Meal_List: Array<CustomerOrderDetail>,
     Cash_Amount: number,
+    Vendor_Name: string,
 };
 
-export type OrderContent = {
+export type CustomerOrderContent = {
     Meal_ID: number,
     Meal_Name: string,
     Price: number,
