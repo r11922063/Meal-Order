@@ -1,12 +1,13 @@
-import VendorNavBar from '../components/VendorNavBar';
-import {Outlet} from 'react-router-dom';
+import VendorNavBar from '../components/NavBar/VendorNavBar';
+import { Outlet } from 'react-router-dom';
+import style from "../style/Layout/CustomerVendorLayout.module.css";
 
 export default function VendorLayout() {
     return (
         <>
-            <VendorNavBar/>
-            <main style={ {marginTop: 100, marginLeft: 35, marginRight: 35} }>
-                <Outlet/>
+            <VendorNavBar />
+            <main className={style.Layout}>
+                <Outlet />
             </main>
         </>
     );

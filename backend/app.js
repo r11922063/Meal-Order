@@ -13,6 +13,9 @@ import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
 import settlementRouter from './routes/Settlement.route.js'
 import allMealsRouter from './routes/allMeals.route.js'
+import loginRouter from './routes/login.route.js'
+import signupRouter from './routes/signup.route.js'
+import ordersRouter from './routes/orders.route.js'
 import mealAmountRouter from './routes/mealAmount.route.js'
 
 import orderMealRouter from './routes/OrderMeal.route.js'
@@ -41,6 +44,9 @@ app.use('/users', usersRouter);
 app.use('/allMeals', allMealsRouter);
 app.use('/mealAmount', mealAmountRouter);
 app.use('/settlement', settlementRouter);
+app.use('/login', loginRouter);
+app.use('/signup', signupRouter);
+app.use('/orders', ordersRouter);
 
 app.use('/orderMeal',orderMealRouter)
 

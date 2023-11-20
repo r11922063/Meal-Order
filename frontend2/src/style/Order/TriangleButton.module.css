@@ -1,0 +1,43 @@
+.triangle_buttons {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Spacing */
+    padding: 0.5rem;
+    background-color: transparent;
+    border: none;
+}
+
+.triangle_buttons :hover {
+    opacity: 0.6;
+}
+
+.triangle_buttons__triangle {
+    border-style: solid;
+
+    /* Size */
+    height: 0px;
+    width: 0px;
+}
+
+.triangle_buttons__triangle_t {
+    border-color: transparent transparent black;
+    border-width: 0 0.5rem 0.5rem;
+}
+
+.triangle_buttons__triangle_r {
+    border-color: transparent transparent transparent black;
+    border-width: 0.5rem 0 0.5rem 0.5rem;
+}
+
+.triangle_buttons__triangle_b {
+    border-color: black transparent transparent;
+    border-width: 0.5rem 0.5rem 0;
+}
+
+.triangle_buttons__triangle_l {
+    border-color: transparent black transparent transparent;
+    border-width: 0.5rem 0.5rem 0.5rem 0;
+}

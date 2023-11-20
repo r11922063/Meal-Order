@@ -9,19 +9,19 @@ const GetSettlement = async (req, res, next) => {
     const end = `${req.query.year}-${req.query.month}-${new Date(req.query.year, req.query.month, 0).getDate()} 23:59:59`;
     try {
         if (req.query.identity === 'customer') {
-            const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amout`, v.`Name` \
+            const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amount`, v.`Name` \
                                                 FROM `Order` o JOIN Vendor v WHERE o.`Customer_ID` = ? AND o.`Status` = ? \
                                                 AND (o.`Pickup_Time` BETWEEN ? AND ?) AND o.`Vendor_ID` = v.`Vendor_ID`\
                                                 ORDER BY `Pickup_Time`', 
-                                                [req.query.id, '4', start, end]);
+                                                [req.query.id, 'PICKED_UP', start, end]);
             res.json(rows);
         }
         else {
-            const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amout` \
+            const [rows, fields] = await query('SELECT `Order_ID`, `Pickup_Time`, `Cash_Amount` \
                                                 FROM `Order` WHERE `Vendor_ID` = ? AND `Status` = ? \
                                                 AND (`Pickup_Time` BETWEEN ? AND ?) \
                                                 ORDER BY `Pickup_Time`', 
-                                                [req.query.id, '4', start, end]);
+                                                [req.query.id, 'PICKED_UP', start, end]);
             res.json(rows);
         }
     }
