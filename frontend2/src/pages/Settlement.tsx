@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import SettlementTable from "../components/SettlementTable";
-import style from "../style/Settlement.module.css";
+import SettlementTable from "../components/Settlement/SettlementTable";
+import style from "../style/Settlement/Settlement.module.css";
 import type { SettlementOrder } from '../type';
 import { BACKEND_URL } from '../constant';
 
@@ -56,10 +56,10 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
     }, [selectedYear, selectedMonth]);
 
     return (
-        <div className={ style.settlement }>
+        <div className={style.settlement}>
             <h1>我的月結算</h1>
-            <div className= { style.container1}>
-                <div className= { style.container2 }>
+            <div className={style.container1}>
+                <div className={style.container2}>
                     <label>
                         Year :
                         <select value={selectedYear} onChange={e => {
@@ -73,18 +73,18 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
                                 setSelectedMonth(maxmonth);
                             }
                         }}>
-                            { yearlist.map(y => <option value={ y } key={ y }> { y } </option>) }
+                            {yearlist.map(y => <option value={y} key={y}> {y} </option>)}
                         </select>
                     </label>
                     <label>
                         Month :
-                        <select value={selectedMonth} onChange={e => setSelectedMonth(+e.target.value) }>
-                            { yearmap.get(selectedYear)!.map(m => <option value={ m } key={ `${selectedYear}/${m}` }> { m } </option>)}
+                        <select value={selectedMonth} onChange={e => setSelectedMonth(+e.target.value)}>
+                            {yearmap.get(selectedYear)!.map(m => <option value={m} key={`${selectedYear}/${m}`}> {m} </option>)}
                         </select>
                     </label>
-                    <h3>總計 : NT$ { totalAmount }</h3>
+                    <h3>總計 : NT$ {totalAmount}</h3>
                 </div>
-                <SettlementTable orders={ orders! } identity= { identity }/>
+                <SettlementTable orders={orders!} identity={identity} />
             </div>
         </div>
     );

@@ -31,14 +31,14 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
-          <BaseButton text="更新" onClickFunc={() => updateOnClick(meal.Meal_ID, count)}/>
+          <div className={style.allMealMealItem_updateButtonBox}>
+            <BaseButton text="更新" onClickFunc={() => updateOnClick(meal.Meal_ID, count)}/>
+          </div>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>
               <Counter count={count} setCount={setCount} />
             </div>
-            <div>
-              <p>預設庫存：</p>
-            </div>
+            <div className={style.allMealMealItem_counterDescription}>預設庫存：</div>
           </div>
           
         </div>

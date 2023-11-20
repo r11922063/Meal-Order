@@ -1,4 +1,5 @@
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { CgAdd, CgRemove } from "react-icons/cg";
 import style from "../../style/shared/Counter.module.css";
 
 
@@ -19,7 +20,7 @@ export default function Counter({count, setCount}:
                 onClick={() => { setCount(Math.max(0, count-1));}}
                 className={style.counter_plus}
             >
-                <AiOutlineMinus />
+                <CgRemove />
             </span>
             
             <span className={style.counter_number} contentEditable 
@@ -31,7 +32,7 @@ export default function Counter({count, setCount}:
             onClick={() => { setCount(count+1); }}
             className={style.counter_minus}
             >
-            <AiOutlinePlus />
+            <CgAdd />
             </span>
         
         </div>

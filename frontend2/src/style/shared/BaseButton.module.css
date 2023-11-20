@@ -1,30 +1,21 @@
-.baseButton_updateBox {
-    padding: 0px 20px;
-    height: 100%;
-    flex: 3 1 auto;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-end;
-    justify-content: flex-start;
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.baseButton_updateButton {
+.baseButton_button {
     padding: 0px 10px;
-    width: auto;
-    height: 30px;
+    width: 45px;
+    height: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-.baseButton_updateButton {
+.baseButton_button {
     background-color: rgb(0, 0, 0);
+    font-size: 14px;
+    font-weight: bold;
     color: #fff;
 }
   
-.baseButton_updateButton:hover {
+.baseButton_button:hover {
     opacity: 0.8;
 }

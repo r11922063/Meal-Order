@@ -1,10 +1,10 @@
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import style from "../style/LoginSignUpForm.module.css";
-import { BACKEND_URL } from '../constant';
-import { LoginInput } from "../type";
+import style from "../../style/LoginSignUp/LoginSignUpForm.module.css";
+import { BACKEND_URL } from '../../constant';
+import type { LoginInput } from "../../type";
 
-export default function LoginForm({ identity, handleActive }: { identity: "customer" | "vendor", handleActive: (e: React.MouseEvent) => void}) {
+export default function LoginForm({ identity, handleActive }: { identity: "customer" | "vendor", handleActive: (e: React.MouseEvent) => void }) {
     const text = identity === "customer" ? "顧客登入" : "商家登入";
     const defaultemail = identity === "customer" ? "123456@gmail.com" : "222@gmail.com";
     const defaultpassword = identity === "customer" ? "LLL" : "tttt";
@@ -33,25 +33,25 @@ export default function LoginForm({ identity, handleActive }: { identity: "custo
         });
     }
     return (
-        <form className={ identity === "customer" ? 
-                        `${style.LoginForm} ${style.customer}` : 
-                        `${style.LoginForm} ${style.vendor}`} onSubmit={async (e) => {
-            try {
-                const id = await handleSubmit(e);
-                navigate(`${identity}/${id}`);
-            } catch (error) {
-                setError(true);
-            }
-        }}>
-            <h1> { text } </h1>
+        <form className={identity === "customer" ?
+            `${style.LoginForm} ${style.customer}` :
+            `${style.LoginForm} ${style.vendor}`} onSubmit={async (e) => {
+                try {
+                    const id = await handleSubmit(e);
+                    navigate(`${identity}/${id}`);
+                } catch (error) {
+                    setError(true);
+                }
+            }}>
+            <h1> {text} </h1>
             <label>
-                <input defaultValue={defaultemail} type="email" name="account" placeholder="Email" onChange={ e => setUserInput({...userInput, email: e.currentTarget.value}) }/>
+                <input defaultValue={defaultemail} type="email" name="account" placeholder="Email" onChange={e => setUserInput({ ...userInput, email: e.currentTarget.value })} />
             </label>
             <label>
-                <input defaultValue={defaultpassword} type="password" name="password" placeholder="Password" onChange={ e => setUserInput({...userInput, password: e.currentTarget.value}) }/>
+                <input defaultValue={defaultpassword} type="password" name="password" placeholder="Password" onChange={e => setUserInput({ ...userInput, password: e.currentTarget.value })} />
             </label>
-            { error && <h3 className={style.errormsg}> Email / password 錯誤</h3> }
-            <input className={style.submitbtn} type="submit" value="Submit"/>
+            {error && <h3 className={style.errormsg}> Email / password 錯誤</h3>}
+            <input className={style.submitbtn} type="submit" value="Submit" />
             <button type="button" className={style.changebtn} onClick={handleActive}>{identity === "customer" ? "我是商家" : "我是顧客"}</button>
         </form>
     );

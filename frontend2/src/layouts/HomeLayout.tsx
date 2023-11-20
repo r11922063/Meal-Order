@@ -1,12 +1,13 @@
-import HomeNavBar from '../components/HomeNavBar'
+import HomeNavBar from '../components/NavBar/HomeNavBar'
 import { Outlet } from 'react-router-dom';
+import style from "../style/Layout/HomeLayout.module.css";
 
 export default function HomeLayout() {
     return (
         <>
-            <HomeNavBar/>
-            <main style={ {marginTop: 100, marginLeft: 35, marginRight: 35} }>
-                <Outlet/>
+            <HomeNavBar />
+            <main className={style.Layout}>
+                <Outlet />
             </main>
         </>
     );

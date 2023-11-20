@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import borderwidth from '../assets/border-width.svg';
-import style from '../style/NavBar.module.css';
+import style from '../../style/NavBar/NavBar.module.css';
 
 export default function CustomerNavBar() {
     return (
