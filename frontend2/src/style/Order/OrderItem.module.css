@@ -1,0 +1,30 @@
+.orderItem_container {
+    padding-left: 1vw;
+    border-bottom-style: solid;
+    border-bottom-color: #00000033;
+    border-bottom-width: 0.2vw 0;
+    margin: 1vw;
+}
+
+.orderItem_InfoItemBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    align-items: flex-start;
+}
+
+.orderItem_mealContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.orderItem_mealItemBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* for discussion */
+}
