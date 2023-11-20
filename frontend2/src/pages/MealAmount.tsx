@@ -32,7 +32,8 @@ export default function MealAmount() {
             const day_offsets = [3, 4, 5, 6];
             for (const offset of day_offsets){
                 const day_num = (today-1 + offset)%7+1;
-                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*offset).toLocaleDateString('fr-CA');
+                const date_string = new Date(+new Date().setHours(0, 0, 0,0)+ 86400000*offset).toLocaleDateString('zh-TW',
+                {  month: 'long', day: 'numeric', weekday: 'long' });
                 _options.push({ value: day_num, label: date_string });
             }
             setOptions(_options);
