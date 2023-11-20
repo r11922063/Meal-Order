@@ -40,9 +40,7 @@ export default function MealAmountMealItem({ meal, setMeals, day }:
             <div className={style.allMealMealItem_counter}>
               <Counter count={count} setCount={setCount} />
             </div>
-            <div>
-              <p>庫存：</p>
-            </div>
+            <div className={style.allMealMealItem_counterDescription}>庫存：</div>
           </div>
           
         </div>
