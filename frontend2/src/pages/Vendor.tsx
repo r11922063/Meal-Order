@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from '../style/shared/Vendor.module.css'
+import style from '../style/Vendor/Vendor.module.css'
 const Today = new Date();
 
 const weekday =['週日', '週一', '週二', '週三', '週四', '週五', '週六']; 
