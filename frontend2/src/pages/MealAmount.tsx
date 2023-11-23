@@ -27,7 +27,7 @@ export default function MealAmount() {
 
     useEffect(() => {
         function fetchDayOption(){
-            var _options = [];
+            var _options: MealAmountSelectOption = [];
             // +3 ~ +6
             const day_offsets = [3, 4, 5, 6];
             for (const offset of day_offsets){
@@ -57,7 +57,7 @@ export default function MealAmount() {
     // For update button
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
-        const meals_data = [];
+        const meals_data: Record<string, number | Record<string, number>>[] = [];
         console.log("updateOnClick");
         for (const meal of meals){
             console.log(`Meal ${meal.Meal_Name}: ${meal.Inventory[selected.value]}`);
