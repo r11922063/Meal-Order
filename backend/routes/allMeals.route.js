@@ -1,6 +1,7 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
 import { query_callBack } from "../models/db.model.js"
+import Meal from '../models/meal.model.js'
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -30,7 +31,39 @@ const updateDefaultInventory = async (req, res, net) => {
             });
 }
 
+const addMealItem = (req, res, next) => {
+    const meal = req.body.newMeal;
+    const img = req.body.img;
+    console.log("addMealItem");
+
+    let newMeal = new Meal(meal);
+    // save image
+    try {
+        newMeal.saveImg(img);
+    }
+    catch (err){
+        console.log("Error saving new meal image: ", err);
+    }
+    // save newMeal to db
+    try {
+        newMeal.insert();
+    }
+    catch (err){
+        console.log("Error inserting new meal to db: ", err);
+    }
+}
+
+const testUploader = (req, res, next) => {
+    console.log("backend test uploader");
+    imagesUpload(
+        '../../data/meal_imgs',
+        null, false);
+}
+
+
+
 router.get('/', getAllMeals); 
 router.post('/updateDefaultInventory', updateDefaultInventory);
+router.post('/addMealItem', addMealItem);
 
 export default router;
