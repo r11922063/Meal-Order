@@ -67,6 +67,7 @@ export type CustomerOrderContent = {
     Meal_Name: string,
     Price: number,
     Image_url: string,
+    Amount: number,
 };
 
 export type OrderTimeInfo = {

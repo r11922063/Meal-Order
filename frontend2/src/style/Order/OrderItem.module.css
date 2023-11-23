@@ -1,5 +1,5 @@
 .orderItem_container {
-    padding-left: 1vw;
+    /* padding-left: 1vw; */
     border-bottom-style: solid;
     border-bottom-color: #00000033;
     border-bottom-width: 0.2vw 0;
@@ -7,7 +7,6 @@
 }
 
 .orderItem_infoItemBox {
-    width: 100%;
     display: flex;
     flex-direction: column;
     padding: 30px;
@@ -16,15 +15,19 @@
 
 .orderItem_mealContainer {
     width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 30px;
+    gap: 20px;
+    padding: 16px;
 }
 
 .orderItem_mealItemBox {
     width: 100%;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: center; /* for discussion */
+    gap: 40px;
+    align-items: center;
 }

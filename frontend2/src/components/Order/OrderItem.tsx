@@ -4,6 +4,7 @@ import { BACKEND_URL } from '../../constant'
 import { useState, useEffect } from "react";
 import OrderInfoItem from "./OrderInfoItem";
 import OrderContentItem from "./OrderContentItem";
+import Orders from '../../pages/Orders';
 
 export default function OrderItem({ order }: { order: CustomerOrder }) {
     const [order_meals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
@@ -28,8 +29,8 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
                 const res = await fetch(
                     BACKEND_URL + `/orders/orderMeals?orderMealIDs=${order_meal_ids}`
                 ).then(res => { return res.json(); });
-                // console.log("[fetchOrderMeals] Result: ", res);
                 setOrderMeal(res);
+                console.log("[fetchOrderMeals] order_meals: ", order_meals);
             } catch (e) {
                 console.log("Error fetching all_orders from backend: ", e);
             }
@@ -54,7 +55,7 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
                         {order_meals.length > 0 ? (
                             <div className={style.orderItem_mealItemBox}>
                                 {order_meals.map((order_meal, index) => (
-                                    <OrderContentItem key={order_meal.Meal_ID} orderContent={order_meal} />
+                                    <OrderContentItem key={order_meal.Meal_ID} orderContent={order_meal} amount={order.Meal_List[index].Amount} />
                                 ))}
                             </div>
                         ) : (
