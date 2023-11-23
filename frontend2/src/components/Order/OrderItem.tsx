@@ -4,7 +4,6 @@ import { BACKEND_URL } from '../../constant'
 import { useState, useEffect } from "react";
 import OrderInfoItem from "./OrderInfoItem";
 import OrderContentItem from "./OrderContentItem";
-import Orders from '../../pages/Orders';
 
 export default function OrderItem({ order }: { order: CustomerOrder }) {
     const [order_meals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
@@ -30,7 +29,7 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
                     BACKEND_URL + `/orders/orderMeals?orderMealIDs=${order_meal_ids}`
                 ).then(res => { return res.json(); });
                 setOrderMeal(res);
-                console.log("[fetchOrderMeals] order_meals: ", order_meals);
+                // console.log("[fetchOrderMeals] order_meals: ", order_meals);
             } catch (e) {
                 console.log("Error fetching all_orders from backend: ", e);
             }

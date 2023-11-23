@@ -74,7 +74,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
                     </button>
                 </div>
                 <div className={style.orderInfoItem_detail}>
-                    <span>{'總計: NT$' + order.Cash_Amount}</span>
+                    <span>{'總計：'+'NT$' + order.Cash_Amount}</span>
                     <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
                         {disclosure ?
                             <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
