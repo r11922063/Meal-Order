@@ -1,5 +1,5 @@
 
-import style from "../style/OrderMeal.module.css";
+import style from "../../style/OrderMeal-ShopCart/OrderMeal.module.css";
 
 export default function VendorInfo({vendorName, vendorAddr}:{vendorName:string, vendorAddr:string}){
     return(

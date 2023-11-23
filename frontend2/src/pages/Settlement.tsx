@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import SettlementTable from "../components/SettlementTable"
-import style from "../style/Settlement.module.css"
-import type { SettlementOrder } from '../type'
+import SettlementTable from "../components/Settlement/SettlementTable";
+import style from "../style/Settlement/Settlement.module.css";
+import type { SettlementOrder } from '../type';
+import { BACKEND_URL } from '../constant';
 
 let year: number = new Date().getFullYear();
 let month: number = new Date().getMonth() + 1;
@@ -31,13 +32,13 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
     const [orders, setOrders] = useState<SettlementOrder[]>([]);
     let totalAmount = 0;
     orders.forEach(order => {
-        totalAmount += order.Cash_Amout;
+        totalAmount += order.Cash_Amount;
     });
 
     useEffect(() => {
         const FetchOrders = async (ID: string, Year: number, Month: number) => {
             try {
-                const url: string = `http://localhost:8081/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
+                const url: string = `${BACKEND_URL}/settlement?id=${ID}&identity=${identity}&year=${Year}&month=${String(Month).padStart(2, '0')}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
                 setOrders(result);
             }
@@ -55,10 +56,10 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
     }, [selectedYear, selectedMonth]);
 
     return (
-        <div className={ style.settlement }>
+        <div className={style.settlement}>
             <h1>我的月結算</h1>
-            <div className= { style.container1}>
-                <div className= { style.container2 }>
+            <div className={style.container1}>
+                <div className={style.container2}>
                     <label>
                         Year :
                         <select value={selectedYear} onChange={e => {
@@ -72,18 +73,18 @@ export default function Settlement({ identity }: { identity: 'customer' | 'vendo
                                 setSelectedMonth(maxmonth);
                             }
                         }}>
-                            { yearlist.map(y => <option value={ y } key={ y }> { y } </option>) }
+                            {yearlist.map(y => <option value={y} key={y}> {y} </option>)}
                         </select>
                     </label>
                     <label>
                         Month :
-                        <select value={selectedMonth} onChange={e => setSelectedMonth(+e.target.value) }>
-                            { yearmap.get(selectedYear)!.map(m => <option value={ m } key={ `${selectedYear}/${m}` }> { m } </option>)}
+                        <select value={selectedMonth} onChange={e => setSelectedMonth(+e.target.value)}>
+                            {yearmap.get(selectedYear)!.map(m => <option value={m} key={`${selectedYear}/${m}`}> {m} </option>)}
                         </select>
                     </label>
-                    <h3>總計 : NT$ { totalAmount }</h3>
+                    <h3>總計 : NT$ {totalAmount}</h3>
                 </div>
-                <SettlementTable orders={ orders! } identity= { identity }/>
+                <SettlementTable orders={orders!} identity={identity} />
             </div>
         </div>
     );
