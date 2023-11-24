@@ -4,7 +4,6 @@ import { query } from "../models/dbasync.model.js";
 const router = express.Router();
 
 const getOrders = async (req, res, next) => {
-    const customerId = req.query.customerId;
     const display = req.query.display;
     if (display == 0) {
         await getOrdersInProgress(req, res, next);
@@ -14,13 +13,13 @@ const getOrders = async (req, res, next) => {
 };
 
 const getOrdersCompleted = async (req, res, next) => {
-    const customerId = req.query.customerId;
+    const customer_id = req.query.customerID;
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
             FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
             LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;';
         const [rows, fields] = await query(query_str, 
-                [customerId, "PICKED_UP", "CANCELLED_UNCHECKED", "CANCELLED_CHECKED"]);
+            [customer_id, "PICKED_UP", "CANCELLED_UNCHECKED", "CANCELLED_CHECKED"]);
         res.json(rows);
     }
     catch (err) {
@@ -29,13 +28,13 @@ const getOrdersCompleted = async (req, res, next) => {
 };
 
 const getOrdersInProgress = async (req, res, next) => {
-    const customerId = req.query.customerId;
+    const customer_id = req.query.customerID;
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
             FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ?)) AS orders \
             LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;';
         const [rows, fields] = await query(query_str,
-            [customerId, "PREPARING", "READY_FOR_PICKUP"]);
+            [customer_id, "PREPARING", "READY_FOR_PICKUP"]);
         res.json(rows);
     }
     catch (err) {
@@ -44,31 +43,42 @@ const getOrdersInProgress = async (req, res, next) => {
 };
 
 const getOrderMeals = async (req, res, next) => {
-    const orderMealIDs = (req.query.orderMealIDs).split(',');
-    var queryResults = [];
-    for (let i = 0; i < orderMealIDs.length; i++) {
+    const order_meal_ids = (req.query.orderMealIDs).split(',');
+    var query_results = [];
+    for (let i = 0; i < order_meal_ids.length; i++) {
         try {
             const query_str = 'SELECT Meal_ID, Meal_Name, Price, Image_url FROM `Meal` WHERE `Meal_ID` = ?';
-            const [rows, fields] = await query(query_str, [orderMealIDs[i]]);
-            queryResults.push(...rows);
+            const [rows, fields] = await query(query_str, [order_meal_ids[i]]);
+            query_results.push(...rows);
         }
         catch (err) {
             throw err;
         }
     }
-    // queryResults.forEach(queryResult => {
-    //     queryResult['Image_url'] = process.env.IMAGE_PATH + queryResult['Image_url'];
-    //     // console.log('row: ', queryResult['Image_url']);
+    // query_results.forEach(query_results => {
+    //     query_results['Image_url'] = process.env.IMAGE_PATH + query_results['Image_url'];
+    //     // console.log('row: ', query_results['Image_url']);
     // })
-    res.json(queryResults);
+    res.json(query_results);
 };
 
-const cancenlOrder = (req, res, net) => {
-    console.log("cancel order, orderID = ", req.query.orderID);
+const cancelOrder = async (req, res, net) => {
+    const order_id = req.query.orderID;
+    // console.log("in cancelOrder: order_id = ", order_id);
+    try {
+        const query_str = 'UPDATE `Order` SET `Status` = ? WHERE Order_ID = ?;'
+        const [rows, fields] = await query(query_str, ["CANCELLED_UNCHECKED", order_id]);
+        // console.log("changedRows = ", rows['changedRows']);
+        res.json(rows['changedRows']);
+    }
+    catch (err) {
+        console.log(err);
+        throw err;
+    }
 }
 
 router.get('/', getOrders);
-router.get('/cancelOrder', cancenlOrder);
+router.get('/cancelOrder', cancelOrder);
 router.get('/orderMeals', getOrderMeals)
 
 export default router;

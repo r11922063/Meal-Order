@@ -21,16 +21,24 @@ export default function OrderItem({ order, handleOrderCancellation }:
         setDisclosure(!disclosure);
     };
 
-    function handleCancelButtonClick() {
-        // TODO: double check
+    async function handleCancelButtonClick() {
         // TODO: get current time: new Date()
         let cur_time = new Date("2023-10-28T02:59:59.000Z");
         let checkCancelAgain = cur_time.getTime() < order_cancel_dl.getTime();
         if (checkCancelAgain === true) {
-            handleOrderCancellation(order.Order_ID);
+            const response = window.confirm(`確定要取消訂單 #${order.Order_ID} 嗎?`);
+            if (response) {
+                const res = await handleOrderCancellation(order.Order_ID).then((res: number) => { return res; });
+                if (res) {
+                    alert(`成功取消訂單 #${order.Order_ID}`);
+                }
+                else {
+                    alert(`沒有成功取消訂單 #${order.Order_ID}，請再試一次`);
+                }
+            }
         }
         else {
-            alert(`已經無法取消訂單 ${order.Order_ID}`);
+            alert(`已經無法取消訂單 #${order.Order_ID}`);
         }
     }
 

@@ -21,17 +21,18 @@ export default function Orders() {
         }
     }
 
-    function cancelOrder(order_id: number) {
-        console.log("click cancel button!");
+    async function cancelOrder(order_id: number) {
+        // console.log("click cancel button!");
         setUpdateOrderState(!update_order_state);
-        // TODO: cancel order
-        // console.log(order_cancel_dl);
+        const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_id}`;
+        const res = await fetch(url).then(res => { return res.json(); }); // changedRows
+        return (res > 0);
     }
 
     useEffect(() => {
         async function fetchOrders(customerId: string) {
             try {
-                const url: string = BACKEND_URL + `/orders?customerId=${customer_id}&display=${display}`;
+                const url: string = BACKEND_URL + `/orders?customerID=${customer_id}&display=${display}`;
                 const res = await fetch(url).then(res => { return res.json(); });
                 // console.log("[fetechOrders] Result: ", res);
                 console.log()
@@ -71,5 +72,3 @@ export default function Orders() {
         </>
     );
 }
-
-// Tab: {OrderItem, OrderItem, ...}
