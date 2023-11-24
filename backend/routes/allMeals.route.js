@@ -1,7 +1,8 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
 import { query_callBack } from "../models/db.model.js"
-import Meal from '../models/meal.model.js'
+import { Meal } from '../models/meal.model.js'
+import { blob_config } from '../config/blob.config.js';
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -32,38 +33,31 @@ const updateDefaultInventory = async (req, res, net) => {
 }
 
 const addMealItem = (req, res, next) => {
-    const meal = req.body.newMeal;
-    const img = req.body.img;
-    console.log("addMealItem");
+    // const img = req.files['img'][0];
+    const mealData = req.body.newMeal;
+    // console.log("addMealItem, img = ", img);
+    console.log("addMealItem, mealData = ", mealData);
 
-    let newMeal = new Meal(meal);
+    let newMeal = new Meal(mealData);
+    // console.log("newMeal = ", newMeal);
     // save image
-    try {
-        newMeal.saveImg(img);
-    }
-    catch (err){
-        console.log("Error saving new meal image: ", err);
-    }
+    
     // save newMeal to db
-    try {
-        newMeal.insert();
-    }
-    catch (err){
-        console.log("Error inserting new meal to db: ", err);
-    }
+    Meal.insertToDb(newMeal, query_callBack, res);
 }
 
-const testUploader = (req, res, next) => {
-    console.log("backend test uploader");
-    imagesUpload(
-        '../../data/meal_imgs',
-        null, false);
+const uploadMealItemImage = (req, res, next) => {
+    console.log("uploadMealItemImage");
+    let img_url = req.body['img_url'];
+    console.log("img_url = ", img_url);
+    const img = req.files['img'][0];
+    console.log("img = ", img);
+
 }
-
-
 
 router.get('/', getAllMeals); 
 router.post('/updateDefaultInventory', updateDefaultInventory);
 router.post('/addMealItem', addMealItem);
+router.post('/uploadMealItemImage', blob_config.MEAL_IMG_UPLOAD.fields([{ name: 'img_url' }, { name: 'img' }]), uploadMealItemImage);
 
 export default router;
