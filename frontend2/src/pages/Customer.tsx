@@ -7,7 +7,7 @@ export default function Customer() {
     return (
         <>
             <SearchVendorBox/>
-            <VendorFilter/>
+            //<VendorFilter/>
             <VendorBlocks/>
         </>
     );
