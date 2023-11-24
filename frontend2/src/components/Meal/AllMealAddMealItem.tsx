@@ -33,13 +33,23 @@ const addMealOnClick = (vendorId: number, mealName: string, description: string,
     Default_Inventory: defaultInventory
   };
 
+  let formData = new FormData();
+  formData.append('img', img);
+  formData.append('newMeal', JSON.stringify(newMeal));
+  for (var key of formData.entries()) {
+    console.log("frontend formData = ", key[0] + ", " + key[1]);
+}
+// console.log(formData.getHeaders());
+
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
   fetch(update_url, {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/x-www-form-urlencoded",
+      // "Content-Type": "multipart/form-data"
     },
-    body: JSON.stringify({ newMeal: newMeal, img: img })
+    // body: JSON.stringify({ newMeal: newMeal, img: img })
+    body: formData
   }).then((res) => res.json())
     .then((data) => console.log(data))
     .catch((err) => console.log(err));
@@ -92,7 +102,7 @@ export default function AllMealAddMealItem() {
 
         <div className={style.addMealItem_buttonContainer}>
           <AddMealButton text="新增餐點" onClickFunc={() => {
-            addMealOnClick(101, "新", "新餐點", 5, 333, image)
+            addMealOnClick(101, "新", "新餐點", 5, 333, image[0].file)
             }}/>
         </div>
       </div>

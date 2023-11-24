@@ -2,6 +2,7 @@ import express from 'express';
 import { query } from "../models/dbasync.model.js";
 import { query_callBack } from "../models/db.model.js"
 import Meal from '../models/meal.model.js'
+import multer from 'multer';
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -31,27 +32,48 @@ const updateDefaultInventory = async (req, res, net) => {
             });
 }
 
-const addMealItem = (req, res, next) => {
-    const meal = req.body.newMeal;
-    const img = req.body.img;
-    console.log("addMealItem");
+// 配置 Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './');
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + "hi.png");
+    }
+});
+const upload = multer({ storage: storage });
 
-    let newMeal = new Meal(meal);
-    // save image
-    try {
-        newMeal.saveImg(img);
-    }
-    catch (err){
-        console.log("Error saving new meal image: ", err);
-    }
-    // save newMeal to db
-    try {
-        newMeal.insert();
-    }
-    catch (err){
-        console.log("Error inserting new meal to db: ", err);
-    }
+const addMealItem = (req, res, next) => {
+    console.log("addMealItem");
+    const img = req.files['img'][0];
+    const newMeal = req.body['newMeal'];
+    console.log("img = ", img);
+    console.log("newMeal = ", newMeal);
+
+
+
+    // for (var key of req.body.entries()) {
+    //     console.log("backend formData = ", key[0] + ", " + key[1]);
+    // }
+
+    // let newMeal = new Meal(meal);
+    // // save image
+    // try {
+    //     newMeal.saveImg(img);
+    // }
+    // catch (err){
+    //     console.log("Error saving new meal image: ", err);
+    // }
+    // // save newMeal to db
+    // try {
+    //     newMeal.insert();
+    // }
+    // catch (err){
+    //     console.log("Error inserting new meal to db: ", err);
+    // }
 }
+
+
 
 const testUploader = (req, res, next) => {
     console.log("backend test uploader");
@@ -64,6 +86,6 @@ const testUploader = (req, res, next) => {
 
 router.get('/', getAllMeals); 
 router.post('/updateDefaultInventory', updateDefaultInventory);
-router.post('/addMealItem', addMealItem);
+router.post('/addMealItem', upload.fields([{ name: 'newMeal' }, { name: 'img' }]), addMealItem);
 
 export default router;
