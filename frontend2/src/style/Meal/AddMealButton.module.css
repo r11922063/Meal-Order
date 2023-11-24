@@ -10,10 +10,12 @@
 }
 
 .baseButton_button {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #000000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-size: 14px;
     font-weight: bold;
-    color: #fff;
+    color: #000000;
 }
   
 .baseButton_button:hover {

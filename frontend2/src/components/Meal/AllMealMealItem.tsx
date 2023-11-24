@@ -43,8 +43,8 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
           
         </div>
 
-        <div className={style.allMealMealItem_img}>
-          <img src={test_img} alt={meal.Meal_Name} />
+        <div className={style.allMealMealItem_imgBox}>
+          <img src={test_img} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
           {/* TODO: change to meal.Image_url */}
           {/* <img src={meal.Image_url} alt={meal.Meal_Name} /> */}
         </div>

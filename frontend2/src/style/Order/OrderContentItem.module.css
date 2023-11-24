@@ -1,15 +1,14 @@
 .orderContentItem_item {
     width: 100%;
-    max-width: 1000px;
     height: 120px;
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: #e7e7e7;
+    border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 5px 20px;
-    border-right: 5px solid #8fc700;
+    /* border-right: 5px solid #b1b1b1; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 5px;
+    padding: 5px 5px;
     position: relative;
 }
 
@@ -21,60 +20,49 @@
 }
 
 .orderContentItem_img img {
+    height: 100%;
     width: 150px;
 }
 
 .orderContentItem_contentContainer {
-    padding: 30px 20px;
-    height: 100%;
-    flex: 3 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.orderContentItem_title {
-    font-size: 24px;
-}
-
-.orderContentItem_otherContainer {
-    padding: 30px 20px;
-    height: 100%;
-    flex: 3 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    color: rgba(0, 0, 0, 0.7);
-}
-
-.orderContentItem_updateBox {
+    /* padding: 30px 20px; */
     padding: 0px 20px;
     height: 100%;
     flex: 3 1 auto;
     display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-end;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.orderContentItem_title {
+    padding: 10px 0px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.orderContentItem_price {
+    /* padding: 10px 0px; */
+    font-size: 16px;
+}
+
+.orderContentItem_otherContainer {
+    /* padding: 30px 20px; */
+    padding: 0px 20px;
+    height: 100%;
+    flex: 3 1 auto;
+    display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     color: rgba(0, 0, 0, 0.7);
 }
 
-.orderContentItem_updateButton {
-    padding: 0px 10px;
-    width: auto;
-    height: 30px;
+.orderContentItem_amount_totalPrice {
+    padding: 10px 10px;
+    height: 100%;
+    font-size: 16px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.orderMealItem_updateButton {
-    background-color: rgb(0, 0, 0);
-    color: #fff;
-}
-
-.orderMealItem_updateButton:hover {
-    opacity: 0.8;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: flex-end;
 }
