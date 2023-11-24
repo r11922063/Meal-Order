@@ -9,32 +9,9 @@ import MealText from './MealText';
 import { GrAdd } from "react-icons/gr"
 import ImageUploading, { ImageListType, ErrorsType } from 'react-images-uploading';
 import { useParams } from 'react-router-dom'
+import { MEAL_IMG_DESTINATION } from '../../constant'
 
-const sendNewMealData = (vendorId: number, mealName: string, description: string, 
-                        price: number, defaultInventory: number, img: any ) => {
-
-  const today = new Date().getDay();
-  let inventory: Record<string, number> = {};
-  for (let i = 0; i < 3; i++){
-    const day = (today-1+i) % 7 + 1;
-    inventory[day.toString()] = 0;
-  }
-  for (let i = 3; i < 7; i++){
-    const day = (today-1+i) % 7 + 1;
-    inventory[day.toString()] = defaultInventory;
-  }
-
-  const newMeal: Meal = {
-    Meal_ID: -1,
-    Vendor_ID: vendorId,
-    Meal_Name: mealName,
-    Description: description,
-    Price: price,
-    Inventory: inventory,
-    Image_url: "",
-    Default_Inventory: defaultInventory
-  };
-
+const sendNewMealData = (newMeal: Meal, img: any ) => {
   let formData = new FormData();
   formData.append('img', img);
   formData.append('newMeal', JSON.stringify(newMeal));
@@ -99,7 +76,29 @@ export default function AllMealAddMealItem() {
     else if (image.length == 0)
       alert("餐點圖片不能為空");
     else {
-      sendNewMealData(Number(vendorId), newMealName, "", newMealPrice, count, image[0].file);
+      const today = new Date().getDay();
+      let inventory: Record<string, number> = {};
+      for (let i = 0; i < 3; i++){
+        const day = (today-1+i) % 7 + 1;
+        inventory[day.toString()] = 0;
+      }
+      for (let i = 3; i < 7; i++){
+        const day = (today-1+i) % 7 + 1;
+        inventory[day.toString()] = count;
+      }
+
+      const newMeal: Meal = {
+        Meal_ID: -1,
+        Vendor_ID: Number(vendorId),
+        Meal_Name: newMealName,
+        Description: "",
+        Price: newMealPrice,
+        Inventory: inventory,
+        // Image_url: `${MEAL_IMG_DESTINATION}/${}`,
+        Image_url: '',
+        Default_Inventory: count
+      };
+      sendNewMealData(newMeal, image[0].file);
     }
   }
 

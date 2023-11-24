@@ -1,3 +1,5 @@
+import { blob_config } from '../config/blob.config.js';
+
 const Meal = function(meal) {
     this.Meal_ID = meal.Meal_ID,
     this.Vendor_ID = meal.Vendor_ID,
@@ -21,10 +23,25 @@ Meal.insertToDb = (meal, query_callBack) => {
             (err, result) => {
                 if (err) 
                     console.log(`Error inserting new meal to db: ${err}`);
-                else
-                    console.log("Affected row(s): ", result.affectedRows);
+                else{
+                    console.log("New meal inserted, affected row(s): ", result.affectedRows);
+                    updateNewMealImage_url(result.insertId, query_callBack);
+                    // res.json({"insertId": result.insertId});
+                }
             });
 }  
+
+const updateNewMealImage_url = (insertId, query_callBack) => {
+    query_callBack('UPDATE `Meal` SET `Image_url` = ?\
+                    WHERE `Meal_ID` = ?', [`${blob_config.MEAL_IMG_DESTINATION}/${insertId}`, insertId],
+            (err, result) => {
+                if (err) 
+                    console.log(`Error updating new meal url: ${err}`);
+                else{
+                    console.log("New meal Image_url updated, affected row(s): ", result.affectedRows);
+                }
+            });
+}
 
 // module.exports.Meal = Meal;
 export { Meal };

@@ -39,7 +39,7 @@ const addMealItem = (req, res, next) => {
     // console.log("addMealItem, mealData = ", mealData);
 
     let newMeal = new Meal(JSON.parse(mealData));
-    console.log("newMeal = ", newMeal);
+    // console.log("newMeal = ", newMeal);
     // save image
     
     // save newMeal to db
