@@ -12,22 +12,46 @@ import { useParams } from 'react-router-dom'
 import { MEAL_IMG_DESTINATION } from '../../constant'
 
 const sendNewMealData = (newMeal: Meal, img: any ) => {
-  let formData = new FormData();
-  formData.append('img', img);
-  formData.append('newMeal', JSON.stringify(newMeal));
-  for (var key of formData.entries()) {
-    console.log("frontend formData = ", key[0] + ", " + key[1]);
-}
+  // let formData = new FormData();
+  // formData.append('img', img);
+  // formData.append('newMeal', JSON.stringify(newMeal));
+  // for (var key of formData.entries()) {
+  //   console.log("frontend formData = ", key[0] + ", " + key[1]);
+  // }
 
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
   fetch(update_url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({newMeal: newMeal}),
+  }).then((res) => res.json())
+    .then((data) => {
+      const image_url = data.image_url;
+      console.log(image_url);
+      newMeal.Image_url = image_url;
+      // TODO: Add to meals(state)
+      // TODO: fetch backend '/uploadMealItemImage'
+      
+      sendNewMealImage(image_url, img);
+    })
+    .catch((err) => console.log(err));
+}
+
+const sendNewMealImage = (image_url: string, img: File) => {
+  const upload_url = `${BACKEND_URL}/allMeals/uploadMealItemImage`;
+  let formData = new FormData();
+  formData.append('img_url', image_url);
+  formData.append('img', img);
+  fetch(upload_url, {
     method: 'POST',
     headers: {
       // "Content-Type": "multipart/form-data"
     },
     body: formData
   }).then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {console.log(data);})
     .catch((err) => console.log(err));
 }
 
@@ -58,11 +82,7 @@ export default function AllMealAddMealItem() {
 
   const [newMealName, setNewMealName] = useState<string>();
   const [newMealPrice, setNewMealPrice] = useState<number>();
-  useEffect(() => {
-    console.log("newMealName is now: ", newMealName);
-    console.log("newMealPrice is now: ", newMealPrice);
-  }, [newMealName, newMealPrice]);
-
+  
   const addMealOnClick = () => {
     // Check data validity
     if (typeof newMealName === "undefined")
@@ -94,7 +114,6 @@ export default function AllMealAddMealItem() {
         Description: "",
         Price: newMealPrice,
         Inventory: inventory,
-        // Image_url: `${MEAL_IMG_DESTINATION}/${}`,
         Image_url: '',
         Default_Inventory: count
       };

@@ -6,7 +6,7 @@ const meal_img_storage = multer.diskStorage({
       cb(null, meal_img_destination);
     },
     filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + "hi.png");
+      cb(null, req.body['img_url']);
     }
 });
 const meal_img_upload = multer({ storage: meal_img_storage });
