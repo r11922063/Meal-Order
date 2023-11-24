@@ -1,8 +1,8 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
 import { query_callBack } from "../models/db.model.js"
-import Meal from '../models/meal.model.js'
-import multer from 'multer';
+import { Meal } from '../models/meal.model.js'
+import { blob_config } from '../config/blob.config.js';
 
 const router = express.Router();
 const getAllMeals = async (req, res, next) => {
@@ -32,60 +32,22 @@ const updateDefaultInventory = async (req, res, net) => {
             });
 }
 
-// 配置 Multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './');
-    },
-    filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + "hi.png");
-    }
-});
-const upload = multer({ storage: storage });
-
 const addMealItem = (req, res, next) => {
-    console.log("addMealItem");
     const img = req.files['img'][0];
-    const newMeal = req.body['newMeal'];
-    console.log("img = ", img);
+    const mealData = req.body['newMeal'];
+    // console.log("addMealItem, img = ", img);
+    // console.log("addMealItem, mealData = ", mealData);
+
+    let newMeal = new Meal(JSON.parse(mealData));
     console.log("newMeal = ", newMeal);
-
-
-
-    // for (var key of req.body.entries()) {
-    //     console.log("backend formData = ", key[0] + ", " + key[1]);
-    // }
-
-    // let newMeal = new Meal(meal);
-    // // save image
-    // try {
-    //     newMeal.saveImg(img);
-    // }
-    // catch (err){
-    //     console.log("Error saving new meal image: ", err);
-    // }
-    // // save newMeal to db
-    // try {
-    //     newMeal.insert();
-    // }
-    // catch (err){
-    //     console.log("Error inserting new meal to db: ", err);
-    // }
+    // save image
+    
+    // save newMeal to db
+    Meal.insertToDb(newMeal, query_callBack);
 }
-
-
-
-const testUploader = (req, res, next) => {
-    console.log("backend test uploader");
-    imagesUpload(
-        '../../data/meal_imgs',
-        null, false);
-}
-
-
 
 router.get('/', getAllMeals); 
 router.post('/updateDefaultInventory', updateDefaultInventory);
-router.post('/addMealItem', upload.fields([{ name: 'newMeal' }, { name: 'img' }]), addMealItem);
+router.post('/addMealItem', blob_config.MEAL_IMG_UPLOAD.fields([{ name: 'newMeal' }, { name: 'img' }]), addMealItem);
 
 export default router;

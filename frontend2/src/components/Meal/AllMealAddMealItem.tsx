@@ -3,12 +3,14 @@ import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealAddMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AddMealButton from './AddMealButton'
+import MealText from './MealText';
 import { GrAdd } from "react-icons/gr"
 import ImageUploading, { ImageListType, ErrorsType } from 'react-images-uploading';
+import { useParams } from 'react-router-dom'
 
-const addMealOnClick = (vendorId: number, mealName: string, description: string, 
+const sendNewMealData = (vendorId: number, mealName: string, description: string, 
                         price: number, defaultInventory: number, img: any ) => {
 
   const today = new Date().getDay();
@@ -39,16 +41,13 @@ const addMealOnClick = (vendorId: number, mealName: string, description: string,
   for (var key of formData.entries()) {
     console.log("frontend formData = ", key[0] + ", " + key[1]);
 }
-// console.log(formData.getHeaders());
 
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
   fetch(update_url, {
     method: 'POST',
     headers: {
-      // "Content-Type": "application/x-www-form-urlencoded",
       // "Content-Type": "multipart/form-data"
     },
-    // body: JSON.stringify({ newMeal: newMeal, img: img })
     body: formData
   }).then((res) => res.json())
     .then((data) => console.log(data))
@@ -56,6 +55,7 @@ const addMealOnClick = (vendorId: number, mealName: string, description: string,
 }
 
 export default function AllMealAddMealItem() {
+  const vendorId = useParams().vendorId;
   const [count, setCount] = useState(0);
 
   const [image, setImages] = useState<ImageListType>([]);
@@ -79,15 +79,37 @@ export default function AllMealAddMealItem() {
     }
   }
 
+  const [newMealName, setNewMealName] = useState<string>();
+  const [newMealPrice, setNewMealPrice] = useState<number>();
+  useEffect(() => {
+    console.log("newMealName is now: ", newMealName);
+    console.log("newMealPrice is now: ", newMealPrice);
+  }, [newMealName, newMealPrice]);
+
+  const addMealOnClick = () => {
+    // Check data validity
+    if (typeof newMealName === "undefined")
+      alert("餐點名稱不能為空");
+    else if (typeof newMealPrice === "undefined")
+      alert("餐點價格不能為空");
+    else if (newMealPrice < 0)
+      alert("餐點價錢不能為負");
+    else if (count <= 0)
+      alert("預設庫存不得小於1");
+    else if (image.length == 0)
+      alert("餐點圖片不能為空");
+    else {
+      sendNewMealData(Number(vendorId), newMealName, "", newMealPrice, count, image[0].file);
+    }
+  }
+
   return (
     <div className={style.addMealItem_item}>
       <div className={style.addMealItem_attributeContainer}>
         <div className={style.addMealItem_mealContainer}>
           <div className={style.addMealItem_contentContainer}>
-            <div className={style.addMealItem_title}>
-              <input type="text" placeholder="餐點名稱" required>
-              </input>
-            </div>
+            <MealText placeholder={"餐點名稱"} inputType={"text"} setInput={setNewMealName}/>
+            <MealText placeholder={"餐點價格"} inputType={"number"} setInput={setNewMealPrice}/>
           </div>
 
           <div className={style.addMealItem_otherContainer}>
@@ -101,9 +123,7 @@ export default function AllMealAddMealItem() {
         </div>
 
         <div className={style.addMealItem_buttonContainer}>
-          <AddMealButton text="新增餐點" onClickFunc={() => {
-            addMealOnClick(101, "新", "新餐點", 5, 333, image[0].file)
-            }}/>
+          <AddMealButton text="新增餐點" onClickFunc={() => {addMealOnClick()}}/>
         </div>
       </div>
 
@@ -138,7 +158,6 @@ export default function AllMealAddMealItem() {
 
       </ImageUploading>
 
-      
     </div>
   );
 }
