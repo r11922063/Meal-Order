@@ -1,4 +1,4 @@
-import type { CustomerOrder, CustomerOrderContent } from '../../type'
+import { OrderStatus, type CustomerOrder, type CustomerOrderContent } from '../../type'
 import style from '../../style/Order/OrderItem.module.css'
 import triangle_style from '../../style/Order/TriangleButton.module.css'
 import { BACKEND_URL } from '../../constant'
@@ -6,21 +6,32 @@ import { useState, useEffect } from "react";
 import OrderInfoItem from "./OrderInfoItem";
 import OrderContentItem from "./OrderContentItem";
 
-export default function OrderItem({ order }: { order: CustomerOrder }) {
+export default function OrderItem({ order, handleOrderCancellation }: 
+    { order: CustomerOrder, handleOrderCancellation: (order_id: number) => any }) {
     const [order_meals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
     const [disclosure, setDisclosure] = useState(false);
     const [bulk_order, setBulkOrder] = useState(false);
     const [order_pickup_time, setOrderPickupTime] = useState<Date>(new Date());
     const [order_cancel_dl, setOrderCancelDL] = useState<Date>(new Date());
+    const [can_cancel, setCanCancel] = useState(true);
+    const [order_status, setOrderStatus] = useState<"IN_PROGRESS" | "COMPLETED">();
+    const [order_status_info, setOrderStatusInfo] = useState<string>("訂單製作中");
 
     const handleDisclosureClick = () => {
         setDisclosure(!disclosure);
     };
 
-    function cancelOrder() {
-        console.log("click cancel button!");
-        // TODO: cancel order
-        // console.log(order_cancel_dl);
+    function handleCancelButtonClick() {
+        // TODO: double check
+        // TODO: get current time: new Date()
+        let cur_time = new Date("2023-10-28T02:59:59.000Z");
+        let checkCancelAgain = cur_time.getTime() < order_cancel_dl.getTime();
+        if (checkCancelAgain === true) {
+            handleOrderCancellation(order.Order_ID);
+        }
+        else {
+            alert(`已經無法取消訂單 ${order.Order_ID}`);
+        }
     }
 
     
@@ -51,6 +62,25 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
     }, [order]);
 
     useEffect(() => {
+        function checkOrderStatus() {
+            if (order.Status === OrderStatus.PREPARING) {
+                setOrderStatus("IN_PROGRESS");
+                setOrderStatusInfo("餐點製作中");
+            }
+            else if (order.Status === OrderStatus.READY_FOR_PICKUP) {
+                setOrderStatus("IN_PROGRESS");
+                setOrderStatusInfo("等待取餐中");
+            }
+            else if (order.Status === OrderStatus.PICKED_UP) {
+                setOrderStatus("COMPLETED");
+                setOrderStatusInfo("訂單已完成");
+            }
+            else { // CANCELLED_UNCHECKED, CANCELLED_CHECKED
+                setOrderStatus("COMPLETED");
+                setOrderStatusInfo("訂單已取消");
+            }
+        }
+
         function calOrderCancelDL() {
             let tmp: Date = order_pickup_time;
             if (bulk_order === true) {
@@ -62,40 +92,66 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
             setOrderCancelDL(tmp);
         }
 
+        checkOrderStatus();
         calOrderCancelDL();
-    }, [bulk_order, order_pickup_time]);
+    }, [order, bulk_order, order_pickup_time]);
+
+    useEffect(() => {
+        function checkCanCancel() {
+            let cur_time = new Date("2023-10-28T02:59:59.000Z");
+            setCanCancel(order_status === "IN_PROGRESS" && cur_time.getTime() < order_cancel_dl.getTime());
+        }
+
+        checkCanCancel();
+    }, [order_cancel_dl, order_status]);
 
 
     return (
         <div className={style.orderItem_container}>
             <div className={style.orderItem_infoItemAndButtonContainer}>
-                    <div className={style.orderItem_infoItemContainer}>
-                        <OrderInfoItem
-                            order_id={order.Order_ID}
-                            vendor_name={order.Vendor_Name}
-                            order_pickup_time={order_pickup_time}
-                            order_cancel_dl={order_cancel_dl}
-                        />
-                    </div>
+                <div className={style.orderItem_infoItemContainer}>
+                    <OrderInfoItem
+                        order_id={order.Order_ID}
+                        vendor_name={order.Vendor_Name}
+                        order_pickup_time={order_pickup_time}
+                        order_cancel_dl={order_cancel_dl}
+                    />
+                </div>
 
-                    <div className={style.orderItem_buttonAndPriceContainer}>
-                        <div className={style.orderItem_cancelBox}>
-                            <button className={style.orderItem_cancelButton} onClick={() => cancelOrder()}>
+                <div className={style.orderItem_buttonAndPriceContainer}>
+                    <div className={style.orderItem_cancelAndStatusBox}>
+                        { can_cancel ?
+                            <button className={style.orderItem_cancelButton} onClick={() => handleCancelButtonClick()}>
                                 <span>取消訂單</span>
                             </button>
-                        </div>
-                        <div className={style.orderItem_totalPriceAndDetail}>
-                            <span>{`總計：${order.Cash_Amount} 元`}</span>
-                            <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
-                                {disclosure ?
-                                    <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
+                            :
+                            <div className={style.orderItem_orderStatus}>
+                                { order_status === "IN_PROGRESS" ?
+                                    <span className={style.orderItem_orderStatus_inProgress}>
+                                        {order_status_info}
+                                    </span>
                                     :
-                                    <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_l}`}></div>
+                                    <span className={style.orderItem_orderStatus_Completed}>
+                                        {order_status_info}
+                                    </span>
                                 }
-                            </button>
-                        </div>
+                            </div>
+                        }
                     </div>
+                    
+                    <div className={style.orderItem_totalPriceAndDetail}>
+                        <span>{`總計：${order.Cash_Amount} 元`}</span>
+                        <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
+                            {disclosure ?
+                                <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
+                                :
+                                <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_l}`}></div>
+                            }
+                        </button>
+                    </div>
+                </div>
             </div>
+
             <div>
                 {disclosure ?
                     <div className={style.orderItem_mealContainer}>

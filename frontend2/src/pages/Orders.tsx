@@ -13,11 +13,19 @@ export default function Orders() {
     const [orders_completed, setOrdersCompleted] = useState<CustomerOrder[]>([]);
     const [orders_in_progress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customer_id = params.customerId;
+    const [update_order_state, setUpdateOrderState] = useState(true);
 
     function changeTab(tab: number) {
         if (tab !== display) {
             setDisplay(tab);
         }
+    }
+
+    function cancelOrder(order_id: number) {
+        console.log("click cancel button!");
+        setUpdateOrderState(!update_order_state);
+        // TODO: cancel order
+        // console.log(order_cancel_dl);
     }
 
     useEffect(() => {
@@ -39,7 +47,7 @@ export default function Orders() {
             }
         };
         fetchOrders(customer_id!);
-    }, [customer_id, display]);
+    }, [customer_id, display, update_order_state]);
 
     return (
         <>
@@ -53,10 +61,10 @@ export default function Orders() {
                 </TabList>
 
                 <TabPanel>
-                    <OrderTab key={0} orders={orders_in_progress} />
+                    <OrderTab key={0} orders={orders_in_progress} handleOrderCancellation={cancelOrder} />
                 </TabPanel>
                 <TabPanel>
-                    <OrderTab key={1} orders={orders_completed} />
+                    <OrderTab key={1} orders={orders_completed} handleOrderCancellation={cancelOrder} />
                 </TabPanel>
             </Tabs>
             

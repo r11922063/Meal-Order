@@ -27,7 +27,7 @@
     justify-content: space-between;
 }
 
-.orderItem_cancelBox {
+.orderItem_cancelAndStatusBox {
     padding: 0px 20px;
     height: 100%;
     flex: 3 1 auto;
@@ -36,6 +36,34 @@
     align-items: center;
     justify-content: center;
     /* color: rgba(0, 0, 0, 0.7); */
+}
+
+.orderItem_orderStatus {
+    width: auto;
+    height: 30px;
+    font-size: 16px;
+}
+
+.orderItem_orderStatus_inProgress {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: darkseagreen;
+    color: #fff;
+}
+
+.orderItem_orderStatus_Completed {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: darkgray;
+    color: #fff;
 }
 
 .orderItem_cancelButton {
