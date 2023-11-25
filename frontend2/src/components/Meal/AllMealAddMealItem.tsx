@@ -9,17 +9,11 @@ import MealText from './MealText';
 import { GrAdd } from "react-icons/gr"
 import ImageUploading, { ImageListType, ErrorsType } from 'react-images-uploading';
 import { useParams } from 'react-router-dom'
-import { MEAL_IMG_DESTINATION } from '../../constant'
+import { Meals } from '../OrderMeal-ShopCart/DateFilter'
 
-const sendNewMealData = (newMeal: Meal, img: any ) => {
-  // let formData = new FormData();
-  // formData.append('img', img);
-  // formData.append('newMeal', JSON.stringify(newMeal));
-  // for (var key of formData.entries()) {
-  //   console.log("frontend formData = ", key[0] + ", " + key[1]);
-  // }
-
+const sendNewMealData = (newMeal: Meal, img: any, setMeals: any ) => {
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
+  var error = false;
   fetch(update_url, {
     method: 'POST',
     headers: {
@@ -28,14 +22,17 @@ const sendNewMealData = (newMeal: Meal, img: any ) => {
     body: JSON.stringify({newMeal: newMeal}),
   }).then((res) => res.json())
     .then((data) => {
+      // Update Meal_ID & Image_url
+      const meal_id = data.meal_id;
       const image_url = data.image_url;
-      console.log(image_url);
+      newMeal.Meal_ID = meal_id;
       newMeal.Image_url = image_url;
-      // TODO: Add to meals(state)
-      // TODO: fetch backend '/uploadMealItemImage'
-      
+      console.log(meal_id, image_url);
+      // Upload image to backend server
       sendNewMealImage(image_url, img);
-    })
+      awaitSetMeals(setMeals, newMeal);
+      
+    }).then(() => {})
     .catch((err) => console.log(err));
 }
 
@@ -50,12 +47,24 @@ const sendNewMealImage = (image_url: string, img: File) => {
       // "Content-Type": "multipart/form-data"
     },
     body: formData
-  }).then((res) => res.json())
+  }).then((res) => {
+    res.json()
+  })
     .then((data) => {console.log(data);})
     .catch((err) => console.log(err));
 }
 
-export default function AllMealAddMealItem() {
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const awaitSetMeals = async (setMeals: any, newMeal: Meal) => {
+  // Add to meals(state)
+  await sleep(500);
+  setMeals((prevMeals: any) => [...prevMeals, newMeal]);
+}
+
+export default function AllMealAddMealItem({setMeals}: {setMeals: React.Dispatch<React.SetStateAction<Meal[]>>}) {
   const vendorId = useParams().vendorId;
   const [count, setCount] = useState(0);
 
@@ -117,7 +126,7 @@ export default function AllMealAddMealItem() {
         Image_url: '',
         Default_Inventory: count
       };
-      sendNewMealData(newMeal, image[0].file);
+      sendNewMealData(newMeal, image[0].file, setMeals);
     }
   }
 
