@@ -1,52 +1,35 @@
 import { useState } from "react";
+import MealItem from './MealItem_OrderMeal';
+import { VendorAndMeal } from '../../type';
 import style from '../../style/shared/DropDown.module.css';
 import style1 from '../../style/OrderMeal-ShopCart/OrderMeal.module.css';
 
-export type Meals = {
-    Vendor_img: string,
-    Meal_ID:number,
-    Name: string,
-    Address: string,
-    Meal_Name: string, 
-    Description?: string,
-    Price: number,
-    Inventory: {"1": number, "2": number, "3": number, "4": number, "5": number, "6": number, "7": number}, 
-    Image_url: string;
-};
+const Today = new Date();// Recent time 
 
-const Today = new Date();//Store the time now
-let day = new Date(Today); //Store the time begin 0:00 today
-day.setHours(0);
-day.setMinutes(0);
-
-const weekday =['週日', '週一', '週二', '週三', '週四', '週五', '週六']; 
-let DateTimeMap = new Map();
-const DayArray = new Array();
-
-const Mealinvsum=[false,false,false,false,false,false,false];
+/* For generating the drop-down options */
+let DateTimeMap = new Map(); // Day-Time correspondence
+const DayArray = new Array(); // Drop-Down of day options
+const weekday =['週日', '週一', '週二', '週三', '週四', '週五', '週六']; // Transfer Date.getday() to chinese
+const Mealinvsum=[false,false,false,false,false,false,false]; // Determine the meal is sold out or not
+let temp_time = new Date(Today); // For generating the time options of drop down of time
+temp_time.setHours(0);
+temp_time.setMinutes(0);
 
 for (let step = 0; step < 3; step++){
-    let temp = new Date(day);
-    DayArray.push(day.getFullYear().toString()+","+(day.getMonth()+1).toString()+","+day.getDate().toString());
+    let temp = new Date(temp_time);
+    DayArray.push(temp_time.getFullYear().toString()+","+(temp_time.getMonth()+1).toString()+","+temp_time.getDate().toString());
     let TimeArray = [];
     for(let i=0;i<96;i++){
-        if(day>Today){
-            TimeArray.push(day.getFullYear().toString()+","
-            +(day.getMonth()+1).toString()+","+day.getDate().toString()+","+day.getHours().toString()+","+day.getMinutes().toString()+","+day.getSeconds().toString());
+        if(temp_time>Today){
+            TimeArray.push(temp_time.getFullYear().toString()+","
+            +(temp_time.getMonth()+1).toString()+","+temp_time.getDate().toString()+","+temp_time.getHours().toString()+","+temp_time.getMinutes().toString()+","+'00');
         }
-        day.setMinutes(day.getMinutes()+15);
+        temp_time.setMinutes(temp_time.getMinutes()+15);
     }
     DateTimeMap.set(temp.getFullYear().toString()+","+(temp.getMonth()+1).toString()+","+temp.getDate().toString(),TimeArray);
 }
-/*
-function SoldOutShow({mealshowday}:{mealshowday:number}){
-    if(!Mealinvsum[mealshowday-1]){
-        alert('全數商品已銷售完畢!\n請選擇別天!')
-    }
-}
-*/
 
-export default function DateFilter({meals}:{meals:Meals[]}){
+export default function MealBlock({meals}:{meals:VendorAndMeal[]}){
     
     for (let i=0;i<meals.length;i++){
         for (let j=1;j<8;j++){
@@ -65,7 +48,6 @@ export default function DateFilter({meals}:{meals:Meals[]}){
     const tt = DateTimeMap.get(str);
     const [time, settime] = useState(tt[0]);
     const [mealshowday,setmealshowday] = useState((Today.getDay())== 0 ? 7:(Today.getDay()));
-
     return(
         <div>
             <div className="DropDown">
@@ -87,18 +69,17 @@ export default function DateFilter({meals}:{meals:Meals[]}){
                 </select>
                 <select className={style.DropDown}  value={time} onChange={e=>{
                     settime(e.target.value);
-
                 }}>
                     {(DateTimeMap.get(date)).map(function(obj:string)
                         {
                         const num_time = obj.split(',')
                         const t_ = new Date(+num_time[0],+num_time[1],+num_time[2],+num_time[3],+num_time[4],+num_time[5])
-                        var HourStr = t_.getHours()
-                        var TimeStr = t_.getMinutes().toString();
+                        let HourStr = t_.getHours()
+                        let TimeStr = t_.getMinutes().toString();
                         if(TimeStr=='0'){TimeStr = TimeStr.toString() +'0'}
                         else{TimeStr = TimeStr.toString()}
-                        var CombineKeyStr =  HourStr + ":" + TimeStr
-                        var AMPM = '凌晨';
+                        let CombineKeyStr = date+"," + HourStr + "," + TimeStr + ",00"
+                        let AMPM = '凌晨';
                         if((HourStr>=6)&&(HourStr<12)){AMPM = '早上';}
                         else if(HourStr==12){AMPM = '中午';}
                         else if((HourStr>12)&&(HourStr<18)){
@@ -109,7 +90,7 @@ export default function DateFilter({meals}:{meals:Meals[]}){
                             HourStr = HourStr -12
                         }
                         
-                        var CombineStr = AMPM + " " + HourStr.toString() + ":" + TimeStr.toString()
+                        let CombineStr = AMPM + " " + HourStr.toString() + ":" + TimeStr.toString()
                         return(
                         <option value={CombineKeyStr} key={CombineKeyStr}>
                             {CombineStr}
@@ -121,43 +102,19 @@ export default function DateFilter({meals}:{meals:Meals[]}){
             <div className={style1.mealblock}>
                 {meals.map(ele=>{
                     let meal_num = ele['Inventory'][mealshowday.toString() as keyof typeof ele['Inventory']]
-                    if (meal_num!=0){
+                    if (meal_num>0){
                         return (
                             <div key={ele.Meal_ID.toString()} className={style1.insell}>
-                                <h1>
-                                    餐點名稱：{ele['Meal_Name']}
-                                </h1>
-                                <p>
-                                    餐點描述：{ele['Description']}
-                                </p>
-                                <p>
-                                    餐點價格：{ele['Price']}
-                                </p>
-                                <p>
-                                    餐點庫存：{meal_num}
-                                </p>
-                                <img src={ele['Image_url']} alt='error' height='100vw'></img>
+                                <MealItem meal={ele} inventory={meal_num} soldout={false} mealshowday={mealshowday} ordertime={time}/>
                             </div>
                         );
                     }
                     else{
                         return(
                             <div key={ele.Meal_ID.toString()} className={style1.soldout}>
-                                <h1>
-                                    餐點名稱：{ele['Meal_Name']}
-                                </h1>
-                                <p>
-                                    餐點描述：{ele['Description']}
-                                </p>
-                                <p>
-                                    餐點價格：{ele['Price']}
-                                </p>
-                                <p>
-                                    餐點庫存：{meal_num}
-                                </p>
-                                <img src={ele['Image_url']} alt='error' height='100vw'></img>
+                                <MealItem meal={ele} inventory={meal_num} soldout={true} mealshowday={mealshowday} ordertime={time}/>
                             </div>
-                    );
+                            );
                     }
                 })}
             </div>

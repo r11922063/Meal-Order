@@ -20,6 +20,7 @@ import mealAmountRouter from './routes/mealAmount.route.js'
 import customerRouter from './routes/customer.route.js'
 
 import orderMealRouter from './routes/OrderMeal.route.js'
+import ShopCartRouter from './routes/ShopCart.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,7 +49,7 @@ app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
-app.use('/customer', customerRouter);
+
 app.use('/orderMeal',orderMealRouter)
 
 
