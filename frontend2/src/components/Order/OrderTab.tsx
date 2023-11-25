@@ -13,7 +13,7 @@ export default function OrderTab({ orders, handleOrderCancellation }:
                     ))}
                 </div>
             ) : (
-                <div className="orders_empty">\
+                <div className="orders_empty">
                     <span className="orders_empty_title">目前沒有訂單！</span>
                 </div>
             )}
