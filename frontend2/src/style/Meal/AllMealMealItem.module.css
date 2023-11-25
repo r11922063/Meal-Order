@@ -38,14 +38,20 @@
     flex: 3 1 auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     color: rgba(0, 0, 0, 0.7);
 }
     
-.allMealMealItem_title {
-    padding: 10px 0px;
+.allMealMealItem_mealName {
+    padding: 10px 0px 0px 0px;
     font-size: 24px;
     font-weight: bold;
+}
+
+.allMealMealItem_price {
+    padding: 2px 0px 0px 0px;
+    font-size: 16px;
+    color: rgba(103, 103, 103, 0.7);;
 }
 
 .allMealMealItem_otherContainer {
