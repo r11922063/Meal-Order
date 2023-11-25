@@ -1,3 +1,6 @@
+/**
+ * About showing the vendor name and address
+ */
 
 import style from "../../style/OrderMeal-ShopCart/OrderMeal.module.css";
 

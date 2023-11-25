@@ -1,3 +1,7 @@
+/**
+ * About the Counter for the ShopCart Page.
+ */
+
 import { CgAdd, CgRemove } from "react-icons/cg";
 import style from "../../style/shared/Counter.module.css";
 import { CustomerOrderDetail } from '../../type';
