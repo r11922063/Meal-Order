@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import type { Meal } from '../type'
 import AllMealMealItem from "../components/Meal/AllMealMealItem";
+import AllMealAddMealItem from "../components/Meal/AllMealAddMealItem";
 import { BACKEND_URL } from '../constant'
 import style from '../style/Meal/AllMeal.module.css'
 
@@ -33,18 +34,25 @@ export default function AllMeals() {
                     {meals.map((meal) => (
                     <AllMealMealItem key={meal.Meal_ID} meal={meal} />
                     ))}
+
+                    <AllMealAddMealItem/>
                 </div>
             ) : (
                 <div className="all_meals_empty">
-                {/* <img
-                    className="all_meals_empty_img"
-                    src="images/empty-cart.png"
-                    alt=""
-                /> */}
-                <span className="all_meals_empty_title">No meals.</span>
+                    {/* <img
+                        className="all_meals_empty_img"
+                        src="images/empty-cart.png"
+                        alt=""
+                    /> */}
+                    <span className="all_meals_empty_title">No meals.</span>
+                    <AllMealAddMealItem/>
                 </div>
+                
             )}
         </div>
+
+        
+
         </>
     );
     
