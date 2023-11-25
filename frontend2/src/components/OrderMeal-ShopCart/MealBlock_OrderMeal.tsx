@@ -51,8 +51,8 @@ export default function MealBlock({ meals }: { meals: VendorAndMeal[] }) {
     const [time, settime] = useState(DateTimeMap.get(str)[0]); // time: used to show the date(including hours, minutes, ...)
     const [mealshowday, setmealshowday] = useState((Today.getDay()) == 0 ? 7 : (Today.getDay())); // mealshowday: the day, e.g. Mon., Tues.,...
     return (
-        <div>
-            <div className="DropDown">
+        <>
+            <div>
                 <select
                     value={date}
                     className={style.DropDown}
@@ -66,7 +66,7 @@ export default function MealBlock({ meals }: { meals: VendorAndMeal[] }) {
                 >
                     {DayArray.map(ele => (
                         <option value={ele} key={ele}>
-                            {((new Date(ele)).getMonth() + 1).toString() + " 月 " + (new Date(ele)).getDate().toString() + " 日 " + weekday[(new Date(ele).getDay())]}
+                            {(new Date(ele)).getFullYear().toString()+" 年 "+((new Date(ele)).getMonth() + 1).toString() + " 月 " + (new Date(ele)).getDate().toString() + " 日 " + weekday[(new Date(ele).getDay())]}
                         </option>))
                     }
                 </select>
@@ -97,26 +97,28 @@ export default function MealBlock({ meals }: { meals: VendorAndMeal[] }) {
                     )}
                 </select>
             </div>
-            <div className={style1.mealblock}>
-                {meals.map(ele => {
-                    let meal_num = ele['Inventory'][mealshowday.toString() as keyof typeof ele['Inventory']] // Determine whether the meal is sold out 
-                    if (meal_num > 0) {
-                        return (
-                            <div key={ele.Meal_ID.toString()} className={style1.insell}>
-                                <MealItem meal={ele} inventory={meal_num} soldout={false} mealshowday={mealshowday} ordertime={time} />
-                            </div>
-                        );
-                    }
-                    else {
-                        return (
-                            <div key={ele.Meal_ID.toString()} className={style1.soldout}>
-                                <MealItem meal={ele} inventory={meal_num} soldout={true} mealshowday={mealshowday} ordertime={time} />
-                            </div>
-                        );
-                    }
-                })}
+            <div className={style1.FilterandContent}>
+                <div className={style1.subFilterandContent}>
+                    {meals.map(ele => {
+                        let meal_num = ele['Inventory'][mealshowday.toString() as keyof typeof ele['Inventory']] // Determine whether the meal is sold out 
+                        if (meal_num > 0) {
+                            return (
+                                <div key={ele.Meal_ID.toString()} className={style1.insell} >
+                                    <MealItem meal={ele} inventory={meal_num} soldout={false} mealshowday={mealshowday} ordertime={time} />
+                                </div>
+                            );
+                        }
+                        else {
+                            return (
+                                <div key={ele.Meal_ID.toString()} className={style1.soldout}>
+                                    <MealItem meal={ele} inventory={meal_num} soldout={true} mealshowday={mealshowday} ordertime={time} />
+                                </div>
+                            );
+                        }
+                    })}
+                </div>
             </div>
-        </div>
+        </>
     );
 
 }

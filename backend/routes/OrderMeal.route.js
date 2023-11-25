@@ -64,11 +64,13 @@ const AddCart = async(req,res,next)=>{
     const str = "'[{"+'"Amount":?,"Meal_ID":?}]'+"'"
     const cmd3 = 'INSERT INTO `Order` (`Customer_ID`, `Vendor_ID`, `Status`, `Pickup_Time`, `Meal_List`, `Cash_Amount`) \
                 VALUES (?,?,"IN_CART",?,'+str+',?)'
-    try{
-        const [rows1,] = await query(cmd0,[day,meal_ID])
-        if((new Date().getTime()) > (new Date(pickuptime)).getTime()){
-            res.json({msg:0})
-        }else{
+    const time_arr = pickuptime.split(',')
+    if((new Date()).getTime() > (new Date(+time_arr[0],+time_arr[1]-1,+time_arr[2],+time_arr[3],+time_arr[4],+time_arr[5]).getTime())){
+        res.json({msg:0})
+    }
+    else{
+        try{
+            const [rows1,] = await query(cmd0,[day,meal_ID])
             if (rows1[0]['inv']<amount || amount==0){
                 res.json({msg:1});
             }
@@ -86,11 +88,9 @@ const AddCart = async(req,res,next)=>{
                 }
                 res.json({msg:2});
             }            
+        }catch(error){
+            throw error;
         }
-
-        
-    }catch(error){
-        throw error;
     }
 }
 

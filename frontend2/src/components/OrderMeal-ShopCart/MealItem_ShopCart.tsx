@@ -76,7 +76,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                         </div>
                         <div className={style.NumDollarButton}>
                             <div className={style.test}>
-                                共{Amount}個，小計{count*MealPrice}元
+                                共{Amount}個，小計NT${count*MealPrice}
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                                 <Counter mealID={Meal_ID} count={count} setCount={setCount} maxinv={MealInv} setMealList={setMealList} mealList={mealList} cashAmount={cashAmount} setcashAmount={setcashAmount} MealPrice={MealPrice}/>
                             </div>
                             <div className={style.insertNum}>
-                                項，小計{MealPrice*count}元
+                                項，小計NT${MealPrice*count}
                             </div>
                             <div >
                                 <button className={style.MealEleDel} onClick={async()=>{

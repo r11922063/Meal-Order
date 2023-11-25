@@ -79,6 +79,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
     }, [Order_ID])
 
     /* Generate the showing content */
+    let year = pickupTime.getFullYear().toString();
     let month = (pickupTime.getMonth() + 1).toString();
     let date = pickupTime.getDate().toString();
     let day = pickupTime.getDay().toString();
@@ -110,7 +111,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                     {vendorName}
                                 </h1>
                                 <p>
-                                    取餐時間：{month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
+                                    取餐時間：{year} 年 {month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
                                 </p>
                             </div>
                         </div>
@@ -178,7 +179,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                     {vendorName}(取餐時間已逾時)
                                 </h1>
                                 <p>
-                                    取餐時間：{month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
+                                    取餐時間：{year} 年 {month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
                                 </p>
                             </div>
                         </div>
@@ -191,7 +192,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                         </div>
                     </div>
                     <div className={style.Meals}>
-                        <div>
+                        <div className={style.test}>
                             {mealList.map(ele => (
                                 <MealItem key={ele['Meal_ID']} Order_ID={Order_ID} mealList={mealList}
                                     setMealList={setMealList} Mealele={ele} mealshowday={(+day == 0) ? 7 : +day} initialcount={ele['Amount']} outofdate={true}

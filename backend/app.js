@@ -55,7 +55,6 @@ app.use('/shopCart',ShopCartRouter);
 app.use('/vendor',vendorRouter);
 app.use('/customer', customerRouter)
 app.use('/orderMeal',orderMealRouter)
-app.use('/shopCart',ShopCartRouter)
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

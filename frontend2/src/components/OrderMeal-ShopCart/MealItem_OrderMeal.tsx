@@ -47,7 +47,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h3>餐點名稱:{meal.Meal_Name}</h3>
+                            <h2>餐點名稱:{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -55,11 +55,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </div>
                     </div>
                     <div className={style.NumDollarButton}>
-                        <div className={style.insertNum}>
-                        </div>
-                        <button className={style.baseButton_button_disable} disabled>
-                            已售完
-                        </button>
+                        <div className={style.insertNum}></div>
+                        已完售
                     </div>
                 </div>
                 <div className={style.Meal_img} >
@@ -74,7 +71,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h3>餐點名稱:{meal.Meal_Name}</h3>
+                            <h2>餐點名稱:{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -89,7 +86,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                             <Counter count={count} setCount={setCount} maxinv={inventory}/>
                         </div>
                         <div className={style.insertNum}>
-                            項，共計{meal.Price*count}元
+                            項，小計NT${meal.Price*count}
                         </div>
                         <button className={style.baseButton_button} onClick={async ()=> {
                             await AddCart(mealshowday, +Customer_ID!, +Vendor_ID!, pickuptime,count,meal.Meal_ID,meal.Price*count)
