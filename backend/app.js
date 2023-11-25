@@ -49,7 +49,7 @@ app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
-
+app.use('/customer', customerRouter)
 app.use('/orderMeal',orderMealRouter)
 
 
