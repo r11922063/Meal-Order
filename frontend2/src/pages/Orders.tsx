@@ -22,11 +22,23 @@ export default function Orders() {
     }
 
     async function cancelOrder(order_id: number) {
+        async function toCancelOrder() {
+            let success = false;
+            const abortController = new AbortController();
+            try {
+                const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_id}`;
+                const res = await fetch(url, { 
+                    signal: abortController.signal }).then(res => { return res.json(); }); // changedRows
+                success = res > 0;
+            } catch (e) {
+                console.log("Error: cancel order from backend: ", e);
+            }
+            abortController.abort();
+            return success;
+        }
         // console.log("click cancel button!");
         setUpdateOrderState(!update_order_state);
-        const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_id}`;
-        const res = await fetch(url).then(res => { return res.json(); }); // changedRows
-        return (res > 0);
+        return await toCancelOrder();
     }
 
     useEffect(() => {
@@ -47,7 +59,12 @@ export default function Orders() {
                 console.log("Error fetching all_orders from backend: ", e);
             }
         };
+
+        const abortController = new AbortController();
         fetchOrders(customer_id!);
+        return () => {
+            abortController.abort();
+        }
     }, [customer_id, display, update_order_state]);
 
     return (

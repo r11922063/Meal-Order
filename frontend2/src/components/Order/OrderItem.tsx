@@ -65,8 +65,13 @@ export default function OrderItem({ order, handleOrderCancellation }:
             }
         };
         
-        fetchOrderMeals();
         setOrderPickupTime(new Date(order.Pickup_Time));
+
+        const abortController = new AbortController();
+        fetchOrderMeals();
+        return () => {
+            abortController.abort();
+        }
     }, [order]);
 
     useEffect(() => {

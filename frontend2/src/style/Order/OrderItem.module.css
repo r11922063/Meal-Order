@@ -51,8 +51,12 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background-color: darkseagreen;
-    color: #fff;
+    border: darkolivegreen solid;
+    background-color: white;
+    /* text-decoration-line: underline;
+    text-decoration-color: darkseagreen;
+    text-decoration-thickness: 2px; */
+    color: darkolivegreen;
 }
 
 .orderItem_orderStatus_Completed {
@@ -62,8 +66,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background-color: darkgray;
-    color: #fff;
+    border: gray solid;
+    background-color: white;
+    color: gray;
 }
 
 .orderItem_cancelButton {
