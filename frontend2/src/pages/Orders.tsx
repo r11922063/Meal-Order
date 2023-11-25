@@ -13,6 +13,7 @@ export default function Orders() {
     const [orders_completed, setOrdersCompleted] = useState<CustomerOrder[]>([]);
     const [orders_in_progress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customer_id = params.customerId;
+    const [update_order_state, setUpdateOrderState] = useState(true);
 
     function changeTab(tab: number) {
         if (tab !== display) {
@@ -20,10 +21,30 @@ export default function Orders() {
         }
     }
 
+    async function cancelOrder(order_id: number) {
+        async function toCancelOrder() {
+            let success = false;
+            const abortController = new AbortController();
+            try {
+                const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_id}`;
+                const res = await fetch(url, { 
+                    signal: abortController.signal }).then(res => { return res.json(); }); // changedRows
+                success = res > 0;
+            } catch (e) {
+                console.log("Error: cancel order from backend: ", e);
+            }
+            abortController.abort();
+            return success;
+        }
+        // console.log("click cancel button!");
+        setUpdateOrderState(!update_order_state);
+        return await toCancelOrder();
+    }
+
     useEffect(() => {
         async function fetchOrders(customerId: string) {
             try {
-                const url: string = BACKEND_URL + `/orders?customerId=${customer_id}&display=${display}`;
+                const url: string = BACKEND_URL + `/orders?customerID=${customer_id}&display=${display}`;
                 const res = await fetch(url).then(res => { return res.json(); });
                 // console.log("[fetechOrders] Result: ", res);
                 console.log()
@@ -38,8 +59,13 @@ export default function Orders() {
                 console.log("Error fetching all_orders from backend: ", e);
             }
         };
+
+        const abortController = new AbortController();
         fetchOrders(customer_id!);
-    }, [customer_id, display]);
+        return () => {
+            abortController.abort();
+        }
+    }, [customer_id, display, update_order_state]);
 
     return (
         <>
@@ -53,15 +79,13 @@ export default function Orders() {
                 </TabList>
 
                 <TabPanel>
-                    <OrderTab key={0} orders={orders_in_progress} />
+                    <OrderTab key={0} orders={orders_in_progress} handleOrderCancellation={cancelOrder} />
                 </TabPanel>
                 <TabPanel>
-                    <OrderTab key={1} orders={orders_completed} />
+                    <OrderTab key={1} orders={orders_completed} handleOrderCancellation={cancelOrder} />
                 </TabPanel>
             </Tabs>
             
         </>
     );
 }
-
-// Tab: {OrderItem, OrderItem, ...}

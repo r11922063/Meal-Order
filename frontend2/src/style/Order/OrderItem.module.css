@@ -6,11 +6,103 @@
     margin: 1vw;
 }
 
-.orderItem_infoItemBox {
+.orderItem_infoItemAndButtonContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+    height: 150px;
+    align-items: center;
+}
+
+.orderItem_infoItemContainer {
+    height: 100%;
+    flex: 3 1 auto;
+}
+
+.orderItem_buttonAndPriceContainer {
+    height: 100%;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.orderItem_cancelAndStatusBox {
+    padding: 0px 20px;
+    height: 100%;
+    flex: 3 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* color: rgba(0, 0, 0, 0.7); */
+}
+
+.orderItem_orderStatus {
+    width: auto;
+    height: 30px;
+    font-size: 16px;
+}
+
+.orderItem_orderStatus_inProgress {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: darkolivegreen solid;
+    background-color: white;
+    /* text-decoration-line: underline;
+    text-decoration-color: darkseagreen;
+    text-decoration-thickness: 2px; */
+    color: darkolivegreen;
+}
+
+.orderItem_orderStatus_Completed {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: gray solid;
+    background-color: white;
+    color: gray;
+}
+
+.orderItem_cancelButton {
+    padding: 0px 10px;
+    width: auto;
+    height: 30px;
+    font-size: 16px; /* different from base button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.orderItem_cancelButton {
+    background-color: firebrick;
+    color: #fff;
+}
+
+.orderItem_cancelButton:hover {
+    opacity: 0.8;
+}
+
+.orderItem_totalPriceAndDetail {
+    padding: 0px 20px;
+    height: 100%;
+    flex: 1 2 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-weight: bold;
 }
 
 .orderItem_mealContainer {
@@ -31,3 +123,4 @@
     gap: 40px;
     align-items: center;
 }
+
