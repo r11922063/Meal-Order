@@ -35,17 +35,12 @@ export default function AllMeals() {
                     <AllMealMealItem key={meal.Meal_ID} meal={meal} />
                     ))}
 
-                    <AllMealAddMealItem/>
+                    <AllMealAddMealItem setMeals={setMeals}/>
                 </div>
             ) : (
                 <div className="all_meals_empty">
-                    {/* <img
-                        className="all_meals_empty_img"
-                        src="images/empty-cart.png"
-                        alt=""
-                    /> */}
                     <span className="all_meals_empty_title">No meals.</span>
-                    <AllMealAddMealItem/>
+                    <AllMealAddMealItem setMeals={setMeals}/>
                 </div>
                 
             )}

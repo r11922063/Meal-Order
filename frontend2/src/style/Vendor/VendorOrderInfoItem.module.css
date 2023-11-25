@@ -1,18 +1,31 @@
-.orderInfoItem_container {
+
+
+.orderInfoItem_item {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* padding: 20px; */
+    /* position: relative; */
+}
+
+.orderInfoItem_leftContainer {
     height: 100%;
+    flex: 3 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
 }
 
-/* .orderInfoItem_rightContainer {
+.orderInfoItem_rightContainer {
     height: 100%;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-} */
+}
 
 .orderInfoItem_title {
     font-size: 32px;
@@ -23,7 +36,7 @@
 
 .orderInfoItem_note {
     font-size: 16px;
-    color: grey;
+    color: rgb(0, 0, 0);
 }
 
 .orderInfoItem_warning {
@@ -31,7 +44,7 @@
     color: crimson;
 }
 
-.orderInfoItem_cancelBox {
+.orderInfoItem_confirmBox {
     padding: 0px 20px;
     height: 100%;
     flex: 3 1 auto;
@@ -42,7 +55,7 @@
     color: rgba(0, 0, 0, 0.7);
 }
 
-.orderInfoItem_cancelButton {
+.orderInfoItem_confirmButton {
     padding: 0px 10px;
     width: auto;
     height: 30px;
@@ -55,12 +68,12 @@
     cursor: pointer;
 }
 
-.orderInfoItem_cancelButton {
-    background-color: firebrick;
+.orderInfoItem_confirmButton {
+    background-color: black;
     color: #fff;
 }
 
-.orderInfoItem_cancelButton:hover {
+.orderInfoItem_confirmButton:hover {
     opacity: 0.8;
 }
 

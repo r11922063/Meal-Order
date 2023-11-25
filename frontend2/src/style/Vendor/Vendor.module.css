@@ -7,17 +7,13 @@
 }
 
 .YellowContainer {
-    width: 95%; /* 設定容器寬度 */
-    height: 200px; /* 設定容器高度 */
-    background-color: rgb(255, 191, 73); /* 設定背景顏色 */
+    background-color: rgb(255, 194, 82); /* 設定背景顏色 */
     border-radius: 10px; /* 設定圓角半徑，使容器呈現圓角形狀 */
     margin: 50px auto; /* 設定外邊距，使容器置中 */
     padding: 20px; /* 設定內邊距，如果需要在容器內部添加內容 */
 }
 
 .GreenContainer {
-    width: 95%; /* 設定容器寬度 */
-    height: 200px; /* 設定容器高度 */
     background-color: lightgreen; /* 設定背景顏色 */
     border-radius: 10px; /* 設定圓角半徑，使容器呈現圓角形狀 */
     margin: 50px auto; /* 設定外邊距，使容器置中 */
@@ -25,8 +21,6 @@
 }
 
 .RedContainer {
-    width: 95%; /* 設定容器寬度 */
-    height: 200px; /* 設定容器高度 */
     background-color: rgb(255, 108, 140); /* 設定背景顏色 */
     border-radius: 10px; /* 設定圓角半徑，使容器呈現圓角形狀 */
     margin: 50px auto; /* 設定外邊距，使容器置中 */

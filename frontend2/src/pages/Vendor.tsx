@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { CustomerOrder } from '../type'
+import { BACKEND_URL } from '../constant'
 import style from '../style/Vendor/Vendor.module.css'
+import VendorOrderTab from "../components/VendorOrder/VendorOrderTab";
 const Today = new Date();
 
 const weekday =['週日', '週一', '週二', '週三', '週四', '週五', '週六']; 
@@ -14,6 +18,25 @@ for (let step = 0; step < 3; step++){
 }
 
 export default function Vendor() {
+    const params = useParams();
+    const [orders, setOrders] = useState<CustomerOrder[]>([]);
+    const vendor_id = params.vendorId;
+
+    useEffect(() => {
+        async function fetchOrders(vendorId: string) {
+            try {
+                const url: string = BACKEND_URL + `/vendor?vendorId=${vendor_id}`;
+                const res = await fetch(url).then(res => { return res.json(); });
+                // console.log("[fetechOrders] Result: ", res);
+                console.log()
+                setOrders(res);
+            } catch (e) {
+                console.log("Error fetching all_orders from backend: ", e);
+            }
+        };
+        fetchOrders(vendor_id!);
+    }, [vendor_id]);
+
     return (
         <div>
             <h1> 我的訂單 </h1>
@@ -24,18 +47,7 @@ export default function Vendor() {
                     </option>))
                 }
             </select>
-            <div className={style.YellowContainer}>
-                <p>This is your content inside the yellow container.</p>
-            </div>
-            <div className={style.GreenContainer}>
-                <p>This is your content inside the green container.</p>
-            </div>
-            <div className={style.RedContainer}>
-                <p>This is your content inside the red container.</p>
-            </div>
+            <VendorOrderTab orders={orders} />
         </div>
-        
-        
-        
     );
 }
