@@ -8,6 +8,7 @@
     padding: 0.5rem;
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 .triangle_buttons :hover {

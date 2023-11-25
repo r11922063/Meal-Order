@@ -40,6 +40,7 @@ export type MealAmountSelectOption = MealAmountOption[];
 export enum OrderStatus {
     IN_CART = "IN_CART",
     PREPARING = "PREPARING",
+    WAIT_FOR_APPROVAL = "WAIT_FOR_APPROVAL",
     READY_FOR_PICKUP = "READY_FOR_PICKUP",
     PICKED_UP = "PICKED_UP",
     CANCELLED_UNCHECKED = "CANCELLED_UNCHECKED",
