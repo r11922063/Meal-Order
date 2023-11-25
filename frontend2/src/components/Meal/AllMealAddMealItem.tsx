@@ -1,5 +1,4 @@
 import type { Meal } from '../../type'
-import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealAddMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
