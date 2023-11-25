@@ -66,23 +66,28 @@ const AddCart = async(req,res,next)=>{
                 VALUES (?,?,"IN_CART",?,'+str+',?)'
     try{
         const [rows1,] = await query(cmd0,[day,meal_ID])
-        if (rows1[0]['inv']<amount || amount==0){
-            res.json({msg:true});
-        }
-        else{        
-            const [rows2,] = await query(cmd1,[Customer_ID,Vendor_ID,pickuptime])
-            if(rows2.length==0){
-                await query(cmd3,[Customer_ID,Vendor_ID,pickuptime,amount,meal_ID,Cash_Amount]);
+        if((new Date().getTime()) > (new Date(pickuptime)).getTime()){
+            res.json({msg:0})
+        }else{
+            if (rows1[0]['inv']<amount || amount==0){
+                res.json({msg:1});
             }
-            else{
-                const [rows3,] = await query(cmd2_1,[Customer_ID,Vendor_ID,pickuptime])
-                const append = (rows3[0]['ext'].includes(meal_ID));
-                const order_id =rows3[0]['Order_ID'];
-                const [adjust_MealList,Total_amount] = await AdjustMealList(order_id,meal_ID,amount,append);
-                await query(cmd2_2,[JSON.stringify(adjust_MealList),Total_amount,order_id]);
-            }
-            res.json({msg:false});
+            else{        
+                const [rows2,] = await query(cmd1,[Customer_ID,Vendor_ID,pickuptime])
+                if(rows2.length==0){
+                    await query(cmd3,[Customer_ID,Vendor_ID,pickuptime,amount,meal_ID,Cash_Amount]);
+                }
+                else{
+                    const [rows3,] = await query(cmd2_1,[Customer_ID,Vendor_ID,pickuptime])
+                    const append = (rows3[0]['ext'].includes(meal_ID));
+                    const order_id =rows3[0]['Order_ID'];
+                    const [adjust_MealList,Total_amount] = await AdjustMealList(order_id,meal_ID,amount,append);
+                    await query(cmd2_2,[JSON.stringify(adjust_MealList),Total_amount,order_id]);
+                }
+                res.json({msg:2});
+            }            
         }
+
         
     }catch(error){
         throw error;

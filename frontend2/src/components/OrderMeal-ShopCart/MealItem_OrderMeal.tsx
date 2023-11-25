@@ -1,20 +1,24 @@
-import {VendorAndMeal} from '../../type';
-import style from '../../style/OrderMeal-ShopCart/OrderMeal.module.css';
-import { useEffect, useState } from 'react';
-import Counter from './Counter_OrderMeal';
-import { useParams } from 'react-router-dom';
-import { BACKEND_URL } from '../../constant';
+/**
+ * The meal item of the meal box in the Order Meal Page
+ */
 
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import Counter from './Counter_OrderMeal';
+import {VendorAndMeal} from '../../type';
+import { BACKEND_URL } from '../../constant';
+import style from '../../style/OrderMeal-ShopCart/OrderMeal.module.css';
 
 export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:{meal:VendorAndMeal, inventory:number, soldout:boolean, mealshowday:number, ordertime:string}){
-    //below is to get the insert information to database
+    /* Get the insert information to database */
     const param = useParams();//website parameters
     const Customer_ID = param.customerId; 
     const Vendor_ID = param.vendorId; 
     const pickuptime = ordertime;
-    const [count, setCount] = useState(0);
-    let warning:boolean;
+    const [count, setCount] = useState(0); //the number of meal which customer selects.
+    let warning:number;
     
+    /* Backend Function: to add the meal to the Shop Cart */
     const AddCart = async (mealshowday:number,Customer_ID:number,Vendor_ID:number,pickuptime:string,count:number,meal_ID:number,Cash_Amount:number)=>{
         const url = `${BACKEND_URL}/orderMeal/addadjustMealList`;
         let t;
@@ -89,8 +93,13 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </div>
                         <button className={style.baseButton_button} onClick={async ()=> {
                             await AddCart(mealshowday, +Customer_ID!, +Vendor_ID!, pickuptime,count,meal.Meal_ID,meal.Price*count)
-                            if(warning){
-                                alert('您選擇的餐點數量為零或已超過當下庫存量!');
+                            if(warning==0){
+                                alert('現在時刻已超過預定時間，請重新預定!');
+                                window.location.reload();
+                            }
+                            else if(warning==1){
+                                alert('您選擇的餐點數量為零或已超過當下庫存量，請重新選擇數量!');
+                                window.location.reload();
                             }
                             }}>
                             加入購物車

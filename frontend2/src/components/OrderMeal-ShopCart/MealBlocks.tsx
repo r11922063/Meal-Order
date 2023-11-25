@@ -1,6 +1,10 @@
-import MealBlock from './MealBlock_ShopCart';
+/**
+ * About the Order Block(Gathering the Meal Blocks) in ShopCart Page
+ */
+
 import { useEffect,useState } from 'react';
 import { useParams} from 'react-router-dom';
+import MealBlock from './MealBlock_ShopCart';
 import { BACKEND_URL } from '../../constant';
 
 export default function MealBlocks(){
@@ -34,7 +38,9 @@ export default function MealBlocks(){
             }
         }
         const abortController = new AbortController();
-        getAllOrders(+customerId!);
+        getAllOrders(+(customerId!));
+        console.log(+(customerId!))
+        console.log(typeof(+(customerId!)))
         return()=>{
             abortController.abort();
         }

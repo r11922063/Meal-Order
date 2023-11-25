@@ -1,22 +1,26 @@
+/**
+ * About the meal item of the meal block in ShopCart page
+ */
+
+import { useEffect,useState } from "react";
+import Counter from './Counter_ShopCart';
 import {CustomerOrderDetail} from "../../type";
 import { BACKEND_URL } from "../../constant";
-import { useEffect,useState } from "react";
 import style from '../../style/OrderMeal-ShopCart/ShopCart.module.css'
-import Counter from './Counter_ShopCart';
 
 export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, setMealList, mealList, outofdate, cashAmount, setcashAmount}:
     {Order_ID:number,Mealele:CustomerOrderDetail, mealshowday:number, initialcount:number, setMealList:(x:CustomerOrderDetail[])=>void,mealList:CustomerOrderDetail[], outofdate:boolean, cashAmount:number,setcashAmount:(x:number)=>void}){
 
     const Meal_ID = Mealele['Meal_ID'];
     const Amount = Mealele['Amount'];
+    const day = mealshowday; 
     const [MealName,setMealName] = useState('');
     const [MealPrice,setMealPrice] = useState(0);
     const [MealInv,setMealInv] = useState(0);
     const [ImgUrl,setImgUrl] = useState('');
-    const day = mealshowday; 
+    const [count,setCount] = useState(initialcount); // Number of the meal when the customer chose
 
-    const [count,setCount] = useState(initialcount);
-
+    /* Backend Function: Delete Meal Button */
     const DeleteMealItem = async (Order_ID:number,Meal_List:CustomerOrderDetail[],Meal_ID:number,cashAmount:number,MealPrice:number) => {
         const url = `${BACKEND_URL}/ShopCart/DeleteMealItem`
         try{
@@ -35,7 +39,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
             throw err;
         }
     }
-
+    /* Initial the meal info, including the Meal Name, Meal Inventory... */
     useEffect(()=>{
         const getMealDetail = async (Meal_ID:number, mealshowday:number) => {
             const url = `${BACKEND_URL}/shopCart/detail?Meal_ID=${Meal_ID}&day=${mealshowday}`;
@@ -56,7 +60,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
         }
     },[Meal_ID,day])
     
-    if(outofdate){
+    if(outofdate){ // outofdate: passed by the parent component, to determine what the meal item should be shown 
         return(
             <>
                 <div className={style.MealBox} id={(Meal_ID).toString()}>
