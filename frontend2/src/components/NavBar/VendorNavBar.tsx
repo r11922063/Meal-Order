@@ -7,11 +7,11 @@ export default function VendorNavBar() {
         <nav className={style.navbar}>
             <NavLink to="." end>FoodApp</NavLink>
             <ul>
+                <li><NavLink to="." end>訂單</NavLink></li>
                 <li><NavLink to="mealamount">供餐數量設定</NavLink></li>
                 <li><NavLink to="allmeals">所有餐點</NavLink></li>
                 <li><NavLink to="settlement">月結算</NavLink></li>
                 <li><NavLink to="/">登出</NavLink></li>
-                {/* <li><button><img src={borderwidth} height="32" width="30"/></button></li> */}
             </ul>
         </nav>
     );

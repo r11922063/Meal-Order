@@ -7,7 +7,7 @@ import http from 'http';
 import 'dotenv/config';
 import { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
-import SendMail from './models/mail.model.js';
+//import SendMail from './models/mail.model.js';
 
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
@@ -21,6 +21,7 @@ import customerRouter from './routes/customer.route.js'
 
 import orderMealRouter from './routes/OrderMeal.route.js'
 import ShopCartRouter from './routes/ShopCart.route.js'
+import vendorRouter from './routes/vendor.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -49,6 +50,9 @@ app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
+app.use('/orderMeal',orderMealRouter);
+app.use('/shopCart',ShopCartRouter);
+app.use('/vendor',vendorRouter);
 app.use('/customer', customerRouter)
 app.use('/orderMeal',orderMealRouter)
 app.use('/shopCart',ShopCartRouter)
