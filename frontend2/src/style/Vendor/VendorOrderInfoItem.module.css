@@ -1,0 +1,90 @@
+
+
+.orderInfoItem_item {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* padding: 20px; */
+    /* position: relative; */
+}
+
+.orderInfoItem_leftContainer {
+    height: 100%;
+    flex: 3 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.orderInfoItem_rightContainer {
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.orderInfoItem_title {
+    font-size: 32px;
+    font-weight: bold;
+    color: black;
+    
+}
+
+.orderInfoItem_note {
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+}
+
+.orderInfoItem_warning {
+    font-size: 16px;
+    color: crimson;
+}
+
+.orderInfoItem_confirmBox {
+    padding: 0px 20px;
+    height: 100%;
+    flex: 3 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.orderInfoItem_confirmButton {
+    padding: 0px 10px;
+    width: auto;
+    height: 30px;
+    font-size: 16px; /* different from base button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.orderInfoItem_confirmButton {
+    background-color: black;
+    color: #fff;
+}
+
+.orderInfoItem_confirmButton:hover {
+    opacity: 0.8;
+}
+
+.orderInfoItem_detail {
+    padding: 0px 20px;
+    height: 100%;
+    flex: 1 2 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-weight: bold;
+}
