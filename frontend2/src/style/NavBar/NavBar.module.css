@@ -1,5 +1,5 @@
 .navbar {
-    background-color: rgb(213, 249, 230);
+    background-color: #FFCD29;
     top: 0;
     left: 0;
     right: 0;
@@ -20,14 +20,14 @@
   
 .navbar > a {
     font-size: 40px;
-    color: rgb(254, 73, 100);
+    color: white;
     font-weight: bolder;
     margin-left: 2.5vw;
     margin-right: auto;
 }
 
 .navbar ul a[class="active"] {
-    border-bottom: 5px rgb(254, 73, 100) solid;
+    border-bottom: 5px white solid;
 }
   
 .navbar ul {
