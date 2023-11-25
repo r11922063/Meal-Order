@@ -17,8 +17,8 @@ import loginRouter from './routes/login.route.js'
 import signupRouter from './routes/signup.route.js'
 import ordersRouter from './routes/orders.route.js'
 import mealAmountRouter from './routes/mealAmount.route.js'
-
 import orderMealRouter from './routes/OrderMeal.route.js'
+import ShopCartRouter from './routes/ShopCart.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -47,8 +47,8 @@ app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
-
-app.use('/orderMeal',orderMealRouter)
+app.use('/orderMeal',orderMealRouter);
+app.use('/shopCart',ShopCartRouter);
 
 
 // // catch 404 and forward to error handler

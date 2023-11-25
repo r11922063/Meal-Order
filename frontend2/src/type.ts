@@ -69,3 +69,15 @@ export type CustomerOrderContent = {
     Image_url: string,
 };
 
+export type VendorAndMeal ={
+    Vendor_img: string,
+    Meal_ID: number,
+    Name: string,
+    Address: string,
+    Meal_Name: string, 
+    Description?: string,
+    Price: number,
+    Inventory: {"1": number, "2": number, "3": number, "4": number, "5": number, "6": number, "7": number}, 
+    Image_url: string;
+}
+
