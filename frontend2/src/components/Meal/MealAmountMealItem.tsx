@@ -1,5 +1,4 @@
 import type { Meal } from '../../type'
-import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { useEffect, useState } from 'react'
@@ -30,9 +29,9 @@ export default function MealAmountMealItem({ meal, setMeals, day }:
   return (
     <div className={style.allMealMealItem_item}>
         <div className={style.allMealMealItem_contentContainer}>
-            <span className={style.allMealMealItem_title}>{meal.Meal_Name}</span>
+            <span className={style.allMealMealItem_mealName}>{meal.Meal_Name}</span>
             {/* TODO: price / number or amount */}
-            {/* <span>{(meal.price * meal.count).toLocaleString()} تومان</span> */}
+            <span className={style.allMealMealItem_price}>NT${meal.Price}</span>
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
@@ -46,9 +45,7 @@ export default function MealAmountMealItem({ meal, setMeals, day }:
         </div>
 
         <div className={style.allMealMealItem_imgBox}>
-          <img src={test_img} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
-          {/* TODO: change to meal.Image_url */}
-          {/* <img src={meal.Image_url} alt={meal.Meal_Name} /> */}
+          <img src={require(`../../assets/meal_imgs/${meal.Image_url}`)} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
         </div>
     </div>
   );

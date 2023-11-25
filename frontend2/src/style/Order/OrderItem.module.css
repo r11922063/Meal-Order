@@ -42,6 +42,7 @@
     width: auto;
     height: 30px;
     font-size: 16px;
+    /* font-weight: bold; */
 }
 
 .orderItem_orderStatus_inProgress {
@@ -53,10 +54,19 @@
     border-radius: 10px;
     border: darkolivegreen solid;
     background-color: white;
-    /* text-decoration-line: underline;
-    text-decoration-color: darkseagreen;
-    text-decoration-thickness: 2px; */
     color: darkolivegreen;
+}
+
+.orderItem_orderStatus_inProgressReady {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: darkorange solid;
+    background-color: white;
+    color: darkorange;
 }
 
 .orderItem_orderStatus_Completed {
@@ -66,9 +76,21 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    border: gray solid;
+    border: rgb(191, 145, 28) solid;
     background-color: white;
-    color: gray;
+    color:rgb(191, 145, 28);
+}
+
+.orderItem_orderStatus_CompletedCancelled {
+    padding: 0px 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: rgb(105, 104, 104) solid;
+    background-color: white;
+    color: rgb(105, 104, 104)
 }
 
 .orderItem_cancelButton {
