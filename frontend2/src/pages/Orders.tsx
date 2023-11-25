@@ -37,8 +37,9 @@ export default function Orders() {
             return success;
         }
         // console.log("click cancel button!");
+        const res = await toCancelOrder();
         setUpdateOrderState(!update_order_state);
-        return await toCancelOrder();
+        return res;
     }
 
     useEffect(() => {

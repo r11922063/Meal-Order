@@ -14,7 +14,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
     const [order_pickup_time, setOrderPickupTime] = useState<Date>(new Date());
     const [order_cancel_dl, setOrderCancelDL] = useState<Date>(new Date());
     const [can_cancel, setCanCancel] = useState(true);
-    const [order_status, setOrderStatus] = useState<"IN_PROGRESS" | "COMPLETED">();
+    const [order_status, setOrderStatus] = useState<"IN_PROGRESS" | "COMPLETED">("IN_PROGRESS");
     const [order_status_info, setOrderStatusInfo] = useState<string>("訂單製作中");
 
     const handleDisclosureClick = () => {
@@ -23,7 +23,8 @@ export default function OrderItem({ order, handleOrderCancellation }:
 
     async function handleCancelButtonClick() {
         // TODO: get current time: new Date()
-        let cur_time = new Date("2023-10-28T02:59:59.000Z");
+        // let cur_time = new Date("2023-10-28T02:59:59.000Z");
+        let cur_time = new Date();
         let checkCancelAgain = cur_time.getTime() < order_cancel_dl.getTime();
         if (checkCancelAgain === true) {
             const response = window.confirm(`確定要取消訂單 #${order.Order_ID} 嗎?`);
@@ -64,9 +65,8 @@ export default function OrderItem({ order, handleOrderCancellation }:
                 console.log("Error fetching all_orders from backend: ", e);
             }
         };
-        
-        setOrderPickupTime(new Date(order.Pickup_Time));
 
+        setOrderPickupTime(new Date(order.Pickup_Time));
         const abortController = new AbortController();
         fetchOrderMeals();
         return () => {
@@ -99,7 +99,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
         }
 
         function calOrderCancelDL() {
-            let tmp: Date = order_pickup_time;
+            let tmp: Date = new Date(order_pickup_time);
             if (bulk_order === true) {
                 tmp.setHours(order_pickup_time.getHours() - 24);
             }
@@ -108,20 +108,45 @@ export default function OrderItem({ order, handleOrderCancellation }:
             }
             setOrderCancelDL(tmp);
         }
-
         checkOrderStatus();
         calOrderCancelDL();
     }, [order, bulk_order, order_pickup_time]);
 
     useEffect(() => {
         function checkCanCancel() {
-            let cur_time = new Date("2023-10-28T02:59:59.000Z");
+            // let cur_time = new Date("2023-10-28T02:59:59.000Z");
+            let cur_time = new Date();
             setCanCancel(order_status === "IN_PROGRESS" && cur_time.getTime() < order_cancel_dl.getTime());
         }
 
         checkCanCancel();
     }, [order_cancel_dl, order_status]);
 
+    function orderStatusInfoRenderSwitch() {
+        switch (order.Status) {
+            case OrderStatus.WAIT_FOR_APPROVAL:
+            case OrderStatus.PREPARING:
+                return (
+                    <span className={style.orderItem_orderStatus_inProgress}>
+                        {order_status_info}
+                    </span>);
+            case OrderStatus.READY_FOR_PICKUP:
+                return (
+                    <span className={style.orderItem_orderStatus_inProgressReady}>
+                        {order_status_info}
+                    </span>);
+            case OrderStatus.PICKED_UP:
+                return (
+                    <span className={style.orderItem_orderStatus_Completed}>
+                        {order_status_info}
+                    </span>);
+            default:
+                return (
+                    <span className={style.orderItem_orderStatus_CompletedCancelled}>
+                        {order_status_info}
+                    </span>);
+        }
+    }
 
     return (
         <div className={style.orderItem_container}>
@@ -130,6 +155,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                     <OrderInfoItem
                         order_id={order.Order_ID}
                         vendor_name={order.Vendor_Name}
+                        order_status={order_status}
                         order_pickup_time={order_pickup_time}
                         order_cancel_dl={order_cancel_dl}
                     />
@@ -143,15 +169,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                             </button>
                             :
                             <div className={style.orderItem_orderStatus}>
-                                { order_status === "IN_PROGRESS" ?
-                                    <span className={style.orderItem_orderStatus_inProgress}>
-                                        {order_status_info}
-                                    </span>
-                                    :
-                                    <span className={style.orderItem_orderStatus_Completed}>
-                                        {order_status_info}
-                                    </span>
-                                }
+                                {orderStatusInfoRenderSwitch()}
                             </div>
                         }
                     </div>
