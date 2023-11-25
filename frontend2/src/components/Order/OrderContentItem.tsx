@@ -19,7 +19,7 @@ export default function OrderContentItem({ orderContent, amount }: { orderConten
             </div>
 
             <div className={style.orderContentItem_imgBox}>
-                <img src={require(`../../assets/${orderContent.Image_url}`)} className={style.orderContentItem_img} alt={orderContent.Meal_Name} />
+                <img src={require(`../../assets/meal_imgs/${orderContent.Image_url}`)} className={style.orderContentItem_img} alt={orderContent.Meal_Name} />
                 {/* TODO: on cloud file path */}
             </div>
         </div>
