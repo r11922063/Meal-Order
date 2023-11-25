@@ -33,13 +33,10 @@ const updateDefaultInventory = async (req, res, net) => {
 }
 
 const addMealItem = (req, res, next) => {
-    // const img = req.files['img'][0];
     const mealData = req.body.newMeal;
-    // console.log("addMealItem, img = ", img);
     console.log("addMealItem, mealData = ", mealData);
 
     let newMeal = new Meal(mealData);
-    // console.log("newMeal = ", newMeal);
     // save image
     
     // save newMeal to db
