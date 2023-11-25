@@ -1,0 +1,17 @@
+.DropDown{
+  position: relative;
+  top: 330px;
+  left: 2%;
+  border-radius:2vw ;
+  border-style: none;
+  background-color: #C4C4C440;
+  padding: 13px 20px;
+  margin-right: 1vw;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.DropDown option {
+  font-weight: bold;
+}
+
