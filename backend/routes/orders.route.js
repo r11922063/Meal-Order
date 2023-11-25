@@ -31,10 +31,10 @@ const getOrdersInProgress = async (req, res, next) => {
     const customer_id = req.query.customerID;
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
-            FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ?)) AS orders \
+            FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
             LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;';
         const [rows, fields] = await query(query_str,
-            [customer_id, "PREPARING", "READY_FOR_PICKUP"]);
+            [customer_id, "WAIT_FOR_APPROVAL", "PREPARING", "READY_FOR_PICKUP"]);
         res.json(rows);
     }
     catch (err) {

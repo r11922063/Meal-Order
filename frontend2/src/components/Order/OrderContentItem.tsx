@@ -14,7 +14,7 @@ export default function OrderContentItem({ orderContent, amount }: { orderConten
 
             <div className={style.orderContentItem_otherContainer}>
                 <div className={style.orderContentItem_amount_totalPrice}>
-                    <span>{`共 ${amount} 項, 共 ${amount * orderContent.Price} 元`}</span>
+                    <span>{`共 ${amount} 項, 共 NT$${amount * orderContent.Price}`}</span>
                 </div>
             </div>
 

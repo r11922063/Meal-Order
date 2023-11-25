@@ -76,7 +76,11 @@ export default function OrderItem({ order, handleOrderCancellation }:
 
     useEffect(() => {
         function checkOrderStatus() {
-            if (order.Status === OrderStatus.PREPARING) {
+            if (order.Status === OrderStatus.WAIT_FOR_APPROVAL) {
+                setOrderStatus("IN_PROGRESS");
+                setOrderStatusInfo("等待商家接單");
+            }
+            else if (order.Status === OrderStatus.PREPARING) {
                 setOrderStatus("IN_PROGRESS");
                 setOrderStatusInfo("餐點製作中");
             }
@@ -153,7 +157,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                     </div>
                     
                     <div className={style.orderItem_totalPriceAndDetail}>
-                        <span>{`總計：${order.Cash_Amount} 元`}</span>
+                        <span>{`總計: NT$${order.Cash_Amount}`}</span>
                         <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
                             {disclosure ?
                                 <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
