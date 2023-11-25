@@ -9,7 +9,6 @@ import MealText from './MealText';
 import { GrAdd } from "react-icons/gr"
 import ImageUploading, { ImageListType, ErrorsType } from 'react-images-uploading';
 import { useParams } from 'react-router-dom'
-import { Meals } from '../OrderMeal-ShopCart/DateFilter'
 
 const sendNewMealData = (newMeal: Meal, img: any, setMeals: any ) => {
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
