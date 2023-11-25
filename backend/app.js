@@ -17,6 +17,7 @@ import loginRouter from './routes/login.route.js'
 import signupRouter from './routes/signup.route.js'
 import ordersRouter from './routes/orders.route.js'
 import mealAmountRouter from './routes/mealAmount.route.js'
+import customerRouter from './routes/customer.route.js'
 
 import orderMealRouter from './routes/OrderMeal.route.js'
 
@@ -47,7 +48,7 @@ app.use('/settlement', settlementRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
-
+app.use('/customer', customerRouter);
 app.use('/orderMeal',orderMealRouter)
 
 
