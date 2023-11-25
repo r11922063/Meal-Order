@@ -1,31 +1,18 @@
-
-
-.orderInfoItem_item {
-    width: 100%;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* padding: 20px; */
-    /* position: relative; */
-}
-
-.orderInfoItem_leftContainer {
+.orderInfoItem_container {
     height: 100%;
-    flex: 3 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
 }
 
-.orderInfoItem_rightContainer {
+/* .orderInfoItem_rightContainer {
     height: 100%;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
+} */
 
 .orderInfoItem_title {
     font-size: 32px;
