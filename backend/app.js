@@ -7,7 +7,7 @@ import http from 'http';
 import 'dotenv/config';
 import { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
-import SendMail from './models/mail.model.js';
+//import SendMail from './models/mail.model.js';
 
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
@@ -19,6 +19,7 @@ import ordersRouter from './routes/orders.route.js'
 import mealAmountRouter from './routes/mealAmount.route.js'
 import orderMealRouter from './routes/OrderMeal.route.js'
 import ShopCartRouter from './routes/ShopCart.route.js'
+import vendorRouter from './routes/vendor.route.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -49,6 +50,7 @@ app.use('/signup', signupRouter);
 app.use('/orders', ordersRouter);
 app.use('/orderMeal',orderMealRouter);
 app.use('/shopCart',ShopCartRouter);
+app.use('/vendor',vendorRouter);
 
 
 // // catch 404 and forward to error handler
