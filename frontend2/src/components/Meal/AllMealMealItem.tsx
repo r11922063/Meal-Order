@@ -1,5 +1,4 @@
 import type { Meal } from '../../type'
-import test_img from '../../assets/dumplings.jpg'
 import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
@@ -25,7 +24,7 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
   return (
     <div className={style.allMealMealItem_item}>
         <div className={style.allMealMealItem_contentContainer}>
-            <span className={style.allMealMealItem_title}>{meal.Meal_Name}</span>
+            <span className={style.allMealMealItem_mealName}>{meal.Meal_Name}</span>
             {/* TODO: price / number or amount */}
             {/* <span>{(meal.price * meal.count).toLocaleString()} تومان</span> */}
         </div>
