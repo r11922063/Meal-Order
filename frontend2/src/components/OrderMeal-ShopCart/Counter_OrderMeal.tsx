@@ -1,5 +1,5 @@
 /**
- * About the Counter in the Order Meal Page.
+ * About the Counter for the Order Meal Page.
  */
 
 import { CgAdd, CgRemove } from "react-icons/cg";
