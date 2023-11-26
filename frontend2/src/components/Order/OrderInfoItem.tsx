@@ -1,9 +1,11 @@
 import type { OrderTimeInfo } from '../../type'
 import style from '../../style/Order/OrderInfoItem.module.css'
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function OrderInfoItem({ order_id, vendor_name, order_status, order_pickup_time, order_cancel_dl }: 
-    { order_id: number, vendor_name: string, order_status: "IN_PROGRESS" | "COMPLETED", order_pickup_time: Date, order_cancel_dl: Date }) {
+export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_status, order_pickup_time, order_cancel_dl }: 
+    { order_id: number, vendor_id: number, vendor_name: string, 
+        order_status: "IN_PROGRESS" | "COMPLETED", order_pickup_time: Date, order_cancel_dl: Date }) {
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
@@ -35,8 +37,10 @@ export default function OrderInfoItem({ order_id, vendor_name, order_status, ord
     }, [order_pickup_time, order_cancel_dl]);
 
     return (
-        <div className={style.orderInfoItem_container}>
-            <span className={style.orderInfoItem_title}>{vendor_name}</span>
+        <div className={style.orderInfoItem_container} onClick={() => console.log("hi")}>
+            <Link className={style.orderInfoItem_title} to={`/customer/1/vendor/${vendor_id}`}>
+                {vendor_name}
+            </Link>
             <span className={style.orderInfoItem_note}>{'訂單編號 #' + order_id}</span>
             <span className={style.orderInfoItem_note}>{'取餐時間：' + pickup_time_str}</span>
             { order_status === "IN_PROGRESS"?
