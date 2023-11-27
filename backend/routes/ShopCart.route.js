@@ -21,7 +21,7 @@ const getAllOrders = async(req,res,next)=>{
 
 const getOneOrder = async(req,res,next)=>{
     try{
-        const cmd = 'with temp_t as (select ma.`Order_ID`,t1.`Name`, ma.`Pickup_Time`, ma.`Meal_List`, ma.`Cash_Amount` \
+        const cmd = 'with temp_t as (select ma.`Order_ID`,t1.`Name`, ma.`Pickup_Time`, ma.`Meal_List`, ma.`Cash_Amount`, ma.`Vendor_ID` \
                     from `Order` ma inner join `Vendor` t1 where ma.`Vendor_ID` = t1.`Vendor_ID`) \
                     select * from temp_t where `Order_ID` = ?'
         const Order_ID = req.query.Order_ID;
