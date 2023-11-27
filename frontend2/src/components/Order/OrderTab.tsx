@@ -5,7 +5,7 @@ export default function OrderTab({ orders, handleOrderCancellation }:
     { orders: Array<CustomerOrder>, handleOrderCancellation: (order_id: number) => any }) {
     return (
         <div className="one_tab">
-            {/* Render items */}
+            {/* orders */}
             {orders.length > 0 ? (
                 <div className="orders">
                     {orders.map((order) => (

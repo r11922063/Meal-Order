@@ -1,18 +1,24 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
+import { query_callBack } from "../models/db.model.js"
 
 const router = express.Router();
 
 const getOrders = async (req, res, next) => {
     const vendorId = req.query.vendorId;
+    const start = `${req.query.year}-${req.query.month}-${req.query.date} 00:00:00`;
+    const end = `${req.query.year}-${req.query.month}-${req.query.date} 23:59:59`;
+    console.log(start);
+    console.log(end);
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
-            FROM (SELECT * from`Order` WHERE Vendor_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
+            FROM (SELECT * from`Order` WHERE Vendor_ID = ? \
+            AND (`Status` = ? OR `Status` = ? OR `Status` = ? OR `Status` = ?)\
+            AND (`Pickup_Time` BETWEEN ? AND ?))\
+            AS orders \
             LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;'
-        // const query_str = 'SELECT * FROM `Order` WHERE `Customer_ID` = ? \
-        //                     AND (`Status` = ? OR `Status` = ? OR `Status` = ?)';
         const [rows, fields] = await query(query_str, 
-                [vendorId, "WAIT_FOR_APPROVAL", "PREPARING", "READY_FOR_PICKUP", "CANCELLED_UNCHECKED"]);
+                [vendorId, "WAIT_FOR_APPROVAL", "PREPARING", "READY_FOR_PICKUP", "CANCELLED_UNCHECKED", start, end]);
         console.log(rows);
         res.json(rows);
         // console.log("in completed");
@@ -41,13 +47,60 @@ const getOrderMeals = async (req, res, next) => {
     res.json(queryResults);
 };
 
-const cancenlOrder = (req, res, net) => {
-    console.log("cancel order, orderID = ", req.query.orderID);
+const getConfirmOrder = (req, res, net) => {
+    console.log("confirm order, orderID = ", req.body.orderID);
+    const orderID = req.body.orderID;
+        query_callBack('UPDATE `Order` SET `Status` = "PREPARING"\
+                        WHERE `Order_ID` = ?', [orderID],
+            (err) => {console.log(`Error updating the inventory: ${err}`)}
+        );
+}
+
+const getFinishOrder = (req, res, net) => {
+    console.log("confirm order, orderID = ", req.body.orderID);
+    const orderID = req.body.orderID;
+        query_callBack('UPDATE `Order` SET `Status` = "READY_FOR_PICKUP"\
+                        WHERE `Order_ID` = ?', [orderID],
+            (err) => {console.log(`Error updating the inventory: ${err}`)}
+        );
+}
+
+const getCancelConfirm = (req, res, net) => {
+    console.log("confirm order, orderID = ", req.body.orderID);
+    const orderID = req.body.orderID;
+        query_callBack('UPDATE `Order` SET `Status` = "CANCELLED_CHECKED"\
+                        WHERE `Order_ID` = ?', [orderID],
+            (err) => {console.log(`Error updating the inventory: ${err}`)}
+        );
+}
+
+const getPickupConfirm = (req, res, net) => {
+    console.log("pickup order, orderID = ", req.body.orderID);
+    const orderID = req.body.orderID;
+        query_callBack('UPDATE `Order` SET `Status` = "PICKED_UP"\
+                        WHERE `Order_ID` = ?', [orderID],
+            (err) => {console.log(`Error updating the inventory: ${err}`)}
+        );
+}
+
+const getCancelOrder = (req, res, net) => {
+    console.log("confirm order, orderID = ", req.body.orderID);
+    const orderID = req.body.orderID;
+        query_callBack('UPDATE `Order` SET `Status` = "CANCELLED_UNCHECKED"\
+                        WHERE `Order_ID` = ?', [orderID],
+            (err) => {console.log(`Error updating the inventory: ${err}`)}
+        );
 }
 
 router.get('/', getOrders);
-router.get('/cancelOrder', cancenlOrder);
 router.get('/orderMeals', getOrderMeals)
+router.post('/confirmOrder', getConfirmOrder)
+router.post('/finishOrder', getFinishOrder)
+router.post('/cancelConfirm', getCancelConfirm)
+router.post('/pickupConfirm', getPickupConfirm)
+router.post('/cancelOrder', getCancelOrder)
+
+
 
 export default router;
 

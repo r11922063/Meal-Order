@@ -8,6 +8,7 @@ import OrderContentItem from "./OrderContentItem";
 
 export default function OrderItem({ order, handleOrderCancellation }: 
     { order: CustomerOrder, handleOrderCancellation: (order_id: number) => any }) {
+    const [order_meal_ids, setOrderMealIDs] = useState<Array<number>>([]);
     const [order_meals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
     const [disclosure, setDisclosure] = useState(false);
     const [bulk_order, setBulkOrder] = useState(false);
@@ -15,15 +16,14 @@ export default function OrderItem({ order, handleOrderCancellation }:
     const [order_cancel_dl, setOrderCancelDL] = useState<Date>(new Date());
     const [can_cancel, setCanCancel] = useState(true);
     const [order_status, setOrderStatus] = useState<"IN_PROGRESS" | "COMPLETED">("IN_PROGRESS");
-    const [order_status_info, setOrderStatusInfo] = useState<string>("訂單製作中");
 
+    /* disclosure clicked */
     const handleDisclosureClick = () => {
         setDisclosure(!disclosure);
     };
 
+    /* check if the order can be cancelled -> if true: cancel order */
     async function handleCancelButtonClick() {
-        // TODO: get current time: new Date()
-        // let cur_time = new Date("2023-10-28T02:59:59.000Z");
         let cur_time = new Date();
         let checkCancelAgain = cur_time.getTime() < order_cancel_dl.getTime();
         if (checkCancelAgain === true) {
@@ -43,58 +43,33 @@ export default function OrderItem({ order, handleOrderCancellation }:
         }
     }
 
-    
-
+    /* set order info */
     useEffect(() => {
-        async function fetchOrderMeals() {
-            let order_meal_ids: Array<number> = [];
+        function initOrderMealIDs() {
+            let tmp: Array<number> = [];
             let total_meal_amount = 0;
             order.Meal_List.forEach((order_meal) => {
-                order_meal_ids.push(order_meal.Meal_ID);
+                tmp.push(order_meal.Meal_ID);
                 total_meal_amount += order_meal.Amount;
             });
-            // console.log("[OrderItem: fetchOrderMeals] orderMealIDs = ", orderMealIDs);
-            setBulkOrder((total_meal_amount >= 20)? true : false);
-            try {
-                const res = await fetch(
-                    BACKEND_URL + `/orders/orderMeals?orderMealIDs=${order_meal_ids}`
-                ).then(res => { return res.json(); });
-                setOrderMeal(res);
-                // console.log("[fetchOrderMeals] order_meals: ", order_meals);
-            } catch (e) {
-                console.log("Error fetching all_orders from backend: ", e);
-            }
-        };
-
-        setOrderPickupTime(new Date(order.Pickup_Time));
-        const abortController = new AbortController();
-        fetchOrderMeals();
-        return () => {
-            abortController.abort();
+            setOrderMealIDs(tmp);
+            return total_meal_amount;
         }
+        const total_meal_amount = initOrderMealIDs();
+        setBulkOrder((total_meal_amount >= 20) ? true : false);
+        setOrderPickupTime(new Date(order.Pickup_Time));
     }, [order]);
 
+    /* check order_status & determine cancel deadline */
     useEffect(() => {
         function checkOrderStatus() {
-            if (order.Status === OrderStatus.WAIT_FOR_APPROVAL) {
+            if (order.Status === OrderStatus.WAIT_FOR_APPROVAL
+                || order.Status === OrderStatus.PREPARING
+                || order.Status === OrderStatus.READY_FOR_PICKUP) {
                 setOrderStatus("IN_PROGRESS");
-                setOrderStatusInfo("等待商家接單");
             }
-            else if (order.Status === OrderStatus.PREPARING) {
-                setOrderStatus("IN_PROGRESS");
-                setOrderStatusInfo("餐點製作中");
-            }
-            else if (order.Status === OrderStatus.READY_FOR_PICKUP) {
-                setOrderStatus("IN_PROGRESS");
-                setOrderStatusInfo("等待取餐中");
-            }
-            else if (order.Status === OrderStatus.PICKED_UP) {
+            else { // PICKED_UP, CANCELLED_UNCHECKED, CANCELLED_CHECKED
                 setOrderStatus("COMPLETED");
-                setOrderStatusInfo("訂單已完成");
-            }
-            else { // CANCELLED_UNCHECKED, CANCELLED_CHECKED
-                setOrderStatus("COMPLETED");
-                setOrderStatusInfo("訂單已取消");
             }
         }
 
@@ -112,9 +87,9 @@ export default function OrderItem({ order, handleOrderCancellation }:
         calOrderCancelDL();
     }, [order, bulk_order, order_pickup_time]);
 
+    /* determine if this order can be cancelled (according to the order_status and cancel deadline ) */
     useEffect(() => {
         function checkCanCancel() {
-            // let cur_time = new Date("2023-10-28T02:59:59.000Z");
             let cur_time = new Date();
             setCanCancel(order_status === "IN_PROGRESS" && cur_time.getTime() < order_cancel_dl.getTime());
         }
@@ -122,38 +97,69 @@ export default function OrderItem({ order, handleOrderCancellation }:
         checkCanCancel();
     }, [order_cancel_dl, order_status]);
 
+    /* fetch order meals */
+    useEffect(() => {
+        async function fetchOrderMeals() {
+            let res;
+            try {
+                const url: string = BACKEND_URL + "/orders/orderMeals";
+                res = await fetch(url, {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({
+                        orderMealIDs: order_meal_ids
+                    })
+                }).then((res) => { return res.json() });
+            } catch (e) {
+                console.log("Error fetching all_orders from backend: ", e);
+                throw e;
+            }
+            setOrderMeal(res);
+        };
+
+        const abortController = new AbortController();
+        fetchOrderMeals();
+        return () => {
+            abortController.abort();
+        }
+    }, [order, order_meal_ids]);
+
+    /* render different content depend on order.Status */
     function orderStatusInfoRenderSwitch() {
         switch (order.Status) {
             case OrderStatus.WAIT_FOR_APPROVAL:
             case OrderStatus.PREPARING:
                 return (
                     <span className={style.orderItem_orderStatus_inProgress}>
-                        {order_status_info}
+                        餐點製作中
                     </span>);
             case OrderStatus.READY_FOR_PICKUP:
                 return (
                     <span className={style.orderItem_orderStatus_inProgressReady}>
-                        {order_status_info}
+                        等待取餐中
                     </span>);
             case OrderStatus.PICKED_UP:
                 return (
                     <span className={style.orderItem_orderStatus_Completed}>
-                        {order_status_info}
+                        訂單已完成
                     </span>);
             default:
                 return (
                     <span className={style.orderItem_orderStatus_CompletedCancelled}>
-                        {order_status_info}
+                        訂單已取消
                     </span>);
         }
     }
 
     return (
         <div className={style.orderItem_container}>
+            {/* order info & [cancel button / order status] */}
             <div className={style.orderItem_infoItemAndButtonContainer}>
+                {/* order info */}
                 <div className={style.orderItem_infoItemContainer}>
                     <OrderInfoItem
                         order_id={order.Order_ID}
+                        vendor_id={order.Vendor_ID}
                         vendor_name={order.Vendor_Name}
                         order_status={order_status}
                         order_pickup_time={order_pickup_time}
@@ -161,7 +167,10 @@ export default function OrderItem({ order, handleOrderCancellation }:
                     />
                 </div>
 
+                {/* [cancel button / order status] & total price */}
                 <div className={style.orderItem_buttonAndPriceContainer}>
+
+                    {/* cancel button / order status */}
                     <div className={style.orderItem_cancelAndStatusBox}>
                         { can_cancel ?
                             <button className={style.orderItem_cancelButton} onClick={() => handleCancelButtonClick()}>
@@ -174,8 +183,9 @@ export default function OrderItem({ order, handleOrderCancellation }:
                         }
                     </div>
                     
+                    {/* total price & disclosure button */}
                     <div className={style.orderItem_totalPriceAndDetail}>
-                        <span>{`總計: NT$${order.Cash_Amount}`}</span>
+                        <span>{`總計：NT$${order.Cash_Amount}`}</span>
                         <button className={triangle_style.triangle_buttons} onClick={() => handleDisclosureClick()}>
                             {disclosure ?
                                 <div className={`${triangle_style.triangle_buttons__triangle} ${triangle_style.triangle_buttons__triangle_b}`}></div>
@@ -187,7 +197,9 @@ export default function OrderItem({ order, handleOrderCancellation }:
                 </div>
             </div>
 
+            {/* order meals */}
             <div>
+                {/* disclosure button -> show / not show */}
                 {disclosure ?
                     <div className={style.orderItem_mealContainer}>
                         {order_meals.length > 0 ? (
@@ -197,7 +209,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                                 ))}
                             </div>
                         ) : (
-                            <div className="orderMeals_empty">\
+                            <div className="orderMeals_empty">
                                 <span className="orderMeals_empty_title">Error: No meals in this order.</span>
                             </div>
                         )}

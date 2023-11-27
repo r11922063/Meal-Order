@@ -27,7 +27,7 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
             setBulkOrder((total_meal_amount >= 20)? true : false);
             try {
                 const res = await fetch(
-                    BACKEND_URL + `/orders/orderMeals?orderMealIDs=${order_meal_ids}`
+                    BACKEND_URL + `/vendor/orderMeals?orderMealIDs=${order_meal_ids}`
                 ).then(res => { return res.json(); });
                 setOrderMeal(res);
                 console.log("[fetchOrderMeals] order_meals: ", order_meals);

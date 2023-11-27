@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import OrderTab from "../components/Order/OrderTab";
-import style from '../style/Order/Order.module.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -14,13 +13,16 @@ export default function Orders() {
     const [orders_in_progress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customer_id = params.customerId;
     const [update_order_state, setUpdateOrderState] = useState(true);
+    const [completed_order_time, setCompletedOrderTime] = useState("");
 
+    /* tab_list clicked */
     function changeTab(tab: number) {
         if (tab !== display) {
             setDisplay(tab);
         }
     }
 
+    /* cancel order & re-render */
     async function cancelOrder(order_id: number) {
         async function toCancelOrder() {
             let success = false;
@@ -36,19 +38,48 @@ export default function Orders() {
             abortController.abort();
             return success;
         }
-        // console.log("click cancel button!");
         const res = await toCancelOrder();
         setUpdateOrderState(!update_order_state);
         return res;
     }
 
+    /* Set the date_time one month ago in mysql format */
     useEffect(() => {
-        async function fetchOrders(customerId: string) {
-            try {
-                const url: string = BACKEND_URL + `/orders?customerID=${customer_id}&display=${display}`;
-                const res = await fetch(url).then(res => { return res.json(); });
-                // console.log("[fetechOrders] Result: ", res);
-                console.log()
+        const toSqlDatetime = (inputDate: Date) => {
+            const date = new Date(inputDate)
+            const dateWithOffest = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+            return dateWithOffest
+                .toISOString()
+                .slice(0, 19)
+                .replace('T', ' ')
+        }
+
+        let oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(new Date().getMonth() - 1);
+        setCompletedOrderTime(toSqlDatetime(oneMonthAgo));
+    }, []);
+
+    /* fetch orders */
+    useEffect(() => {
+
+        async function fetchOrders() {
+            if (display === 0 || (display === 1 && completed_order_time.length > 0)) {
+                const url: string = BACKEND_URL + "/orders";
+                let res;
+                try {
+                    res = await fetch(url, {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json", },
+                        body: JSON.stringify({
+                            customerID: customer_id,
+                            display: display,
+                            completed_order_time: completed_order_time
+                        })
+                    }).then((res) => { return res.json() });
+                } catch (e) {
+                    console.log("Error fetching all_orders from backend: ", e);
+                    throw e;
+                }
                 if (display === 0) {
                     setOrdersInProgress(res);
                     setOrdersCompleted([]);
@@ -56,27 +87,40 @@ export default function Orders() {
                     setOrdersInProgress([]);
                     setOrdersCompleted(res);
                 }
-            } catch (e) {
-                console.log("Error fetching all_orders from backend: ", e);
             }
         };
 
         const abortController = new AbortController();
-        fetchOrders(customer_id!);
+        fetchOrders();
         return () => {
             abortController.abort();
         }
-    }, [customer_id, display, update_order_state]);
+    }, [customer_id, display, update_order_state, completed_order_time]);
+
+    /* determine the tab's style */
+    function tabListStyleSwitch(tab_id: number) {
+        const styleTabListChosen = {
+            color: "black",
+            fontWeight: "bold",
+            backgroundColor: "gainsboro"
+        };
+
+        const styleTabListUnchosen = {
+            color: "black",
+            fontWeight: "bold",
+        };
+
+        if (tab_id === display) return styleTabListChosen;
+        else return styleTabListUnchosen;
+    }
 
     return (
         <>
-            <h2 className={style.order_title}>
-                我的訂單
-            </h2>
+            <h1> 我的訂單 </h1>
             <Tabs>
                 <TabList>
-                    <Tab onClick={() => changeTab(0)}>未完成</Tab>
-                    <Tab onClick={() => changeTab(1)}>已完成</Tab>
+                    <Tab style={ tabListStyleSwitch(0) } onClick={() => changeTab(0)}>進行中</Tab>
+                    <Tab style={ tabListStyleSwitch(1) } onClick={() => changeTab(1)}>近期完成</Tab>
                 </TabList>
 
                 <TabPanel>
