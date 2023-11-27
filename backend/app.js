@@ -7,7 +7,7 @@ import http from 'http';
 import 'dotenv/config';
 import { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
-//import SendMail from './models/mail.model.js';
+import DailySchedule from './models/schedule.model.js';
 
 import indexRouter from './routes/index.js'
 import usersRouter from './routes/users.js'
@@ -27,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 const server = http.createServer(app);
-
+const dailySchedule = DailySchedule();
 
 app.use(cors());
 app.set('port', process.env.PORT);
