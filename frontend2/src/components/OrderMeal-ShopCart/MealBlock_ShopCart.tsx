@@ -3,6 +3,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import MealItem from './MealItem_ShopCart';
 import { CustomerOrderDetail } from '../../type'
 import { BACKEND_URL } from '../../constant';
@@ -14,6 +15,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
     const [pickupTime, setPickupTime] = useState(new Date());
     const [cashAmount, setcashAmount] = useState(0);
     const [mealList, setMealList] = useState<CustomerOrderDetail[]>([]);
+    const [vendor_id, setvendor_id] = useState(0);
     let warning: number;
 
     /* Backend Function: Submit Order Button */
@@ -66,6 +68,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                 setMealList(result[0]['Meal_List']);
                 setcashAmount(result[0]['Cash_Amount']);
                 setMealList(result[0]['Meal_List']);
+                setvendor_id(result[0]['Vendor_ID'])
             }
             catch (err) {
                 throw err;
@@ -107,8 +110,10 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                     <div className={style.InfoAndButton}>
                         <div className={style.OrderInfo}>
                             <div>
-                                <h1 className={style.ResName}>
-                                    {vendorName}
+                                <h1 className={style.ResName1} >
+                                    <Link to={`/customer/1/vendor/${vendor_id}`}>
+                                        {vendorName}
+                                    </Link>
                                 </h1>
                                 <p>
                                     取餐時間：{year} 年 {month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
@@ -176,7 +181,9 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                         <div className={style.OrderInfo}>
                             <div>
                                 <h1 className={style.ResName}>
-                                    {vendorName}(取餐時間已逾時)
+                                    <Link to={`/customer/1/vendor/${vendor_id}`} >
+                                        {vendorName}
+                                    </Link>(已逾時)
                                 </h1>
                                 <p>
                                     取餐時間：{year} 年 {month} 月 {date} 日 {daystrArray[+day]}, {hour_str}:{minute}
