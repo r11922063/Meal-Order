@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import OrderTab from "../components/Order/OrderTab";
-import style from '../style/Order/Order.module.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -16,12 +15,14 @@ export default function Orders() {
     const [update_order_state, setUpdateOrderState] = useState(true);
     const [completed_order_time, setCompletedOrderTime] = useState("");
 
+    /* tab_list clicked */
     function changeTab(tab: number) {
         if (tab !== display) {
             setDisplay(tab);
         }
     }
 
+    /* cancel order & re-render */
     async function cancelOrder(order_id: number) {
         async function toCancelOrder() {
             let success = false;
@@ -37,7 +38,6 @@ export default function Orders() {
             abortController.abort();
             return success;
         }
-        // console.log("click cancel button!");
         const res = await toCancelOrder();
         setUpdateOrderState(!update_order_state);
         return res;
@@ -97,27 +97,26 @@ export default function Orders() {
         }
     }, [customer_id, display, update_order_state, completed_order_time]);
 
+    /* determine the tab's style */
     function tabListStyleSwitch(tab_id: number) {
+        const styleTabListChosen = {
+            color: "black",
+            fontWeight: "bold",
+            backgroundColor: "gainsboro"
+        };
+
+        const styleTabListUnchosen = {
+            color: "black",
+            fontWeight: "bold",
+        };
+
         if (tab_id === display) return styleTabListChosen;
         else return styleTabListUnchosen;
     }
 
-    const styleTabListChosen = {
-        color: "black",
-        fontWeight: "bold",
-        backgroundColor: "gainsboro"
-    };
-
-    const styleTabListUnchosen = {
-        color: "black",
-        fontWeight: "bold",
-    };
-
     return (
         <>
-            <h2 className={style.order_title}>
-                我的訂單
-            </h2>
+            <h1> 我的訂單 </h1>
             <Tabs>
                 <TabList>
                     <Tab style={ tabListStyleSwitch(0) } onClick={() => changeTab(0)}>進行中</Tab>
