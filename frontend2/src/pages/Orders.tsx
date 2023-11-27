@@ -15,12 +15,14 @@ export default function Orders() {
     const [update_order_state, setUpdateOrderState] = useState(true);
     const [completed_order_time, setCompletedOrderTime] = useState("");
 
+    /* tab_list clicked */
     function changeTab(tab: number) {
         if (tab !== display) {
             setDisplay(tab);
         }
     }
 
+    /* cancel order & re-render */
     async function cancelOrder(order_id: number) {
         async function toCancelOrder() {
             let success = false;
@@ -36,7 +38,6 @@ export default function Orders() {
             abortController.abort();
             return success;
         }
-        // console.log("click cancel button!");
         const res = await toCancelOrder();
         setUpdateOrderState(!update_order_state);
         return res;
@@ -96,21 +97,22 @@ export default function Orders() {
         }
     }, [customer_id, display, update_order_state, completed_order_time]);
 
+    /* determine the tab's style */
     function tabListStyleSwitch(tab_id: number) {
+        const styleTabListChosen = {
+            color: "black",
+            fontWeight: "bold",
+            backgroundColor: "gainsboro"
+        };
+
+        const styleTabListUnchosen = {
+            color: "black",
+            fontWeight: "bold",
+        };
+
         if (tab_id === display) return styleTabListChosen;
         else return styleTabListUnchosen;
     }
-
-    const styleTabListChosen = {
-        color: "black",
-        fontWeight: "bold",
-        backgroundColor: "gainsboro"
-    };
-
-    const styleTabListUnchosen = {
-        color: "black",
-        fontWeight: "bold",
-    };
 
     return (
         <>
