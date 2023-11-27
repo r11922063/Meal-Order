@@ -1,4 +1,5 @@
 import type { CustomerOrder, OrderTimeInfo } from '../../type'
+import { BACKEND_URL } from '../../constant'
 import style from '../../style/Vendor/VendorOrderInfoItem.module.css'
 import triangle_style from '../../style/Order/TriangleButton.module.css'
 import { useState, useEffect } from "react";
@@ -8,21 +9,50 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
-    function confirmOrder() {
-        console.log("click cancel button!");
-        // TODO: confirm order
+    async function confirmOrder() {
+        fetch(BACKEND_URL + `/vendor/confirmOrder`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : order.Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        window.location.reload()
     }
-    function finishOrder() {
-        console.log("click cancel button!");
-        // TODO: finish order
+    async function finishOrder() {
+        fetch(BACKEND_URL + `/vendor/finishOrder`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : order.Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        window.location.reload()
     }
-    function cancelConfirm() {
-        console.log("click confirm button!");
-        // TODO: confirm cancel
+    async function cancelConfirm() {
+        fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : order.Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        window.location.reload()
     }
-    function pickUpConfirm() {
-        console.log("click pick up button!");
-        // TODO: confirm pick up
+    async function pickupConfirm() {
+        // console.log("click pick up button!");
+        fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : order.Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        window.location.reload()
     }
 
     useEffect(() => {
@@ -31,8 +61,8 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
             const DAYS: Array<string> = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
             let time_info: OrderTimeInfo = {
                 year: date_time.getFullYear().toString(),
-                month: date_time.getMonth().toString(),
-                date: date_time.getDate().toString(),
+                month: (date_time.getMonth() + 1).toString(),
+                date: (date_time.getDate()).toString(),
                 day: DAYS[date_time.getDay()],
                 hour: ((date_time.getHours() > 12) ?
                     date_time.getHours() - 12 : date_time.getHours()).toString(),
@@ -58,7 +88,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
         };
 
         function buildTimeStr(time_info: OrderTimeInfo) {
-            return `${time_info.month} 月 ${time_info.date} 日 ${time_info.day}, ${time_info.dayPeriod} ${time_info.hour}:${time_info.minute}`;
+            return `${time_info.year} 年 ${time_info.month} 月 ${time_info.date} 日 ${time_info.day}, ${time_info.dayPeriod} ${time_info.hour}:${time_info.minute}`;
         }
 
         let order_pickup_time: Date = new Date(order.Pickup_Time);
@@ -89,7 +119,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
                         } else if (order.Status === 'CANCELLED_UNCHECKED') {
                             cancelConfirm();
                         } else if (order.Status === 'READY_FOR_PICKUP') {
-                            pickUpConfirm();
+                            pickupConfirm();
                         }
                     }}>
                         <span>{(order.Status === 'WAIT_FOR_APPROVAL') ? "接單" : 
