@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import OrderTab from "../components/Order/OrderTab";
-import style from '../style/Order/Order.module.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
@@ -115,9 +114,7 @@ export default function Orders() {
 
     return (
         <>
-            <h2 className={style.order_title}>
-                我的訂單
-            </h2>
+            <h1> 我的訂單 </h1>
             <Tabs>
                 <TabList>
                     <Tab style={ tabListStyleSwitch(0) } onClick={() => changeTab(0)}>進行中</Tab>
