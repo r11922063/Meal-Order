@@ -1,0 +1,5 @@
+docker build -t meal-order-mysql . --no-cache
+docker run -p 5555:5555 meal-order-mysql
+
+# You can test the container with this command
+mysql -h localhost -P 5555 -u root -p
