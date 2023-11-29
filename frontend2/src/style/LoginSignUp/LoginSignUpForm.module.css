@@ -3,6 +3,10 @@
 @value vendor-primary: rgb(14, 181, 22);
 @value vendor-secondary: rgb(225, 253, 227);
 
+.LoginForm {
+    margin-top: 0.5vw;
+}
+
 .LoginForm.customer {
     background-color: customer-secondary;
     border-radius: 10px;
@@ -99,7 +103,7 @@
 }
 
 .InputImg img {
-    width: 240px;
-    height: 180px;
+    width: 200px;
+    height: 150px;
     cursor: pointer;
 }
