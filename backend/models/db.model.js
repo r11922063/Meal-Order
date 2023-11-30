@@ -4,6 +4,7 @@ import { db_config } from "../config/db.config.js";
 console.log("Trying to connect to DB...");
 const connection = mysql.createConnection({
     host: db_config.HOST,
+    port: db_config.PORT,
     user: db_config.USER,
     password: db_config.PASSWORD,
     database: db_config.DB
