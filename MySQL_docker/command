@@ -1,0 +1,6 @@
+docker build -t meal-order-mysql . --no-cache
+docker run -p 3306:3306 meal-order-mysql
+
+# You can test the container with this command
+# Before testing, remember to shutdown MySQL Workbench server
+mysql -h localhost -P 3306 -u root -p

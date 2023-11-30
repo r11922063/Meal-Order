@@ -9,6 +9,7 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
+    /* build pickup_time_str & cancel_deadline_str */
     useEffect(() => {
 
         function buildTimeInfo(date_time: Date) {
@@ -38,9 +39,13 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
 
     return (
         <div className={style.orderInfoItem_container} onClick={() => console.log("hi")}>
+
+            {/* [click vendor name] link to vendor-order page */}
             <Link className={style.orderInfoItem_title} to={`/customer/1/vendor/${vendor_id}`}>
                 {vendor_name}
             </Link>
+
+            {/* order info */}
             <span className={style.orderInfoItem_note}>{'訂單編號 #' + order_id}</span>
             <span className={style.orderInfoItem_note}>{'取餐時間：' + pickup_time_str}</span>
             { order_status === "IN_PROGRESS"?
