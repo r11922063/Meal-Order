@@ -3,5 +3,7 @@ FROM mysql:8.2.0
 ENV MYSQL_ROOT_PASSWORD=1qaz2wsx
 ENV MYSQL_DATABASE=MEAL_ORDER
 
+WORKDIR .
+
 COPY init.sql /docker-entrypoint-initdb.d/
-EXPOSE 5555
+EXPOSE 3306
