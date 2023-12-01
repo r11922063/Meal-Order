@@ -6,4 +6,5 @@ ENV MYSQL_DATABASE=MEAL_ORDER
 WORKDIR .
 
 COPY init.sql /docker-entrypoint-initdb.d/
+COPY utf8mb4.cnf /etc/mysql/conf.d
 EXPOSE 3306
