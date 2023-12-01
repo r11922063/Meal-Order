@@ -8,12 +8,18 @@ services:
     #   - mysql-data:/var/lib/mysql
     networks:
       - backend-net
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://127.0.0.1:3306"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
 
   backend:
     image: meal-order-backend:latest
     restart: always
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - backend-net
     ports:
