@@ -5,11 +5,13 @@ const router = express.Router();
 
 const getAllOrders = async(req,res,next)=>{
     try{
+        
         const cmd = 'Select `Order_ID`,`Pickup_Time` from `Order` \
                     where `Status` = "IN_CART" \
-                    and `Customer_ID` = ? ' ;
+                    and `Customer_ID` = ? ' 
+        
         const Customer_ID = req.query.Customer_ID;
-        const [rows,] = await query(cmd,[Customer_ID]);
+        const [rows,] = await query(cmd,[+Customer_ID]);
         res.json(rows);
     }
     catch(err){
@@ -19,7 +21,7 @@ const getAllOrders = async(req,res,next)=>{
 
 const getOneOrder = async(req,res,next)=>{
     try{
-        const cmd = 'with temp_t as (select ma.`Order_ID`,t1.`Name`, ma.`Pickup_Time`, ma.`Meal_List`, ma.`Cash_Amount` \
+        const cmd = 'with temp_t as (select ma.`Order_ID`,t1.`Name`, ma.`Pickup_Time`, ma.`Meal_List`, ma.`Cash_Amount`, ma.`Vendor_ID` \
                     from `Order` ma inner join `Vendor` t1 where ma.`Vendor_ID` = t1.`Vendor_ID`) \
                     select * from temp_t where `Order_ID` = ?'
         const Order_ID = req.query.Order_ID;
@@ -53,25 +55,31 @@ const postSubmitOrder = async (req, res, next) =>{
     const day = req.body.mealshowday;
     const Meal_List = req.body.Meal_List;
     const Cash_Amount = req.body.Cash_Amount;
+    const pickupTime = req.body.pickupTime;
     try{
         let BanSubmit=false;
-        for (let i=0; i<Meal_List.length; i++){
-            const [rows1,] = await query(cmd1,[day,Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
-            if(rows1[0]['BanSubmit']){
-                BanSubmit = true;
-                break;
-            }
-        }
-        if (BanSubmit){
-            res.json({msg:true});
-        }
-        else{
-            await query(cmd2_1,[JSON.stringify(Meal_List),Cash_Amount,Order_ID]);
+        if (((new Date()).getTime())>((new Date(pickupTime)).getTime())){
+            res.json({msg:0})
+        }else{
             for (let i=0; i<Meal_List.length; i++){
-                await query(cmd2_2,[day,day,Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
+                const [rows1,] = await query(cmd1,[day,Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
+                if(rows1[0]['BanSubmit']){
+                    BanSubmit = true;
+                    break;
+                }
             }
-            res.json({msg:false})
+            if (BanSubmit){
+                res.json({msg:1});
+            }
+            else{
+                await query(cmd2_1,[JSON.stringify(Meal_List),Cash_Amount,Order_ID]);
+                for (let i=0; i<Meal_List.length; i++){
+                    await query(cmd2_2,[day,day,Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
+                }
+                res.json({msg:2})
+            }
         }
+        
     }catch(err){
         throw err;
     }

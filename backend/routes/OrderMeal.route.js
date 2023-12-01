@@ -64,28 +64,33 @@ const AddCart = async(req,res,next)=>{
     const str = "'[{"+'"Amount":?,"Meal_ID":?}]'+"'"
     const cmd3 = 'INSERT INTO `Order` (`Customer_ID`, `Vendor_ID`, `Status`, `Pickup_Time`, `Meal_List`, `Cash_Amount`) \
                 VALUES (?,?,"IN_CART",?,'+str+',?)'
-    try{
-        const [rows1,] = await query(cmd0,[day,meal_ID])
-        if (rows1[0]['inv']<amount || amount==0){
-            res.json({msg:true});
-        }
-        else{        
-            const [rows2,] = await query(cmd1,[Customer_ID,Vendor_ID,pickuptime])
-            if(rows2.length==0){
-                await query(cmd3,[Customer_ID,Vendor_ID,pickuptime,amount,meal_ID,Cash_Amount]);
+    const time_arr = pickuptime.split(',')
+    if((new Date()).getTime() > (new Date(+time_arr[0],+time_arr[1]-1,+time_arr[2],+time_arr[3],+time_arr[4],+time_arr[5]).getTime())){
+        res.json({msg:0})
+    }
+    else{
+        try{
+            const [rows1,] = await query(cmd0,[day,meal_ID])
+            if (rows1[0]['inv']<amount || amount==0){
+                res.json({msg:1});
             }
-            else{
-                const [rows3,] = await query(cmd2_1,[Customer_ID,Vendor_ID,pickuptime])
-                const append = (rows3[0]['ext'].includes(meal_ID));
-                const order_id =rows3[0]['Order_ID'];
-                const [adjust_MealList,Total_amount] = await AdjustMealList(order_id,meal_ID,amount,append);
-                await query(cmd2_2,[JSON.stringify(adjust_MealList),Total_amount,order_id]);
-            }
-            res.json({msg:false});
+            else{        
+                const [rows2,] = await query(cmd1,[Customer_ID,Vendor_ID,pickuptime])
+                if(rows2.length==0){
+                    await query(cmd3,[Customer_ID,Vendor_ID,pickuptime,amount,meal_ID,Cash_Amount]);
+                }
+                else{
+                    const [rows3,] = await query(cmd2_1,[Customer_ID,Vendor_ID,pickuptime])
+                    const append = (rows3[0]['ext'].includes(meal_ID));
+                    const order_id =rows3[0]['Order_ID'];
+                    const [adjust_MealList,Total_amount] = await AdjustMealList(order_id,meal_ID,amount,append);
+                    await query(cmd2_2,[JSON.stringify(adjust_MealList),Total_amount,order_id]);
+                }
+                res.json({msg:2});
+            }            
+        }catch(error){
+            throw error;
         }
-        
-    }catch(error){
-        throw error;
     }
 }
 

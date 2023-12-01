@@ -4,7 +4,7 @@ import { query } from "../models/dbasync.model.js";
 const router = express.Router();
 
 const getOrders = async (req, res, next) => {
-    const display = req.query.display;
+    const display = req.body.display;
     if (display == 0) {
         await getOrdersInProgress(req, res, next);
     } else {
@@ -13,13 +13,16 @@ const getOrders = async (req, res, next) => {
 };
 
 const getOrdersCompleted = async (req, res, next) => {
-    const customer_id = req.query.customerID;
+    const customer_id = req.body.customerID;
+    const completed_order_time = req.body.completed_order_time;
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
-            FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
+            FROM (SELECT * from`Order` WHERE Customer_ID = ? \
+                AND (Pickup_Time >= ?) \
+                AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
             LEFT JOIN Vendor ON orders.Vendor_ID = Vendor.Vendor_ID;';
         const [rows, fields] = await query(query_str, 
-            [customer_id, "PICKED_UP", "CANCELLED_UNCHECKED", "CANCELLED_CHECKED"]);
+            [customer_id, completed_order_time, "PICKED_UP", "CANCELLED_UNCHECKED", "CANCELLED_CHECKED"]);
         res.json(rows);
     }
     catch (err) {
@@ -28,7 +31,7 @@ const getOrdersCompleted = async (req, res, next) => {
 };
 
 const getOrdersInProgress = async (req, res, next) => {
-    const customer_id = req.query.customerID;
+    const customer_id = req.body.customerID;
     try {
         const query_str = 'SELECT orders.*, Vendor.Name AS Vendor_Name \
             FROM (SELECT * from`Order` WHERE Customer_ID = ? AND (`Status` = ? OR `Status` = ? OR `Status` = ?)) AS orders \
@@ -43,7 +46,7 @@ const getOrdersInProgress = async (req, res, next) => {
 };
 
 const getOrderMeals = async (req, res, next) => {
-    const order_meal_ids = (req.query.orderMealIDs).split(',');
+    const order_meal_ids = req.body.orderMealIDs;
     var query_results = [];
     for (let i = 0; i < order_meal_ids.length; i++) {
         try {
@@ -77,9 +80,9 @@ const cancelOrder = async (req, res, net) => {
     }
 }
 
-router.get('/', getOrders);
+router.post('/', getOrders);
 router.get('/cancelOrder', cancelOrder);
-router.get('/orderMeals', getOrderMeals)
+router.post('/orderMeals', getOrderMeals)
 
 export default router;
 
