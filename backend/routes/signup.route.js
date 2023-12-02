@@ -1,9 +1,8 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
-import Multer from 'multer';
+import upload from '../models/upload.model.js'
 
 const router = express.Router();
-const upload = Multer();
 
 const CheckUser = async (email, identity) => {
     if (identity === "customer") {
@@ -17,14 +16,14 @@ const CheckUser = async (email, identity) => {
     throw "No User";
 }
 
-const AddUser = async ({email, name, password, type, address, img, identity}) => {
+const AddUser = async ({email, name, password, type, address, imgURL, identity}) => {
     try {
         if (identity === "customer") {
             await query('INSERT INTO `Customer` (`Email`, `Name`, `Password`) VALUES (?, ?, ?)', [email, name, password]);
         }
         else {
-            await query('INSERT INTO `Vendor` (`Email`, `Name`, `Password`, `Type`, `Address`, `Status`) \
-                        VALUES (?, ?, ?, ?, ?, ?)', [email, name, password, type, address, true]);
+            await query('INSERT INTO `Vendor` (`Email`, `Name`, `Password`, `Type`, `Address`, `Image_url`, `Status`) \
+                        VALUES (?, ?, ?, ?, ?, ?, ?)', [email, name, password, type, address, imgURL, true]);
         }
         return await CheckUser(email, identity);
     } catch (error) {
@@ -34,9 +33,9 @@ const AddUser = async ({email, name, password, type, address, img, identity}) =>
 
 const SignUp = async (req, res, next) => {
     const { email, name, password, type, address, identity } = JSON.parse(req.body.data);
-    const img = req.file;
+    const imgURL = req.file.url;
     try {
-        const id = await AddUser({ email, name, password, type, address, img, identity });
+        const id = await AddUser({ email, name, password, type, address, imgURL, identity });
         return res.json({id: id});
     } catch (error) {
         return res.json(null);
