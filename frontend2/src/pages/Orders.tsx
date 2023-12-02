@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { CustomerOrder } from '../type'
+import { OrderStatus, CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import OrderTab from "../components/Order/OrderTab";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -12,7 +12,6 @@ export default function Orders() {
     const [orders_completed, setOrdersCompleted] = useState<CustomerOrder[]>([]);
     const [orders_in_progress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customer_id = params.customerId;
-    const [update_order_state, setUpdateOrderState] = useState(true);
     const [completed_order_time, setCompletedOrderTime] = useState("");
 
     /* tab_list clicked */
@@ -22,25 +21,42 @@ export default function Orders() {
         }
     }
 
+    const updateOrders = (order_id: number) => {
+        function updateOrdersCompleted(order_id: number) {
+            let order_cancelled = orders_in_progress.find((order) => order.Order_ID === order_id);
+            if (order_cancelled !== undefined) {
+                order_cancelled.Status = OrderStatus.CANCELLED_UNCHECKED;
+                let new_orders_completed = [order_cancelled, ...orders_completed];
+                new_orders_completed.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
+                setOrdersCompleted(new_orders_completed);
+            }
+        }
+
+        function updateOrdersInProgress(order_id: number) {
+            let filteredArray = orders_in_progress.filter(order => order.Order_ID !== order_id)
+            filteredArray.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
+            setOrdersInProgress(filteredArray);
+        }
+
+        updateOrdersCompleted(order_id);
+        updateOrdersInProgress(order_id);
+    };
+
     /* cancel order & re-render */
     async function cancelOrder(order_id: number) {
         async function toCancelOrder() {
             let success = false;
-            const abortController = new AbortController();
             try {
                 const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_id}`;
-                const res = await fetch(url, { 
-                    signal: abortController.signal }).then(res => { return res.json(); }); // changedRows
+                const res = await fetch(url).then(res => { return res.json(); }); // changedRows
                 success = res > 0;
             } catch (e) {
                 console.log("Error: cancel order from backend: ", e);
             }
-            abortController.abort();
             return success;
         }
-        const res = await toCancelOrder();
-        setUpdateOrderState(!update_order_state);
-        return res;
+        updateOrders(order_id);
+        toCancelOrder();
     }
 
     /* Set the date_time one month ago in mysql format */
@@ -81,10 +97,12 @@ export default function Orders() {
                     throw e;
                 }
                 if (display === 0) {
+                    res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
                     setOrdersInProgress(res);
                     setOrdersCompleted([]);
                 } else {
                     setOrdersInProgress([]);
+                    res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
                     setOrdersCompleted(res);
                 }
             }
@@ -95,7 +113,7 @@ export default function Orders() {
         return () => {
             abortController.abort();
         }
-    }, [customer_id, display, update_order_state, completed_order_time]);
+    }, [customer_id, display, completed_order_time]);
 
     /* determine the tab's style */
     function tabListStyleSwitch(tab_id: number) {
