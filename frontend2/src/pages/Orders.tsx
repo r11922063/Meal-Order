@@ -13,6 +13,8 @@ export default function Orders() {
     const [orders_in_progress, setOrdersInProgress] = useState<CustomerOrder[]>([]);
     const customer_id = params.customerId;
     const [completed_order_time, setCompletedOrderTime] = useState("");
+    const [orders_in_progress_feteched, setOrdersInProgressFetched] = useState<boolean>(false);
+    const [orders_completed_feteched, setOrdersCompletedFetched] = useState<boolean>(false);
 
     /* tab_list clicked */
     function changeTab(tab: number) {
@@ -75,11 +77,48 @@ export default function Orders() {
         setCompletedOrderTime(toSqlDatetime(oneMonthAgo));
     }, []);
 
-    /* fetch orders */
+    /* fetch orders in progress */
     useEffect(() => {
 
-        async function fetchOrders() {
-            if (display === 0 || (display === 1 && completed_order_time.length > 0)) {
+        async function fetchOrdersInProgress() {
+            if (display === 0 && orders_in_progress_feteched === false) {
+
+                const url: string = BACKEND_URL + "/orders";
+                let res;
+                try {
+                    res = await fetch(url, {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/json", },
+                        body: JSON.stringify({
+                            customerID: customer_id,
+                            display: display,
+                            completed_order_time: ""
+                        })
+                    }).then((res) => { return res.json() });
+                } catch (e) {
+                    console.log("Error fetching all_orders from backend: ", e);
+                    throw e;
+                }
+                // console.log("orders_in_progress fetched!");
+                res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
+                setOrdersInProgress(res);
+                setOrdersInProgressFetched(true);
+            }
+        };
+
+        const abortController = new AbortController();
+        fetchOrdersInProgress();
+        return () => {
+            abortController.abort();
+        }
+    }, [customer_id, display, orders_in_progress_feteched]);
+
+    /* fetch orders completed */
+    useEffect(() => {
+
+        async function fetchOrdersCompleted() {
+            if (display === 1 && completed_order_time.length > 0 && orders_completed_feteched === false) {
+
                 const url: string = BACKEND_URL + "/orders";
                 let res;
                 try {
@@ -96,24 +135,19 @@ export default function Orders() {
                     console.log("Error fetching all_orders from backend: ", e);
                     throw e;
                 }
-                if (display === 0) {
-                    res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
-                    setOrdersInProgress(res);
-                    setOrdersCompleted([]);
-                } else {
-                    setOrdersInProgress([]);
-                    res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
-                    setOrdersCompleted(res);
-                }
+                // console.log("orders_completed fetched!");
+                res.sort((a: CustomerOrder, b: CustomerOrder) => b.Order_ID - a.Order_ID);
+                setOrdersCompleted(res);
+                setOrdersCompletedFetched(true);
             }
         };
 
         const abortController = new AbortController();
-        fetchOrders();
+        fetchOrdersCompleted();
         return () => {
             abortController.abort();
         }
-    }, [customer_id, display, completed_order_time]);
+    }, [customer_id, display, completed_order_time, orders_completed_feteched]);
 
     /* determine the tab's style */
     function tabListStyleSwitch(tab_id: number) {
