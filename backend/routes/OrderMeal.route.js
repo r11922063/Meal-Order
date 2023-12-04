@@ -54,10 +54,10 @@ const AddCart = async(req,res,next)=>{
     const Cash_Amount = req.body.Cash_Amount;
     const cmd0 = 'select JSON_EXTRACT(`Inventory`,' + " '$. "+' "?" ' + " ') as inv from `Meal` where Meal_ID=? "
     const cmd1 = 'Select `Order_ID` from `Order` \
-                where `Customer_ID`=? and `Vendor_ID`=? and `Pickup_Time`=?'
+                where `Customer_ID`=? and `Vendor_ID`=? and `Pickup_Time`=? and `Status` = "IN_CART"'
 
     const cmd2_1 = "Select `Order_ID`,JSON_EXTRACT(`Meal_List`,'$[*].Meal_ID') as ext from `Order` \
-                where `Customer_ID`=? and `Vendor_ID`=? and `Pickup_Time`=?"
+                where `Customer_ID`=? and `Vendor_ID`=? and `Pickup_Time`=? and `Status` = 'IN_CART'"
     
     const cmd2_2 = "Update `Order` set `Meal_List`=?, `Cash_Amount`=? where Order_ID=?"
 
