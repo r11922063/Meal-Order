@@ -23,6 +23,9 @@ import orderMealRouter from './routes/OrderMeal.route.js'
 import ShopCartRouter from './routes/ShopCart.route.js'
 import vendorRouter from './routes/vendor.route.js'
 
+import promClient from 'prom-client'
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
@@ -55,6 +58,16 @@ app.use('/shopCart',ShopCartRouter);
 app.use('/vendor',vendorRouter);
 app.use('/customer', customerRouter)
 app.use('/orderMeal',orderMealRouter)
+
+const Registry = promClient.collectDefaultMetrics;
+const register = new Registry();
+
+// expose our metrics at the default URL for Prometheus
+app.get('/metrics', (async (request, response) => {
+  response.set('Content-Type', promClient.register.contentType);
+  response.send(await promClient.register.metrics());
+}));
+
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
