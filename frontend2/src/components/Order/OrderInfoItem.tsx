@@ -38,7 +38,7 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
     }, [order_pickup_time, order_cancel_dl]);
 
     return (
-        <div className={style.orderInfoItem_container} onClick={() => console.log("hi")}>
+        <div className={style.orderInfoItem_container}>
 
             {/* [click vendor name] link to vendor-order page */}
             <Link className={style.orderInfoItem_title} to={`/customer/1/vendor/${vendor_id}`}>

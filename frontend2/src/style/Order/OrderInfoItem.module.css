@@ -15,6 +15,7 @@
 } */
 
 .orderInfoItem_title {
+    width: fit-content;
     font-size: 32px;
     font-weight: bold;
     color: black;
