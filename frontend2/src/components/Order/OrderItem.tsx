@@ -29,17 +29,9 @@ export default function OrderItem({ order, handleOrderCancellation }:
         if (checkCancelAgain === true) {
             const response = window.confirm(`確定要取消訂單 #${order.Order_ID} 嗎?`);
             if (response) {
-                const res = await handleOrderCancellation(order.Order_ID).then((res: number) => { return res; });
-                if (res) {
-                    alert(`成功取消訂單 #${order.Order_ID}`);
-                }
-                else {
-                    alert(`沒有成功取消訂單 #${order.Order_ID}，請再試一次`);
-                }
+                // alert(`成功取消訂單 #${order.Order_ID}`);
+                handleOrderCancellation(order.Order_ID);
             }
-        }
-        else {
-            alert(`已經無法取消訂單 #${order.Order_ID}`);
         }
     }
 
