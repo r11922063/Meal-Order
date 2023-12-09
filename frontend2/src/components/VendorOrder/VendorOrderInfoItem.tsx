@@ -8,6 +8,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     { order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean, bulk_order: boolean }) {
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
+    const [customerEmail, setcustomerEmail] = useState("");
 
     async function confirmOrder() {
         fetch(BACKEND_URL + `/vendor/confirmOrder`, {
