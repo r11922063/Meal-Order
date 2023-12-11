@@ -1,17 +1,19 @@
 .DropDown{
   position: relative;
-  top: 330px;
-  left: 2%;
+  top: 210px;
+  left: 3vw;
   border-radius:2vw ;
   border-style: none;
   background-color: #C4C4C440;
-  padding: 13px 20px;
-  margin-right: 1vw;
+  padding: 15px 8px;
+  /* margin-right: 100vw; */
   font-weight: bold;
   cursor: pointer;
+  text-align: center;
 }
 
 .DropDown option {
   font-weight: bold;
+  text-align: center;
 }
 

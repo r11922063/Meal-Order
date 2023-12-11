@@ -1,0 +1,11 @@
+.searchLine {
+    /* position: relative;
+    top: 230px; */
+    /* left: 2vw; */
+    left: 23vw;
+    position: absolute;
+    top: 304px;
+    font-size: 18px;
+    color: gray;
+    font-weight: bold;
+}
