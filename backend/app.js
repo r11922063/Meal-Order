@@ -23,6 +23,8 @@ import orderMealRouter from './routes/OrderMeal.route.js'
 import ShopCartRouter from './routes/ShopCart.route.js'
 import vendorRouter from './routes/vendor.route.js'
 
+import k8sTestRouter from './routes/k8sTest.route.js'
+
 import promClient from 'prom-client'
 
 
@@ -58,6 +60,7 @@ app.use('/shopCart',ShopCartRouter);
 app.use('/vendor',vendorRouter);
 app.use('/customer', customerRouter)
 app.use('/orderMeal',orderMealRouter)
+app.use('/k8sTest', k8sTestRouter)
 
 const Registry = promClient.collectDefaultMetrics;
 const register = new Registry();
