@@ -4,6 +4,7 @@ import { CustomerOrder } from '../type'
 import { BACKEND_URL } from '../constant'
 import style from '../style/Vendor/Vendor.module.css'
 import VendorOrderTab from "../components/VendorOrder/VendorOrderTab";
+import AutoRefreshComponent from "../components/VendorOrder/AutoRefreshComponent";
 
 const Today = new Date();
 
@@ -17,6 +18,7 @@ for (let step = 0; step < 3; step++){
     day.setDate(day.getDate() + step);
     DayArray.push(day);
 }
+  
 
 export default function Vendor() {
     const params = useParams();
@@ -60,6 +62,7 @@ export default function Vendor() {
                 }
             </select>
             <VendorOrderTab orders={orders}/>
+            <AutoRefreshComponent />
         </div>
     );
 }

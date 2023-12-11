@@ -20,7 +20,6 @@ export default function OrderContentItem({ orderContent, amount }: { orderConten
 
             <div className={style.orderContentItem_img}>
                 <img src={test_img} alt={orderContent.Meal_Name} />
-                {/* TODO: change to meal.Image_url */}
             </div>
         </div>
     );
