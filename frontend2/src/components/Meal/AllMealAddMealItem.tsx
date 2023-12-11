@@ -9,9 +9,12 @@ import { GrAdd } from "react-icons/gr"
 import ImageUploading, { ImageListType, ErrorsType } from 'react-images-uploading';
 import { useParams } from 'react-router-dom'
 
-const sendNewMealData = (newMeal: Meal, img: any, setMeals: any ) => {
+const sendNewMealData = async (newMeal: Meal, img: any, setMeals: any ) => {
+  const image_url = await sendNewMealImage(img, newMeal, setMeals);
+  console.log("image_url = ", image_url);
+  newMeal.Image_url = image_url;
+  
   const update_url = `${BACKEND_URL}/allMeals/addMealItem`;
-  var error = false;
   fetch(update_url, {
     method: 'POST',
     headers: {
@@ -22,34 +25,34 @@ const sendNewMealData = (newMeal: Meal, img: any, setMeals: any ) => {
     .then((data) => {
       // Update Meal_ID & Image_url
       const meal_id = data.meal_id;
-      const image_url = data.image_url;
       newMeal.Meal_ID = meal_id;
-      newMeal.Image_url = image_url;
-      console.log(meal_id, image_url);
-      // Upload image to backend server
-      sendNewMealImage(image_url, img);
       awaitSetMeals(setMeals, newMeal);
-      
-    }).then(() => {})
+    })
     .catch((err) => console.log(err));
 }
-
-const sendNewMealImage = (image_url: string, img: File) => {
+const sendNewMealImage = async (img: File, newMeal: Meal, setMeals: any) => {
   const upload_url = `${BACKEND_URL}/allMeals/uploadMealItemImage`;
   let formData = new FormData();
-  formData.append('img_url', image_url);
   formData.append('img', img);
-  fetch(upload_url, {
-    method: 'POST',
-    headers: {
-      // "Content-Type": "multipart/form-data"
-    },
-    body: formData
-  }).then((res) => {
-    res.json()
-  })
-    .then((data) => {console.log(data);})
-    .catch((err) => console.log(err));
+  try {
+    const response = await fetch(upload_url, {
+      method: 'POST',
+      headers: {
+        
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const returnData = await response.json();
+    return returnData.image_url;
+  } catch (err) {
+    console.error('Error:', err);
+    throw err;
+}
 }
 
 function sleep(ms: number) {
@@ -69,7 +72,7 @@ export default function AllMealAddMealItem({setMeals}: {setMeals: React.Dispatch
   const [image, setImages] = useState<ImageListType>([]);
   const uploadImageOnChange = (imageList: ImageListType, addUpdateIndex: any) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
+    // console.log(imageList, addUpdateIndex);
     setImages(imageList as never[]);
   };
 
