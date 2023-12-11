@@ -4,11 +4,12 @@ import { BACKEND_URL } from '../constant';
 import VendorBlock from '../components/VendorHomepage/VendorBlock'
 import style1 from '../style/CustomerHomepage/DropDown.module.css';
 import style2 from "../style/CustomerHomepage/CustomerSearch.module.css";
+import style3 from "../style/CustomerHomepage/SearchLine.module.css";
 
 export type Vendors = {
     Image_url: string,
     Name: string,
-    Address: string;
+    Address: string
     Vendor_ID: number;
 };
 
@@ -17,6 +18,7 @@ export default function Customer() {
     const id = params.customerId;
     const [vendorType, setVendorType] = useState("所有類型");
     const [vendors, setVendors] = useState<Vendors[]>([]);
+    const [searchResultLine, setSearchResultLine] = useState("");
     const [searchInput, setSearchInput] = useState('');
     const vendortypelist: string[] = ["所有類型", "台灣美食", "日本美食", "中式美食", "美式料理", "義大利美食", "韓國美食", "泰國美食", "港式美食", "純素料理", "其他異國料理", "速食", "飲料", "點心"]
 
@@ -26,6 +28,12 @@ export default function Customer() {
                 const url: string = `${BACKEND_URL}/customer?id=${ID}&vendortype=${vendortype}&searchinput=${searchinput}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
                 setVendors(result);
+                if (searchinput == ""){
+                    setSearchResultLine("");
+                }
+                else{
+                    setSearchResultLine(`${result.length}筆結果符合在"`+vendorType+`"搜尋"`+searchInput+`"`);
+                }
             }
             catch (err) {
                 throw err;
@@ -38,7 +46,7 @@ export default function Customer() {
         return () => {
             abortController.abort();
         }
-    }, [vendorType, searchInput]);
+    }, [vendorType, searchInput, id]);
 
     return (
         <>
@@ -52,16 +60,23 @@ export default function Customer() {
                     </div>
                 </div>
             </div>
+
+            {/* <SearchResultLine result_cnt={vendors.length} vendorType={vendorType} searchInput={searchInput} />             */}
+            <div className={style3.searchLine}>
+                {searchResultLine}
+            </div>
+
             {/* vendorTypeFilter */}
             <select 
                 value={vendorType}
-                className={style1.DropDown} 
+                className={style1.DropDown}
                 onChange={e=>{setVendorType(e.target.value);}}>
                 {vendortypelist.map(v => (<option value={v} key={v}> {v} </option>))}
             </select>
+
             {/* vendorBlocks */}
             <div className='VendorBlocks'>
-                {vendors.map(e=>{return <VendorBlock imgurl={e.Image_url} name={e.Name} addr={e.Address} vid={e.Vendor_ID} cid={id!}/>})}
+                {vendors.map(e=>{return <VendorBlock key={e.Vendor_ID} imgurl={e.Image_url} name={e.Name} addr={e.Address} vid={e.Vendor_ID} cid={id!}/>})}
             </div>
         </>
     );

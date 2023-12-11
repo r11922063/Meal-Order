@@ -1,11 +1,13 @@
 .VendorBlock{
     position: relative;
-    top: 350px;
-    width: 100%;
+    top: 220px;
+    width: 96%;
     background: white;
     cursor: pointer;
     border-radius: 8px;
     border: none;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 
@@ -17,14 +19,17 @@
 .VendorImg{
     position: relative;
     width: 100%;
-    max-height: 20vw;
+    max-height: 15vw;
     overflow:hidden;
     object-fit:cover;      
     display: block;
     padding-top : 2%;
+    border-radius: 15px;
+    
     }
 .VendorImg img{
   width: 100%;
+  border-radius: 15px;
 }
 
 .VendorInfo{
