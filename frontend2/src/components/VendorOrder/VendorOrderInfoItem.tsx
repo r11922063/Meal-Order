@@ -8,6 +8,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     { order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean, bulk_order: boolean }) {
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
+    const [customerEmail, setcustomerEmail] = useState("");
 
     async function confirmOrder() {
         fetch(BACKEND_URL + `/vendor/confirmOrder`, {
@@ -43,7 +44,6 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
         window.location.reload()
     }
     async function pickupConfirm() {
-        // console.log("click pick up button!");
         fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
             method: 'POST',
             headers: {
@@ -101,12 +101,8 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     return (
         <div className={style.orderInfoItem_item}>
             <div className={style.orderInfoItem_leftContainer}>
-                {/*<span className={style.orderInfoItem_title}>{order.Vendor_Name}</span>*/}
                 <span className={style.orderInfoItem_title}>{'訂單編號 #' + order.Order_ID}</span>
                 <span className={style.orderInfoItem_note}>{'取餐時間：' + pickup_time_str}</span>
-                {/* <span className={style.orderInfoItem_warning}>{'最後取消時間：' + cancel_dl_str}</span> */ }
-                {/* TODO: vendor name */}
-                {/* TODO: 取餐時間、最後取消時間 */}
             </div>
 
             <div className={style.orderInfoItem_rightContainer}>
