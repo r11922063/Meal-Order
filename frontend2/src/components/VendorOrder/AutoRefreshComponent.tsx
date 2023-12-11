@@ -11,7 +11,6 @@ const AutoRefreshComponent = () => {
 
   return (
     <div>
-        <p>This is an auto refrash component</p>
     </div>
   );
 };

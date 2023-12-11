@@ -8,7 +8,6 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     { order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean, bulk_order: boolean }) {
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
-    const [customerEmail, setcustomerEmail] = useState("");
 
     async function confirmOrder() {
         fetch(BACKEND_URL + `/vendor/confirmOrder`, {
@@ -19,6 +18,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
             body: JSON.stringify({"orderID" : order.Order_ID})
         }).then((res) => res.json())
           .catch((err) => console.log(err));
+        const response = window.confirm(`已接取訂單 #${order.Order_ID}`);
         window.location.reload()
     }
     async function finishOrder() {
@@ -66,7 +66,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
                 day: DAYS[date_time.getDay()],
                 hour: ((date_time.getHours() > 12) ?
                     date_time.getHours() - 12 : date_time.getHours()).toString(),
-                minute: date_time.getMinutes().toString(),
+                minute: (date_time.getMinutes() == 0)? "00" : date_time.getMinutes().toString(),
                 dayPeriod: (date_time.getHours() > 12) ? "下午" : "上午",
             };
             return time_info;
