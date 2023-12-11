@@ -33,7 +33,7 @@ const AddUser = async ({email, name, password, type, address, imgURL, identity})
 
 const SignUp = async (req, res, next) => {
     const { email, name, password, type, address, identity } = JSON.parse(req.body.data);
-    const imgURL = req.file.url;
+    const imgURL = identity === 'vendor' ? req.file.url : '';
     try {
         const id = await AddUser({ email, name, password, type, address, imgURL, identity });
         return res.json({id: id});
