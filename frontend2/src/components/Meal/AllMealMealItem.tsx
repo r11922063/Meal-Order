@@ -43,8 +43,8 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
         </div>
 
         <div className={style.allMealMealItem_imgBox}>
-          <img src={require(`../../assets/meal_imgs/${meal.Image_url}`)} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
-          {/* <img src={require(`../../assets/meal_imgs/10001.png`)} className={style.allMealMealItem_img} alt={meal.Meal_Name} /> */}
+          <img src={`${meal.Image_url}`} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
+          {/* <img src={`https://mealorder.blob.core.windows.net/image/dumplings.jpg`} className={style.allMealMealItem_img} alt={meal.Meal_Name} /> */}
         </div>
     </div>
   );

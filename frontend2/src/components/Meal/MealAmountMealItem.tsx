@@ -45,7 +45,7 @@ export default function MealAmountMealItem({ meal, setMeals, day }:
         </div>
 
         <div className={style.allMealMealItem_imgBox}>
-          <img src={require(`../../assets/meal_imgs/${meal.Image_url}`)} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
+          <img src={`${meal.Image_url}`} className={style.allMealMealItem_img} alt={meal.Meal_Name} />
         </div>
     </div>
   );
