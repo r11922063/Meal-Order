@@ -59,8 +59,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         已完售
                     </div>
                 </div>
-                <div className={style.Meal_img} >
-                    <img src={meal.Image_url} alt='test' width='100%' height='100%'/>
+                <div className={style.Meal_imgBox} >
+                    <img src={meal.Image_url} className={style.Meal_img} alt={meal.Meal_Name} />
                 </div>
             </div>
         );
