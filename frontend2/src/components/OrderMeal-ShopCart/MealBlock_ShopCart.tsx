@@ -96,7 +96,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
         hour_str = '下午 ' + (hour-12).toString();
     }
     let minute = pickupTime.getMinutes().toString();
-    if (minute == '0') {
+    if (minute === '0') {
         minute = '00'
     } else {
         minute = minute.toString();
@@ -128,14 +128,14 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                         DeleteOrder(Order_ID);
                                         window.location.reload();
                                     }
-                                }}>一鍵刪除<img src={require('../../assets/delete.png')} height='17vw' ></img></button>
+                                }}>一鍵刪除<img src={require('../../assets/delete.png')} height='17vw' alt='delete'></img></button>
                         </div>
                     </div>
                     <div className={style.Meals}>
                         <div>
                             {mealList.map(ele => (
                                 <MealItem key={ele['Meal_ID']} Order_ID={Order_ID} mealList={mealList}
-                                    setMealList={setMealList} Mealele={ele} mealshowday={(+day == 0) ? 7 : +day} initialcount={ele['Amount']} outofdate={false}
+                                    setMealList={setMealList} Mealele={ele} mealshowday={(+day === 0) ? 7 : +day} initialcount={ele['Amount']} outofdate={false}
                                     cashAmount={cashAmount} setcashAmount={setcashAmount} />
                             ))}
                         </div>
@@ -152,12 +152,12 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                             </div>
                             <button className={style.sendButton} onClick={
                                 async () => {
-                                    await SubmitOrder(Order_ID, (+day == 0) ? 7 : +day, mealList, cashAmount, pickupTime);
-                                    if(warning==0){
+                                    await SubmitOrder(Order_ID, (+day === 0) ? 7 : +day, mealList, cashAmount, pickupTime);
+                                    if(warning===0){
                                         alert('現在時刻已超過您的預定時間，請重新點餐!');
                                         window.location.reload();
                                     }
-                                    else if (warning==1) {
+                                    else if (warning===1) {
                                         alert('您所預定的餐點中，有餐點數量已超過當下庫存量');
                                         window.location.reload();
                                     }
@@ -165,7 +165,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                         window.location.reload();
                                     }
                                 }}>
-                                <img src={require('../../assets/checked.png')} height='17vw' ></img>確認送出
+                                <img src={require('../../assets/checked.png')} height='17vw' alt='submit' ></img>確認送出
                             </button>
                         </div>
                     </div>
@@ -195,14 +195,14 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                 DeleteOrder(Order_ID);
                                 window.location.reload();
                                 }}>
-                                一鍵刪除<img src={require('../../assets/delete.png')} height='17vw' ></img></button>
+                                一鍵刪除<img src={require('../../assets/delete.png')} height='17vw' alt='delete' ></img></button>
                         </div>
                     </div>
                     <div className={style.Meals}>
                         <div className={style.test}>
                             {mealList.map(ele => (
                                 <MealItem key={ele['Meal_ID']} Order_ID={Order_ID} mealList={mealList}
-                                    setMealList={setMealList} Mealele={ele} mealshowday={(+day == 0) ? 7 : +day} initialcount={ele['Amount']} outofdate={true}
+                                    setMealList={setMealList} Mealele={ele} mealshowday={(+day === 0) ? 7 : +day} initialcount={ele['Amount']} outofdate={true}
                                     cashAmount={cashAmount} setcashAmount={setcashAmount} />
                             ))}
                         </div>

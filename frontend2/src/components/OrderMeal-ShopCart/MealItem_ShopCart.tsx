@@ -118,7 +118,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                                         window.location.reload();
                                     }
                                 }}>
-                                    <img src={require('../../assets/delete.png')} height='25vw'></img>
+                                    <img src={require('../../assets/delete.png')} height='25vw' alt="delete"></img>
                                 </button>
                             </div>
     

@@ -90,11 +90,11 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </div>
                         <button className={style.baseButton_button} onClick={async ()=> {
                             await AddCart(mealshowday, +Customer_ID!, +Vendor_ID!, pickuptime,count,meal.Meal_ID,meal.Price*count)
-                            if(warning==0){
+                            if(warning===0){
                                 alert('現在時刻已超過預定時間，請重新預定!');
                                 window.location.reload();
                             }
-                            else if(warning==1){
+                            else if(warning===1){
                                 alert('您選擇的餐點數量為零或已超過當下庫存量，請重新選擇數量!');
                                 window.location.reload();
                             }
