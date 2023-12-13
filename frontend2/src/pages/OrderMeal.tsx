@@ -9,6 +9,7 @@ import VendorImg from '../components/OrderMeal-ShopCart/VendorImg';
 import VendorInfo from '../components/OrderMeal-ShopCart/VendorInfo';
 import MealBlock from '../components/OrderMeal-ShopCart/MealBlock_OrderMeal';
 import { VendorAndMeal } from '../type'
+import { BACKEND_URL } from "../constant";
 
 export default function OrderMeal() {
 
@@ -23,7 +24,7 @@ export default function OrderMeal() {
     useEffect(() => {
         const FetchOrders = async (ID: string) => {
             try {
-                const url: string = `http://localhost:8081/orderMeal?vid=${ID}`;
+                const url: string = `${BACKEND_URL}/orderMeal?vid=${ID}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
                 setVendorImgurl(result[0]['Vendor_img' as keyof typeof VendorImgurl]);
                 setVendorName(result[0]['Name' as keyof typeof VendorName]);
