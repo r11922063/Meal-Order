@@ -90,7 +90,10 @@ export default function MealAmount() {
         //     alert(`${selected} 的餐點數量更新成功！`);
         //     console.log(data);
         // })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            alert("Network error :(");
+            console.log(err);
+        });
     }
 
     return (
