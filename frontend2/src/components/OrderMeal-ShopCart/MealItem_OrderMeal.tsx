@@ -47,7 +47,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h2>餐點名稱:{meal.Meal_Name}</h2>
+                            <h2>{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -71,7 +71,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h2>餐點名稱:{meal.Meal_Name}</h2>
+                            <h2>{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -103,8 +103,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </button>
                     </div>
                 </div>
-                <div className={style.Meal_img} >
-                    <img src={meal.Image_url} alt='test' width='100%' height='100%'/>
+                <div className={style.Meal_imgBox} >
+                    <img src={meal.Image_url} className={style.Meal_img} alt={meal.Meal_Name} />
                 </div>
             </div>
         );
