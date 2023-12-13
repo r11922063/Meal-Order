@@ -80,8 +80,8 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                             </div>
                         </div>
                     </div>
-                    <div className={style.Meal_img} >
-                        <img src={ImgUrl} alt='test' width='100%' height='100%'/>
+                    <div className={style.Meal_imgBox} >
+                        <img src={ImgUrl} className={style.Meal_img} alt={MealName} />
                     </div>
                 </div>
             </>
@@ -124,9 +124,6 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
     
                         </div>
                     </div>
-                    {/* <div className={style.Meal_img} >
-                        <img src={ImgUrl} alt='test' width='100%' height='100%'/>
-                    </div> */}
                     <div className={style.Meal_imgBox} >
                         <img src={ImgUrl} className={style.Meal_img} alt={MealName} />
                     </div>
