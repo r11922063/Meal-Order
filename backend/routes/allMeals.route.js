@@ -26,10 +26,14 @@ const updateDefaultInventory = async (req, res, net) => {
     query_callBack('UPDATE `Meal` SET `Default_Inventory` = ?\
             WHERE `Meal_ID` = ?', [count, mealId],
             (err, result) => {
-                if (err) 
+                if (err) {
                     console.log(`Error updating the default inventory: ${err}`);
-                else
+                    res.sendStatus(500);
+                }
+                else{
                     console.log("Updated row(s): ", result.affectedRows);
+                    res.sendStatus(200);
+                }
             });
 }
 

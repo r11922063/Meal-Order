@@ -202,7 +202,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                             </div>
                         ) : (
                             <div className="orderMeals_empty">
-                                <span className="orderMeals_empty_title">Error: No meals in this order.</span>
+                                <span className="orderMeals_empty_title">獲取訂單資訊中...</span>
                             </div>
                         )}
                     </div>

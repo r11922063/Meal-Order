@@ -109,6 +109,7 @@
   margin-top: 1vw;
   flex:3 1 auto;
   margin-bottom: 1vw;
+  padding: 5px 5px;
 }
 
 .MealBox_Text{
@@ -158,7 +159,7 @@
 
 
 
-.Meal_img{
+/* .Meal_img{
   width: 10%;
   height: 100%;
   display: flex;
@@ -170,6 +171,30 @@
 .Meal_img img{
   width: 7vw;
   height: 7vw;
+} */
+
+.Meal_imgBox {
+  height: 100%;
+  width: 15%;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+.Meal_img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.Meal_img img {
+  height: 100%;
+  width: 150px;
 }
 
 
@@ -276,4 +301,8 @@
 .ResName *{
   color: rgb(168, 168, 168);
   text-decoration: none;
+}
+
+.VendorName:hover {
+  opacity: 0.6;
 }
