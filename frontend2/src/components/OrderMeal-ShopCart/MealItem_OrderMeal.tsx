@@ -47,7 +47,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h2>餐點名稱:{meal.Meal_Name}</h2>
+                            <h2>{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -59,8 +59,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         已完售
                     </div>
                 </div>
-                <div className={style.Meal_img} >
-                    <img src={meal.Image_url} alt='test' width='100%' height='100%'/>
+                <div className={style.Meal_imgBox} >
+                    <img src={meal.Image_url} className={style.Meal_img} alt={meal.Meal_Name} />
                 </div>
             </div>
         );
@@ -71,7 +71,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                 <div className={style.MealBox_Text}>
                     <div className={style.TitleDollarInv}>
                         <div className={style.TitleDollar}>
-                            <h2>餐點名稱:{meal.Meal_Name}</h2>
+                            <h2>{meal.Meal_Name}</h2>
                             <p>NT${meal.Price}</p>
                         </div>
                         <div className={style.Inv}>
@@ -90,11 +90,11 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </div>
                         <button className={style.baseButton_button} onClick={async ()=> {
                             await AddCart(mealshowday, +Customer_ID!, +Vendor_ID!, pickuptime,count,meal.Meal_ID,meal.Price*count)
-                            if(warning==0){
+                            if(warning===0){
                                 alert('現在時刻已超過預定時間，請重新預定!');
                                 window.location.reload();
                             }
-                            else if(warning==1){
+                            else if(warning===1){
                                 alert('您選擇的餐點數量為零或已超過當下庫存量，請重新選擇數量!');
                                 window.location.reload();
                             }
@@ -103,8 +103,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                         </button>
                     </div>
                 </div>
-                <div className={style.Meal_img} >
-                    <img src={meal.Image_url} alt='test' width='100%' height='100%'/>
+                <div className={style.Meal_imgBox} >
+                    <img src={meal.Image_url} className={style.Meal_img} alt={meal.Meal_Name} />
                 </div>
             </div>
         );

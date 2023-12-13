@@ -30,7 +30,7 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
                     BACKEND_URL + `/vendor/orderMeals?orderMealIDs=${order_meal_ids}`
                 ).then(res => { return res.json(); });
                 setOrderMeal(res);
-                console.log("[fetchOrderMeals] order_meals: ", order_meals);
+                // console.log("[fetchOrderMeals] order_meals: ", order_meals);
             } catch (e) {
                 console.log("Error fetching all_orders from backend: ", e);
             }
