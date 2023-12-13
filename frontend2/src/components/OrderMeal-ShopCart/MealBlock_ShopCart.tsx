@@ -158,7 +158,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                         window.location.reload();
                                     }
                                     else if (warning===1) {
-                                        alert('您所預定的餐點中，有餐點數量已超過當下庫存量');
+                                        alert('您所預定的餐點中，有餐點數量已超過當下庫存量或為0');
                                         window.location.reload();
                                     }
                                     else {
