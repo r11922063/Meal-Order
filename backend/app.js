@@ -26,8 +26,7 @@ import vendorRouter from './routes/vendor.route.js'
 import k8sTestRouter from './routes/k8sTest.route.js'
 
 import promClient from 'prom-client'
-import { WebSocket, WebSocketServer } from 'ws';
-
+import wsServer from './models/websocket.model.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,18 +36,13 @@ const dailySchedule = DailySchedule();
 
 app.use(cors());
 app.set('port', process.env.PORT);
-// server.listen(process.env.PORT, () => {
-//   console.log(`server listen on ${process.env.PORT}`);
-// });
-
-server.on('request', app);
-
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+server.on('request', app);
+const wsserver = new wsServer(server);
 
 // Router set up
 app.use('/', indexRouter);
@@ -75,43 +69,8 @@ app.get('/metrics', (async (request, response) => {
   response.send(await promClient.register.metrics());
 }));
 
-
-const wsServer = new WebSocketServer({ server })
-const connections = {}
-
-const handleMessage = (bytes, vendorId) => {
-  const message = JSON.parse(bytes.toString());
-  console.log(message);
-  connections[vendorId].send(JSON.stringify(message));
-}
-
-wsServer.on("connection", (connection, request) => {
-  const vendorId = request.url.split("=")[1];
-  console.log(vendorId);
-  connections[vendorId] = connection;
-  connection.on('message', msg => handleMessage(msg, vendorId));
-})
-
 server.listen(process.env.PORT, () => {
   console.log(`WebSocket server is running on port ${process.env.PORT}`)
 })
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-// SendMail({to: 'r11922125@csie.ntu.edu.tw', subject: 'nodemailer test', text: 'Hi, this is nodemail test.'})
 
 export default app;
