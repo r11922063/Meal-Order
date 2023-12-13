@@ -1,6 +1,7 @@
 import express from 'express';
 import { query } from "../models/dbasync.model.js";
 import upload from '../models/upload.model.js'
+import 'dotenv/config';
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ const AddUser = async ({email, name, password, type, address, imgURL, identity})
 
 const SignUp = async (req, res, next) => {
     const { email, name, password, type, address, identity } = JSON.parse(req.body.data);
-    const imgURL = identity === 'vendor' ? req.file.url : '';
+    const imgURL = identity === 'vendor' ? `${req.file.url.split('?')[0] + '?' + process.env.AZURE_BLOB_SAS}` : '';
     try {
         const id = await AddUser({ email, name, password, type, address, imgURL, identity });
         return res.json({id: id});
