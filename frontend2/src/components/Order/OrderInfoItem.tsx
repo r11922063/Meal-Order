@@ -21,7 +21,7 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
                 day: WEEKDAYS[date_time.getDay()],
                 hour: ((date_time.getHours() > 12) ?
                     date_time.getHours() - 12 : date_time.getHours()).toString(),
-                minute: date_time.getMinutes().toString(),
+                minute: date_time.getMinutes().toString().padStart(2, '0'),
                 dayPeriod: (date_time.getHours() > 12) ? "下午" : "上午",
             };
             return time_info;

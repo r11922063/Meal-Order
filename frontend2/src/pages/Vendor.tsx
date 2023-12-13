@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CustomerOrder } from '../type'
-import { BACKEND_URL } from '../constant'
+import { BACKEND_URL, WS_URL } from '../constant'
 import style from '../style/Vendor/Vendor.module.css'
 import VendorOrderTab from "../components/VendorOrder/VendorOrderTab";
 import AutoRefreshComponent from "../components/VendorOrder/AutoRefreshComponent";
+import useWebSocket from "react-use-websocket"
 
 const Today = new Date();
 
@@ -26,6 +27,18 @@ export default function Vendor() {
     const [selectedDate, setSelectedDate] = useState<string>(((new Date()).getFullYear()).toString() + " 年 " + ((new Date()).getMonth()+1).toString() + " 月 " + (new Date()).getDate().toString() + " 日 " + weekday[(new Date().getDay())]);
     const vendor_id = params.vendorId;
     //console.log("selectedDate: ", selectedDate);
+
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket<CustomerOrder>(WS_URL, {
+        queryParams: { "vendorId": vendor_id! },
+        share: true,
+    })
+    
+    useEffect(() => {
+        if(lastJsonMessage) {
+            console.log("readyState", readyState);
+            setOrders([...orders, lastJsonMessage]);
+        }
+    }, [lastJsonMessage]);
 
     useEffect(() => {
 
@@ -49,6 +62,30 @@ export default function Vendor() {
     return (
         <div>
             <h1> 我的訂單 </h1>
+            <button onClick={(e) => {
+                sendJsonMessage({
+                    Order_ID: 101099,
+                    Customer_ID : 1,
+                    Vendor_ID : 101,
+                    Status : 'WAIT_FOR_APPROVAL',
+                    Pickup_Time : '2023-12-12 21:59:59',
+                    Meal_List: [{"Meal_ID": 10001, "Amount": 10}, {"Meal_ID": 10002, "Amount": 25}],
+                    Cash_Amount: 250,
+                    Vendor_Name: "李記水餃1",
+                });
+                sendJsonMessage({
+                    Order_ID: 101199,
+                    Customer_ID : 1,
+                    Vendor_ID : 101,
+                    Status : 'WAIT_FOR_APPROVAL',
+                    Pickup_Time : '2023-12-12 21:59:59',
+                    Meal_List: [{"Meal_ID": 10001, "Amount": 10}, {"Meal_ID": 10002, "Amount": 25}],
+                    Cash_Amount: 250,
+                    Vendor_Name: "李記水餃1",
+                })
+
+                //console.log("送一次訂單");
+            }}>送訂單</button>
             <select className={style.DropDown} 
                     onChange={e => {
                         let ele = e.target.value;
@@ -62,7 +99,7 @@ export default function Vendor() {
                 }
             </select>
             <VendorOrderTab orders={orders}/>
-            <AutoRefreshComponent />
+            {/*<AutoRefreshComponent />*/}
         </div>
     );
 }

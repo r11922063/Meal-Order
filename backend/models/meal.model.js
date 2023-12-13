@@ -25,24 +25,8 @@ Meal.insertToDb = (meal, query_callBack, res) => {
                     console.log(`Error inserting new meal to db: ${err}`);
                 else{
                     console.log("New meal inserted, affected row(s): ", result.affectedRows);
-                    updateNewMealInfo(result.insertId, query_callBack, res);
+                    res.json({"meal_id": result.insertId});
                 }
             });
 }  
-
-const updateNewMealInfo = (insertId, query_callBack, res) => {
-    const meal_id = insertId;
-    const image_url = `${insertId}.png`;
-    query_callBack('UPDATE `Meal` SET `Image_url` = ?\
-                    WHERE `Meal_ID` = ?', [image_url, insertId],
-            (err, result) => {
-                if (err) 
-                    console.log(`Error updating new meal url: ${err}`);
-                else{
-                    console.log("New meal Image_url updated, affected row(s): ", result.affectedRows);
-                    res.json({"meal_id": meal_id, "image_url": image_url});
-                }
-            });
-}
-
 export { Meal };
