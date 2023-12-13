@@ -21,7 +21,10 @@ const updateOnClick = (meal: Meal, count: number) => {
     }
     alert(`${meal.Meal_Name} 預設庫存更新成功！`);
   })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      alert("Network error :(");
+    });
 }
 
 export default function AllMealMealItem({ meal }: {meal: Meal}) {
