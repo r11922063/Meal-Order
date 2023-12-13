@@ -16,7 +16,7 @@ export default function MealAmount() {
     // For BaseSelector
     const [options, setOptions] = useState<MealAmountSelectOption>([]);
     const [selected, setSelected] = useState<MealAmountOption>({ value: (today-1+3)%7+1, label: "請選擇時間" });
-    const onChange = (e: any) => {
+    const optionOnChange = (e: any) => {
         const option_found = options.find((option: MealAmountOption) => {
             return option.value.toString() === e.target.value;
         });
@@ -72,14 +72,30 @@ export default function MealAmount() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(meals_data)
-        }).then((res) => res.json())
-          .then((data) => console.log(data))
+        }).then((res) => {
+            if (!res.ok){
+                console.log(res.status);
+                throw new Error('Network response was not ok');
+            }
+            var selected_day = "";
+            for (const option of options){
+                if (option.value == selected.value)
+                    selected_day = option.label;
+            }
+            if (selected_day != "")
+                alert(`${selected_day} 的餐點數量更新成功！`);
+            // return res.json();
+        })
+        //   .then((data) => {
+        //     alert(`${selected} 的餐點數量更新成功！`);
+        //     console.log(data);
+        // })
           .catch((err) => console.log(err));
     }
 
     return (
         <>
-        < MealAmountSelect options={options} onChangeFunc={onChange} 
+        < MealAmountSelect options={options} onChangeFunc={optionOnChange} 
                      value={selected.value} />
 
         <div className={style.meal_container}>
