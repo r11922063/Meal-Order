@@ -67,7 +67,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                     <div className={style.MealBox_Text}>
                         <div className={style.TitleDollarInv}>
                             <div className={style.TitleDollar}>
-                                <h3>餐點名稱:{MealName}</h3>
+                                <h3>{MealName}</h3>
                                 <p>NT${MealPrice}</p>
                             </div>
                             <div className={style.Inv}>
@@ -93,7 +93,7 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                     <div className={style.MealBox_Text}>
                         <div className={style.TitleDollarInv}>
                             <div className={style.TitleDollar}>
-                                <h3>餐點名稱:{MealName}</h3>
+                                <h3>{MealName}</h3>
                                 <p>NT${MealPrice}</p>
                             </div>
                             <div className={style.Inv}>
@@ -118,14 +118,17 @@ export default function MealItem({Order_ID, Mealele, mealshowday, initialcount, 
                                         window.location.reload();
                                     }
                                 }}>
-                                    <img src={require('../../assets/delete.png')} height='25vw'></img>
+                                    <img src={require('../../assets/delete.png')} height='25vw' alt="delete"></img>
                                 </button>
                             </div>
     
                         </div>
                     </div>
-                    <div className={style.Meal_img} >
+                    {/* <div className={style.Meal_img} >
                         <img src={ImgUrl} alt='test' width='100%' height='100%'/>
+                    </div> */}
+                    <div className={style.Meal_imgBox} >
+                        <img src={ImgUrl} className={style.Meal_img} alt={MealName} />
                     </div>
                 </div>
             </>
