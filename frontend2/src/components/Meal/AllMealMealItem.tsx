@@ -5,17 +5,26 @@ import { BACKEND_URL } from '../../constant'
 import { useState } from 'react'
 import  BaseButton from '../shared/BaseButton'
 
-const updateOnClick = (mealId: number, count: number) => {
+const updateOnClick = (meal: Meal, count: number) => {
+
   const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
   fetch(update_url, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ mealId: mealId, count: count })
-  }).then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+    body: JSON.stringify({ mealId: meal.Meal_ID, count: count })
+  }).then((res) => {
+    if (!res.ok){
+      console.log(res.status);
+      throw new Error('Network response was not ok');
+    }
+    alert(`${meal.Meal_Name} 預設庫存更新成功！`);
+  })
+    .catch((err) => {
+      console.log(err);
+      alert("Network error :(");
+    });
 }
 
 export default function AllMealMealItem({ meal }: {meal: Meal}) {
@@ -31,7 +40,7 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
 
         <div className={style.allMealMealItem_otherContainer}>
           <div className={style.allMealMealItem_updateButtonBox}>
-            <BaseButton text="更新" onClickFunc={() => updateOnClick(meal.Meal_ID, count)}/>
+            <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count)}/>
           </div>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>

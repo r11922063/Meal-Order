@@ -16,8 +16,9 @@ const getAllMeals = async (req, res, next) => {
     }
 };
 
-const updateAllInventory = async (req, res, net) => {
+const updateAllInventory = async (req, res, next) => {
     console.log("data: ", req.body);
+    var error = false;
     for (const meal of req.body){
         const mealId = meal.mealId;
         const inventory = meal.inventory;
@@ -25,12 +26,18 @@ const updateAllInventory = async (req, res, net) => {
         query_callBack('UPDATE `Meal` SET `Inventory` =?\
                         WHERE `Meal_ID` = ?', [JSON.stringify(inventory), mealId],
             (err, result) => {
-                if (err) 
+                if (err){
                     console.log(`Error updating the inventory: ${err}`);
-                else
+                    error = true;
+                }
+                else{
                     console.log("Updated row(s): ", result.affectedRows);
-        });
+                }
+            });
     }
+    if (error) res.sendStatus(500);
+    else res.sendStatus(200);
+    
     // const mealId = req.body.mealId;
     // const count = req.body.count;
 
