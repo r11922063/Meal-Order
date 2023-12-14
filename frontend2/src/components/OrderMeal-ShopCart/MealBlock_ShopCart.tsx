@@ -3,20 +3,24 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import MealItem from './MealItem_ShopCart';
 import { CustomerOrderDetail } from '../../type'
 import { BACKEND_URL } from '../../constant';
 import style from '../../style/OrderMeal-ShopCart/ShopCart.module.css'
+import { WebSocketHook } from 'react-use-websocket/dist/lib/types';
+import { CustomerOrder } from '../../type';
 
 export default function MealBlock({ Order_ID, intime }: { Order_ID: number, intime: boolean }) {
-
+    const params = useParams();
+    const customerId = params.customerId;
     const [vendorName, setvendorName] = useState('');
     const [pickupTime, setPickupTime] = useState(new Date());
     const [cashAmount, setcashAmount] = useState(0);
     const [mealList, setMealList] = useState<CustomerOrderDetail[]>([]);
     const [vendor_id, setvendor_id] = useState(0);
     let warning: number;
+    const { sendJsonMessage, lastJsonMessage, readyState } = useOutletContext<WebSocketHook<CustomerOrder>>();
 
     /* Backend Function: Submit Order Button */
     const SubmitOrder = async (Order_ID: number, mealshowday: number, Meal_List: CustomerOrderDetail[], cashAmount: number, pickupTime:Date) => {
@@ -111,7 +115,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                         <div className={style.OrderInfo}>
                             <div>
                                 <h1 className={style.ResName1} >
-                                    <Link to={`/customer/1/vendor/${vendor_id}`} className={style.VendorName}>
+                                    <Link to={`/customer/${customerId}/vendor/${vendor_id}`}>
                                         {vendorName}
                                     </Link>
                                 </h1>
@@ -162,6 +166,16 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                                         window.location.reload();
                                     }
                                     else {
+                                        sendJsonMessage({
+                                            Order_ID: Order_ID,
+                                            Vendor_ID: vendor_id,
+                                            Customer_ID: customerId,
+                                            Status: 'WAIT_FOR_APPROVAL',
+                                            Pickup_Time: pickupTime,
+                                            Meal_List: mealList,
+                                            Cash_Amount: cashAmount,
+                                            Vendor_Name: vendorName
+                                        });
                                         window.location.reload();
                                     }
                                 }}>

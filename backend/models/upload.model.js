@@ -16,6 +16,7 @@ const azureStorage = new MulterAzureStorage({
     accessKey: process.env.AZURE_KEY,
     containerName: process.env.AZURE_CONTAINER,
     blobName: resolveBlobName,
+    urlExpirationTime: -1
 });
 
 const upload = multer({

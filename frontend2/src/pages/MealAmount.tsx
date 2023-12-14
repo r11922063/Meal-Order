@@ -55,6 +55,14 @@ export default function MealAmount() {
         fetchMealData();
     }, []);
 
+    // useEffect(() => {
+    //     console.log("rerender");
+    //     for (const meal of meals){
+    //         console.log("Meal_ID:", meal.Meal_ID);
+    //     }
+    //   }, [meals]);
+    
+
     // For update button
     const updateOnClick = () => {
         const update_url = `${BACKEND_URL}/mealAmount/updateAllInventory`;
@@ -94,6 +102,7 @@ export default function MealAmount() {
             alert("Network error :(");
             console.log(err);
         });
+        
     }
 
     return (
@@ -105,9 +114,10 @@ export default function MealAmount() {
             {meals.length > 0 ? (
                 <div>
                     <div className={style.meal_itemBox}>
-                        {meals.map((meal) => (
-                        <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
-                        ))}
+                        {meals.map((meal) => {
+                            // console.log("Meal_ID:", meal.Meal_ID);
+                            return <MealAmountMealItem key={meal.Meal_ID} meal={meal} setMeals={setMeals} day={selected} />
+                        })}
                     </div>
                 
                     <div className={style.meal_updateButtonBox}>
