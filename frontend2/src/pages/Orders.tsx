@@ -88,7 +88,7 @@ export default function Orders() {
         }
         // update orders
         const order_cancelled: CustomerOrder | undefined = await updateOrders(order_id);
-        // cancel (notify Vendor & write backend)
+        // cancel (notify Vendor & write db)
         notifyCancellationToVendor(order_cancelled);
         toCancelOrder(order_cancelled);
     }
