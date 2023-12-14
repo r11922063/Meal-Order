@@ -21,7 +21,7 @@ export default function Counter({ mealID, count, setCount, maxinv, setMealList, 
             let temp_mealList: CustomerOrderDetail[] = mealList;
             for (let i = 0; i < mealList.length; i++) {
                 if (temp_mealList[i]['Meal_ID'] === mealID) {
-                    temp_mealList[i]['Amount'] = Math.max(1, number - 1);
+                    temp_mealList[i]['Amount'] = number;
                 }
             }
             setMealList(temp_mealList);
