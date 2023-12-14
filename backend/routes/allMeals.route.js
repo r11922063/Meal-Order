@@ -42,7 +42,6 @@ const addMealItem = (req, res, next) => {
     console.log("addMealItem, mealData = ", mealData);
 
     let newMeal = new Meal(mealData);
-    // save image
     
     // save newMeal to db
     Meal.insertToDb(newMeal, query_callBack, res);
@@ -50,8 +49,11 @@ const addMealItem = (req, res, next) => {
 
 const uploadMealItemImage = (req, res, next) => {
     console.log("uploadMealItemImage");
-    const image_url = req.file.url;
-    console.log("image_url = ", image_url);
+    var image_url = req.file.url;
+    console.log("original image_url = ", image_url);
+    image_url = `${req.file.url.split('?')[0] + '?' + process.env.AZURE_BLOB_SAS}`;
+    console.log("modified image_url = ", image_url);
+    
     res.json({image_url: image_url});
     // let img_url = req.body['img_url'];
     // console.log("img_url = ", img_url);
