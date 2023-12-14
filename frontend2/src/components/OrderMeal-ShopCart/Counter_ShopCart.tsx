@@ -13,10 +13,23 @@ export default function Counter({ mealID, count, setCount, maxinv, setMealList, 
     const handleInput = (text: any) => {
         const number = Number(text);
         if (!isNaN(number)) {
+            if(+number===0 || +number>maxinv){
+                alert('Warning!單品項數量不得為0或超過庫存!');   
+            }
             setCount(number);
-            setMealList(mealList);
-            setcashAmount(cashAmount);
-            console.log("count updated");
+            setcashAmount(cashAmount - MealPrice * count + MealPrice * number);
+            let temp_mealList: CustomerOrderDetail[] = mealList;
+            for (let i = 0; i < mealList.length; i++) {
+                if (temp_mealList[i]['Meal_ID'] === mealID) {
+                    temp_mealList[i]['Amount'] = number;
+                }
+            }
+            setMealList(temp_mealList);
+            
+            console.log(mealList)
+            console.log(cashAmount)
+            console.log(count)
+                
         }
     };
 
@@ -24,15 +37,28 @@ export default function Counter({ mealID, count, setCount, maxinv, setMealList, 
         <div className={style.counter_buttons}>
             <span
                 onClick={() => {
-                    setCount(Math.max(0, count - 1));
-                    let temp_mealList: CustomerOrderDetail[] = mealList;
-                    for (let i = 0; i < mealList.length; i++) {
-                        if (temp_mealList[i]['Meal_ID'] === mealID) {
-                            temp_mealList[i]['Amount'] = Math.max(0, count - 1);
+                    if(count>maxinv){
+                        setCount(maxinv);
+                        let temp_mealList: CustomerOrderDetail[] = mealList;
+                        for (let i = 0; i < mealList.length; i++) {
+                            if (temp_mealList[i]['Meal_ID'] === mealID) {
+                                temp_mealList[i]['Amount'] = maxinv;
+                            }
                         }
+                        setMealList(temp_mealList);
+                        setcashAmount(cashAmount - MealPrice * count + MealPrice * maxinv);
                     }
-                    setMealList(temp_mealList);
-                    setcashAmount(cashAmount - MealPrice * count + MealPrice * (Math.max(0, count - 1)));
+                    else{
+                        setCount(Math.max(1, count - 1));
+                        let temp_mealList: CustomerOrderDetail[] = mealList;
+                        for (let i = 0; i < mealList.length; i++) {
+                            if (temp_mealList[i]['Meal_ID'] === mealID) {
+                                temp_mealList[i]['Amount'] = Math.max(1, count - 1);
+                            }
+                        }
+                        setMealList(temp_mealList);
+                        setcashAmount(cashAmount - MealPrice * count + MealPrice * (Math.max(1, count - 1)));
+                    }
                 }}
                 className={style.counter_plus}
             >
@@ -46,15 +72,15 @@ export default function Counter({ mealID, count, setCount, maxinv, setMealList, 
 
             <span
                 onClick={() => {
-                    setCount(Math.min(maxinv, count + 1));
+                    setCount(Math.max(Math.min(maxinv, count + 1),1));
                     let temp_mealList: CustomerOrderDetail[] = mealList;
                     for (let i = 0; i < mealList.length; i++) {
                         if (temp_mealList[i]['Meal_ID'] === mealID) {
-                            temp_mealList[i]['Amount'] = Math.min(maxinv, count + 1);
+                            temp_mealList[i]['Amount'] = Math.max(Math.min(maxinv, count + 1),1);
                         }
                     }
                     setMealList(temp_mealList);
-                    setcashAmount(cashAmount - MealPrice * count + MealPrice * (Math.min(maxinv, count + 1)))
+                    setcashAmount(cashAmount - MealPrice * count + MealPrice * (Math.max(Math.min(maxinv, count + 1),1)))
                 }}
                 className={style.counter_minus}
             >

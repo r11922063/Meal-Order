@@ -48,7 +48,7 @@ const getMealDetail = async(req, res, next) =>{
 }
 
 const postSubmitOrder = async (req, res, next) =>{
-    const cmd1 = 'Select JSON_EXTRACT(`Inventory`,'+"'$."+'"?"'+"')<? as 'BanSubmit' from `Meal` where Meal_ID = ?"
+    const cmd1 = 'Select (JSON_EXTRACT(`Inventory`,'+"'$."+'"?"'+"')<?) || (? = 0) as 'BanSubmit' from `Meal` where Meal_ID = ?"
     const cmd2_1 = 'Update `Order` set `Meal_List` = ?, `Status`= "WAIT_FOR_APPROVAL",`Cash_Amount`=? where `Order_ID` = ?;'
     const cmd2_2 = 'Update `Meal` set `Inventory` = JSON_REPLACE(INVENTORY,'+"'$."+'"?"'+"',round(JSON_EXTRACT(`Inventory`,'$."+'"?"'+"')-?)) where Meal_ID = ?"
     const Order_ID = req.body.Order_ID;
@@ -62,7 +62,7 @@ const postSubmitOrder = async (req, res, next) =>{
             res.json({msg:0})
         }else{
             for (let i=0; i<Meal_List.length; i++){
-                const [rows1,] = await query(cmd1,[day,Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
+                const [rows1,] = await query(cmd1,[day,Meal_List[i]['Amount'],Meal_List[i]['Amount'],Meal_List[i]['Meal_ID']]);
                 if(rows1[0]['BanSubmit']){
                     BanSubmit = true;
                     break;
