@@ -10,11 +10,13 @@ export default class wsServer {
             console.log(`${identity} ${id} connect websocket`);
             if (identity === 'vendor')
                 this.vendorConnections[id] = connection;
+            
             connection.on('message', bytesmsg => {
                 const message = JSON.parse(bytesmsg.toString());
                 console.log(`ws recieve ${message}`);
-                this.vendorConnections[message.Vendor_ID].send(JSON.stringify(message));
-                
+                if(this.vendorConnections[message.Vendor_ID]) {
+                    this.vendorConnections[message.Vendor_ID].send(JSON.stringify(message));
+                }
             });
         })
     }

@@ -12,52 +12,6 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
-    // async function confirmOrder() {
-    //     fetch(BACKEND_URL + `/vendor/confirmOrder`, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({"orderID" : order.Order_ID})
-    //     }).then((res) => res.json())
-    //       .catch((err) => console.log(err));
-    //     const response = window.confirm(`已接取訂單 #${order.Order_ID}`);
-    //     //window.location.reload()
-    // }
-    // async function finishOrder() {
-    //     fetch(BACKEND_URL + `/vendor/finishOrder`, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({"orderID" : order.Order_ID})
-    //     }).then((res) => res.json())
-    //       .catch((err) => console.log(err));
-    //     //window.location.reload()
-    // }
-    // async function cancelConfirm() {
-    //     fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({"orderID" : order.Order_ID})
-    //     }).then((res) => res.json())
-    //       .catch((err) => console.log(err));
-    //     //window.location.reload()
-    // }
-    // async function pickupConfirm() {
-    //     fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({"orderID" : order.Order_ID})
-    //     }).then((res) => res.json())
-    //       .catch((err) => console.log(err));
-    //     //window.location.reload()
-    // }
-
     useEffect(() => {
 
         function buildTimeInfo(date_time: Date) {
