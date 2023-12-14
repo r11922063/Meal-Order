@@ -19,7 +19,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
         }).then((res) => res.json())
           .catch((err) => console.log(err));
         const response = window.confirm(`已接取訂單 #${order.Order_ID}`);
-        window.location.reload()
+        //window.location.reload()
     }
     async function finishOrder() {
         fetch(BACKEND_URL + `/vendor/finishOrder`, {
@@ -30,7 +30,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
             body: JSON.stringify({"orderID" : order.Order_ID})
         }).then((res) => res.json())
           .catch((err) => console.log(err));
-        window.location.reload()
+        //window.location.reload()
     }
     async function cancelConfirm() {
         fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
@@ -41,7 +41,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
             body: JSON.stringify({"orderID" : order.Order_ID})
         }).then((res) => res.json())
           .catch((err) => console.log(err));
-        window.location.reload()
+        //window.location.reload()
     }
     async function pickupConfirm() {
         fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
@@ -52,7 +52,7 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
             body: JSON.stringify({"orderID" : order.Order_ID})
         }).then((res) => res.json())
           .catch((err) => console.log(err));
-        window.location.reload()
+        //window.location.reload()
     }
 
     useEffect(() => {

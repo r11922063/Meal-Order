@@ -30,7 +30,11 @@ export default function Vendor() {
         if(lastJsonMessage) {
             if (lastJsonMessage.Status === "WAIT_FOR_APPROVAL") {
                 // 新增訂單
-                setOrders([...orders, lastJsonMessage]);
+                const PickupDate = +(lastJsonMessage.Pickup_Time.split('T')[0]).split('-')[2];
+                const CurrentDate = +selectedDate.split(' ')[4];
+                if(PickupDate === CurrentDate) {
+                    setOrders([...orders, lastJsonMessage]);
+                }     
             }
             else if (lastJsonMessage.Status === "CANCELLED_UNCHECKED") {
                 // 取消訂單
@@ -38,7 +42,9 @@ export default function Vendor() {
                     return order.Order_ID === lastJsonMessage.Order_ID ? lastJsonMessage : order;
                 }));
             }
-            else {}
+            else {
+                // 未知的操作
+            }
         }
     }, [lastJsonMessage]);
 
