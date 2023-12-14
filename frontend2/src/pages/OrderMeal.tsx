@@ -10,6 +10,7 @@ import VendorInfo from '../components/OrderMeal-ShopCart/VendorInfo';
 import MealBlock from '../components/OrderMeal-ShopCart/MealBlock_OrderMeal';
 import { VendorAndMeal } from '../type'
 import { BACKEND_URL } from "../constant";
+import style from '../style/OrderMeal-ShopCart/ShopCart.module.css'
 
 export default function OrderMeal() {
 
@@ -26,10 +27,12 @@ export default function OrderMeal() {
             try {
                 const url: string = `${BACKEND_URL}/orderMeal?vid=${ID}`;
                 const result = await fetch(url).then((res) => { return res.json(); });
-                setVendorImgurl(result[0]['Vendor_img' as keyof typeof VendorImgurl]);
-                setVendorName(result[0]['Name' as keyof typeof VendorName]);
-                setVendorAddr(result[0]['Address' as keyof typeof VendorAddr]);
-                setOrderMeal(result);
+                if(result.length > 0){
+                    setVendorImgurl(result[0]['Vendor_img' as keyof typeof VendorImgurl]);
+                    setVendorName(result[0]['Name' as keyof typeof VendorName]);
+                    setVendorAddr(result[0]['Address' as keyof typeof VendorAddr]);
+                    setOrderMeal(result);
+                }
             }
             catch (err) {
                 throw err;
@@ -42,11 +45,28 @@ export default function OrderMeal() {
         }
     }, [vid]);
 
-    return (
-        <>
-            <VendorImg img_url={VendorImgurl} />
-            <VendorInfo vendorName={VendorName} vendorAddr={VendorAddr} />
-            <MealBlock meals={OrderMeal} />
-        </>
-    );
+    if(VendorImgurl!=''){
+        return (
+            <>
+                <VendorImg img_url={VendorImgurl} />
+                <VendorInfo vendorName={VendorName} vendorAddr={VendorAddr} />
+                <MealBlock meals={OrderMeal} />
+            </>
+        );
+    }
+    else{
+        return(
+          <>
+            <div className={style.noOrder}>
+                    <div>
+                        <h2>目前這家餐廳沒有餐點!!!</h2>
+                    </div>
+                    <div>
+                        <img src={require('../assets/crying.png')} alt='error' height='100vw'></img>
+                    </div>
+                </div>
+          </>  
+        );
+    }
+
 }
